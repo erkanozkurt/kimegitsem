@@ -1,0 +1,187 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/aop
+            http://www.springframework.org/schema/aop/spring-aop.xsd
+            http://www.springframework.org/schema/tx
+            http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+            http://www.springframework.org/schema/jdbc
+            http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/cache 
+            http://www.springframework.org/schema/cache/spring-cache.xsd">
+	<!-- Interceptor section start -->
+	<context:annotation-config />
+	<context:property-placeholder location="classpath*:*.properties"/>
+	
+	<bean id="talkInterceptor" class="com.persona.kg.interceptor.TalkInterceptor"/>
+	<bean id="authenticationInterceptor" class="com.persona.kg.interceptor.AuthenticationInterceptor"/>
+	<bean id="contextInterceptor" class="com.persona.kg.interceptor.ContextInterceptor" />
+	<bean id="fakeUserInterceptor" class="com.persona.kg.interceptor.FakeUserInterceptor" />
+	<bean id="categoryInterceptor" class="com.persona.kg.interceptor.CategoryInterceptor">
+		<property name="categoryDAO" ref="categoryDao" />
+	</bean>
+	<bean id="poiRetrieverInterceptor" class="com.persona.kg.interceptor.PoiRetrieverInterceptor">
+		<property name="poiDAO" ref="poiDao" />
+	</bean>
+	
+
+	<!-- Interceptor section end -->
+
+	<!-- Action section start -->
+	<bean class="com.persona.kg.action.LandingPageAction" id="landingPageAction"
+		scope="prototype">
+		<property name="landingPageDao" ref="landingPageDao" />
+		<property name="PATH" value="C:/tomcat/webapps/image/" />
+	</bean>
+
+	<bean class="com.persona.kg.action.MainPageAction" id="mainPageAction">
+	</bean>
+
+	<bean class="com.persona.kg.action.AjaxAction" id="ajaxAction" scope="prototype">
+	</bean>
+
+	<bean class="com.persona.kg.action.FacebookAction" id="facebookAction">
+		<property name="subscriberDao" ref="subscriberDao" />
+	</bean>
+
+	<bean class="com.persona.kg.action.SearchAction" id="searchAction">
+	</bean>
+
+	<bean class="com.persona.kg.action.TalkAction" id="talkAction">
+	</bean>
+
+	<bean class="com.persona.kg.action.PoiAction" id="poiAction">
+		<property name="poiDAO" ref="poiDao"></property>
+		<property name="subscriberDAO" ref="subscriberDao"></property>
+		<property name="categoryDAO" ref="categoryDao"></property>
+	</bean>
+
+	<bean class="com.persona.kg.action.UserAction" id="subscriberAction">
+		<property name="subscriberDAO" ref="subscriberDao"></property>
+	</bean>
+	<!-- Action section end -->
+
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactoryMysql" />
+	</bean>
+
+
+	<bean id="mySqlDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://localhost:3306/kimegitsem?characterEncoding=utf8" />
+		<property name="user" value="root" />
+		<property name="password" value="eozkurt" />
+		<property name="minPoolSize" value="40" />
+		<property name="initialPoolSize" value="40" />
+		<property name="maxPoolSize" value="40" />
+		<property name="maxStatements" value="100" />
+		<property name="checkoutTimeout" value="10000" />
+		<property name="idleConnectionTestPeriod" value="60" />
+	</bean>
+	<bean id="sessionFactoryMysql"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="mySqlDataSource" />
+		<property name="mappingResources">
+			<list>
+				<value>com/persona/kg/dao/TblLandingPage.hbm.xml</value>
+				<value>com/persona/kg/dao/TblLandingPagePoi.hbm.xml</value>
+				<value>com/persona/kg/dao/TblCategory.hbm.xml</value>
+				<value>com/persona/kg/dao/TblPoiCategory.hbm.xml</value>
+				<value>com/persona/kg/dao/TblPoi.hbm.xml</value>
+				<value>com/persona/kg/dao/TblComment.hbm.xml</value>
+				<value>com/persona/kg/dao/TblListItems.hbm.xml</value>
+				<value>com/persona/kg/dao/TblAttributeDefVal.hbm.xml</value>
+				<value>com/persona/kg/dao/TblAttributeValue.hbm.xml</value>
+				<value>com/persona/kg/dao/TblCity.hbm.xml</value>
+				<value>com/persona/kg/dao/TblCompliment.hbm.xml</value>
+				<value>com/persona/kg/dao/TblComplimentType.hbm.xml</value>
+				<value>com/persona/kg/dao/TblConversation.hbm.xml</value>
+				<value>com/persona/kg/dao/TblConversationReply.hbm.xml</value>
+				<value>com/persona/kg/dao/TblDistrict.hbm.xml</value>
+				<value>com/persona/kg/dao/TblFriendship.hbm.xml</value>
+				<value>com/persona/kg/dao/TblImage.hbm.xml</value>
+				<value>com/persona/kg/dao/TblInvitation.hbm.xml</value>
+				<value>com/persona/kg/dao/TblList.hbm.xml</value>
+				<value>com/persona/kg/dao/TblMessage.hbm.xml</value>
+				<value>com/persona/kg/dao/TblNotification.hbm.xml</value>
+				<value>com/persona/kg/dao/TblSubscriber.hbm.xml</value>
+				<value>com/persona/kg/dao/TblTransactionLog.hbm.xml</value>
+				<value>com/persona/kg/dao/TblWatchList.hbm.xml</value>
+				<value>com/persona/kg/dao/TblPoiAdministrator.hbm.xml</value>
+				<value>com/persona/kg/dao/TblStats.hbm.xml</value>
+				<value>com/persona/kg/dao/TblRate.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.MySQLDialect
+				hibernate.connection.release_mode =after_transaction
+				hibernate.current_session_context_class=org.springframework.orm.hibernate3.SpringSessionContext
+			</value>
+		</property>
+	</bean>
+
+	<bean id="landingPageDao" class="com.persona.kg.LandingPageDAO">
+		<property name="sessionFactory" ref="sessionFactoryMysql"></property>
+	</bean>
+	<bean id="categoryDao" class="com.persona.kg.CategoryDAO">
+		<property name="sessionFactory" ref="sessionFactoryMysql"></property>
+	</bean>
+	<bean id="subscriberDao" class="com.persona.kg.SubscriberDAO">
+		<property name="sessionFactory" ref="sessionFactoryMysql"></property>
+	</bean>
+	<bean id="poiDao" class="com.persona.kg.PoiDAO">
+		<property name="sessionFactory" ref="sessionFactoryMysql"></property>
+	</bean>
+	<bean id="talkDao" class="com.persona.kg.TalkDAO">
+		<property name="sessionFactory" ref="sessionFactoryMysql"></property>
+	</bean>
+
+	<!-- Cache config begin -->
+	
+	<bean id="cachedResources" class="com.persona.kg.common.CachedResources"/>
+	
+	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+		<property name="caches">
+			<set>
+				<bean
+					class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+					p:name="default" />
+			</set>
+		</property>
+	</bean>
+	<!-- Cache config end -->
+	
+	<!-- Mail Config start -->
+	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="mailSender">
+        <property name="host" value="${email.host}"/>
+        <property name="protocol" value="${email.protocol}"/>
+        <property name="port" value="${email.port}"/>
+        <property name="username" value="${email.username}"/>
+        <property name="password" value="${email.password}"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+            </props>
+        </property>
+        <property name="defaultEncoding" value="UTF-8"/>
+    </bean>
+    
+    <bean id="velocityEngine" 
+    class="org.springframework.ui.velocity.VelocityEngineFactoryBean" p:resourceLoaderPath="/WEB-INF/velocity">
+	
+    </bean>
+    
+	
+	<!-- Mail Config end -->
+</beans>

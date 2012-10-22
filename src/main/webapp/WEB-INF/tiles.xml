@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="firstPage" template="/jsp/common/layoutEntrance.jsp">
+		<put-attribute name="header" value="/jsp/common/headerEntrance.jsp"/>
+	</definition>
+
+	<definition name="master" template="/jsp/common/layout.jsp">
+		<put-attribute name="meta" value="/jsp/emptyMeta.jsp"/>
+		<put-attribute name="header" value="/jsp/common/header.jsp"/>
+		<put-attribute name="categories" value="/jsp/categories.jsp"/>
+		<put-attribute name="body" value="/jsp/main.jsp"/>
+	</definition>
+	<definition name="filter" extends="master">
+		<put-attribute name="body" value="/jsp/search/searchResult.jsp"/>
+	</definition>
+	<definition name="search" extends="master">
+		<put-attribute name="body" value="/jsp/search/searchResult.jsp"/>
+	</definition>
+	<definition name="profile" extends="master">
+		<put-attribute name="body" value="/jsp/subs/profile.jsp"/>
+	</definition>
+	
+	<definition name="poiMain" extends="master">
+		<put-attribute name="meta" value="/jsp/in/meta.jsp"/>
+		<put-attribute name="body" value="/jsp/in/poi.jsp"/>
+	</definition>
+	<definition name="claimForm" extends="master">
+		<put-attribute name="meta" value="/jsp/in/meta.jsp"/>
+		<put-attribute name="body" value="/jsp/in/claimForm.jsp"/>
+	</definition>
+	
+	<definition name="talkMain" extends="master">
+		<put-attribute name="meta" value="/jsp/talk/meta.jsp"/>
+		<put-attribute name="body" value="/jsp/talk/list.jsp"/>
+		<put-attribute name="categories" value="/jsp/talk/talkFilter.jsp"/>
+	</definition>
+	
+	<definition name="talkShow" extends="master">
+		<put-attribute name="meta" value="/jsp/talk/meta.jsp"/>
+		<put-attribute name="body" value="/jsp/talk/show.jsp"/>
+		<put-attribute name="categories" value="/jsp/talk/talkFilter.jsp"/>
+	</definition>
+	
+</tiles-definitions>
