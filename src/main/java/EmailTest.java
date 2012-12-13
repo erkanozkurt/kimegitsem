@@ -29,7 +29,6 @@ public class EmailTest {
 							MimeMessageHelper message = new MimeMessageHelper(
 									mimeMessage);
 							// mail sending parameters
-							  
 							
 							message.setTo(address);
 							message.setFrom("davet@kimegitsem.com");
