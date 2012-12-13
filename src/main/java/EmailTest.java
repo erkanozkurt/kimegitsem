@@ -29,7 +29,7 @@ public class EmailTest {
 							MimeMessageHelper message = new MimeMessageHelper(
 									mimeMessage);
 							// mail sending parameters
-				   			
+				      			
 							message.setTo(address);
 							message.setFrom("davet@kimegitsem.com");
 							message.setSubject("sana kimegitsem?com’dan arkadaslik istegi gonderdi");
