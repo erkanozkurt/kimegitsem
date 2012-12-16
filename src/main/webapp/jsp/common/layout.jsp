@@ -50,6 +50,7 @@
 					   }
 			});
 		}
+		
 		function serverLogout(){
 			$.ajax({
 					   url: "<%=response.encodeURL(request.getContextPath()+"/fb/logout")%>", 
@@ -64,18 +65,29 @@
 			});
 			FB.Event.subscribe('auth.login', function(response) {
 				login(response);
+				document.getElementById('login').style.display='none';
+				document.getElementById('logoutdiv').style.display = 'block';
+				try{
+					hs.close();
+				}catch(error){
+				alert(error);
+				}
 			});
 			FB.Event.subscribe('auth.logout', function(response) {
 				logout();
+				document.getElementById('login').style.display='block';
+				document.getElementById('logoutdiv').style.display = 'hide';
 			});
 
 			FB.getLoginStatus(function(response) {
 						if (response.status == 'connected') {
 							login(response);
 							document.getElementById('login').style.display='none';
-							document.getElementById('logout').style.display = 'block';
+							document.getElementById('logoutdiv').style.display = 'block';
 						}else{
-							hs.htmlExpand(this, {width: 400, contentId: 'facebookLoginDiv',wrapperClassName :'draggable-header'});
+							document.getElementById('login').style.display='block';
+							document.getElementById('logoutdiv').style.display = 'hide';
+							hs.htmlExpand(null, {width: 400,height:100, contentId: 'facebookLoginDiv',wrapperClassName :'draggable-header'} );
 						}
 					});
 		};
@@ -105,12 +117,12 @@
 			serverLogout();
 			facebookId=null;
 		}
+		
 		function fblogout() {
 		    FB.logout(function(response) {
 		    	serverLogout();
 		    });
 		}
-		
 		hs.graphicsDir = '<%=response.encodeURL(request.getContextPath())%>/img/highslide/graphics/';
 		hs.align = 'center';
 		hs.transitions = ['expand', 'crossfade'];

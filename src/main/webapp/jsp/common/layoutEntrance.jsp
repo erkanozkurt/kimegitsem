@@ -82,8 +82,8 @@ function serverLogin(accessCode){
 	<center>
 		<div>
 			<img src="<%=response.encodeURL(request.getContextPath()+"/img/kimegitsem.jpg") %>" alt="" align="top" /><br/>
-			facebook ile hemen bağlan <fb:login-button autologoutlink="true"
-			scope="email,user_likes,user_checkins,publish_stream"></fb:login-button>
+			<fb:login-button autologoutlink="true"
+			scope="email,user_likes,user_checkins,publish_stream">Facebook ile hemen bağlan</fb:login-button>
 		</div>
 	</center>
 </body>

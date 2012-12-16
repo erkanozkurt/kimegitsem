@@ -7,13 +7,11 @@
 	<a href="<%=response.encodeURL(request.getContextPath()+ "/welcome")%>"><div class="logo" id="logo"></div></a>
 	<div class="login" id="login">
 		<fb:login-button autologoutlink="true"
-			scope="email,user_likes,user_checkins,publish_stream"></fb:login-button>
+			scope="email,user_likes,user_checkins,publish_stream">Facebook ile bağlan</fb:login-button>
 	</div>
-	
-	<div class="login" id="logout" style="diplay:none">
+	<div class="login" id="logoutdiv" style="display:none">
 		<a href="#" onclick="fblogout()"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/logout.jpg")%>"></a>
 	</div>
-	
 	<div class="searchArea" id="searchArea">
 		<s:form labelposition="left" theme="simple" action="search"
 			namespace="/s" id="searchHeaderform">
@@ -25,7 +23,7 @@
 					</td>
 					<td>
 						<s:url id="placeList" action="placeList" namespace="/ajax"/>
-						<sj:autocompleter id="where" list="json" name="where" onSelectTopics="whereSelected" href="%{placeList}" delay="50"  loadMinimumCount="2" placeholder="Nerede" maxlength="10" onkeypress="return sendSearchForm(event);"/>
+						<sj:autocompleter id="where" list="json" name="where" href="%{placeList}" delay="50"  loadMinimumCount="2" placeholder="Nerede" maxlength="10" onkeypress="return sendSearchForm(event);"/>
 					</td>
 					<td><a href="#" onclick="javascript:document.getElementById('searchHeaderform').submit();"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/search.jpg")%>"></a>
 					</td>
@@ -114,9 +112,9 @@
 
 <div id="facebookLoginDiv" class="popupDiv">			
 		<div class="popupHeader">kimegitsem?com'a bağlan!</div>
-		<div>
+		<div align="center">
 			<fb:login-button autologoutlink="true"
-				scope="email,user_likes,user_checkins,publish_stream"></fb:login-button>
+				scope="email,user_likes,user_checkins,publish_stream">Facebook ile bağlan</fb:login-button>
 		</div>
 </div>
 
@@ -141,8 +139,4 @@
 		});
 		
 	}
-	
-	$.subscribe('whereSelected', function(event, data) {
-		alert(data);
-	        });
 </script>
