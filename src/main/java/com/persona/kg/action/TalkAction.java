@@ -139,7 +139,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 			FacebookClient facebookClient = new DefaultFacebookClient(
 					accessToken);
 			FacebookType publishResponse = facebookClient.publish(
-					"me/kgitsemtest:kime_gitsem",
+					"me/"+ApplicationConstants.getProperty("facebookAsk"),
 					Post.class,
 					Parameter.with("obje", getApplicationContext()
 							+ "/talk/show?talkId=" + convId));
@@ -163,7 +163,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 				TblPoi poi=poiDAO.findPoiById(poiId);
 				FacebookType publishResponse = facebookClient
 						.publish(
-								"/me/kgitsemtest:tavsiye_etmek",
+								"/me/"+ApplicationConstants.getProperty("facebookSuggest"),
 								Post.class,
 								Parameter.with("obje", ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier()));
 				if(publishResponse!=null && publishResponse.getId()!=null && publishResponse.getId().trim().length()>0){

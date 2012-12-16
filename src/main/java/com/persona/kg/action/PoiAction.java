@@ -53,6 +53,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 	private String categoryId;
 	private TblPoi poi;
 	private boolean updateMode=false;
+	private int poiId;
 	
 	@Autowired
 	private CachedResources cachedResources;
@@ -258,6 +259,77 @@ public class PoiAction extends BaseAction implements SessionAware {
 		return "show";
 	}
 
+	public String uploadLogo(){
+		UserContext userContext = getUserContext();
+		if (getUploadFile() != null) {
+			if (userContext.isLoggedIn()) {
+				TblPoi poi = poiDAO.findPoiById(poiId);
+				TblSubscriber subscriber = subscriberDAO
+						.retrieveFacebookSubscriber(userContext.getFacebookId());
+				if (poi != null && subscriber != null) {
+					logger.debug("file format:" + getUploadFileContentType());
+					setUploadFileContentType(getUploadFileContentType()
+							.toLowerCase());
+					if (getUploadFileContentType().equalsIgnoreCase(
+							"image/pjpeg")
+							|| getUploadFileContentType().equalsIgnoreCase(
+									"image/x-png")
+							|| getUploadFileContentType().equalsIgnoreCase(
+									"image/gif")
+							|| getUploadFileContentType().equalsIgnoreCase(
+									"image/jpeg")
+							|| getUploadFileContentType().equalsIgnoreCase(
+									"image/png")) {
+						String fileName = "" + ObjectIdGenerator.getObjectId();
+						String baseFileName = fileName;
+						if (getUploadFileContentType().equalsIgnoreCase(
+								"image/jpeg")
+								|| getUploadFileContentType().equalsIgnoreCase(
+										"image/pjpeg"))
+							fileName += ".jpg";
+						else if (getUploadFileContentType().equalsIgnoreCase(
+								"image/png")
+								|| getUploadFileContentType().equalsIgnoreCase(
+										"image/x-png"))
+							fileName += ".png";
+						else
+							fileName += ".gif";
+						if (getUploadFile() != null
+								&& getUploadFile().length() > 0
+								&& getUploadFile().length() < 800000) {
+							String outputFile = ApplicationConstants
+									.getImageDir() + fileName;
+							if (saveFileToFileSystem(outputFile)
+									&& new ImageResizer(getUploadFile()
+											.getAbsolutePath(),
+											ApplicationConstants.getImageDir()
+													+ "thumb_" + baseFileName
+													+ ".png").createThumbnail()) {
+								TblImage img = new TblImage();
+								img.setImgType(poi.getPoiId());
+								img.setTblSubscriber(subscriber);
+								img.setStatus((short) 3);
+								img.setFilename(fileName);
+								poiDAO.addImage(img);
+								poi.setImages(poiDAO.retrieveImagesByPoi(poi));
+								poiDAO.setPoiLogo(poi.getPoiId(), img.getFilename());
+								poi.setProfileImage(img.getFilename());
+								userContext.setSelectedPoi(poi);
+							} else {
+								addActionMessage(getText("message.general.request.not.performed"));
+							}
+						} else {
+							addActionError("Resim dosyasý izin verilenden daha büyük.");
+						}
+					} else {
+						addActionError("Resim dosyasý formatý uygun deðil. Lütfen belirtilen resim formatlarýnda resimler yükleyin.");
+					}
+				}
+			}
+		}
+		return "show";
+	}
+	
 	public String listAjax() {
 		logger.debug("postcomment invoked" + userComment);
 		TblCategory category = categoryDAO.findCategoryById(categoryId);
@@ -392,5 +464,12 @@ public class PoiAction extends BaseAction implements SessionAware {
 	public void setUpdateMode(boolean updateMode) {
 		this.updateMode = updateMode;
 	}
+	public int getPoiId() {
+		return poiId;
+	}
+	public void setPoiId(int poiId) {
+		this.poiId = poiId;
+	}
+	
 
 }
