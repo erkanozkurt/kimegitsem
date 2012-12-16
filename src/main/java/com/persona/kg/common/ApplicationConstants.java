@@ -71,4 +71,8 @@ public class ApplicationConstants {
 		return context;
 	}
 	
+	public static String getProperty(String proppertyKey){
+		return kgProperties.getProperty(proppertyKey);
+	}
+	
 }
