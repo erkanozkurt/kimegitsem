@@ -9,7 +9,7 @@ var selectedPoiUnique='<s:property value="#session.userContext.selectedPoi.uniqu
 function suggest()
 {
     FB.api(
-      '/me/kgitsemtest:tavsiye_etmek',
+      '/me/<%=ApplicationConstants.getProperty("facebookSuggest")%>',
       'post',
       { obje: '<%=ApplicationConstants.getContext()%>in/'+selectedPoiUnique },
       function(response) {
@@ -37,7 +37,7 @@ function suggest()
 					</div>
 					<table border="0" width="100%">
 						<tr>
-							<td valign="top">Kategori:<s:iterator
+							<td valign="top"><span class="bold">Kategori: </span><s:iterator
 									value="#session.userContext.selectedPoi.categories"
 									var="categorie">
 									<s:a action="filter?category=%{categoryId}" namespace="/s"
@@ -48,24 +48,31 @@ function suggest()
 							</td>
 						</tr>
 						<tr>
-							<td valign="top">Adress: <s:property
+							<td valign="top"><span class="bold">Adress: </span><s:property
 									value="#session.userContext.selectedPoi.address" escape="true" />
 							</td>
 						</tr>
 						<tr>
-							<td valign="top">Şehir/Semt: <s:property
+							<td valign="top"><span class="bold">Şehir/Semt: </span><s:property
 									value="#session.userContext.selectedPoi.address" escape="true" />
 							</td>
 						</tr>
 						<tr>
-							<td valign="top">Telefon: <s:property
+							<td valign="top"><span class="bold">Telefon: </span><s:property
 									value="#session.userContext.selectedPoi.phone" escape="true" />
 							</td>
 						</tr>
 						<s:if test="#session.userContext.selectedPoi.website!=null">
 							<tr>
-								<td valign="top">Site: <s:property
+								<td valign="top"><span class="bold">Site: </span><s:property
 										value="#session.userContext.selectedPoi.website" escape="true" />
+								</td>
+							</tr>
+						</s:if>
+						<s:if test="#session.userContext.selectedPoi.keywords!=null">
+							<tr>
+								<td valign="top"><span class="bold">Anahtar Kelimeler: </span> <s:property
+										value="#session.userContext.selectedPoi.keywords" escape="true" />
 								</td>
 							</tr>
 						</s:if>
@@ -121,7 +128,7 @@ function suggest()
 
 										}
 									</script>
-									<div id="map_canvas" style="width: 250px; height: 250px">
+									<div id="map_canvas" style="width: 300px; height: 300px">
 										<script type="text/javascript">
 											initialize();
 										</script>

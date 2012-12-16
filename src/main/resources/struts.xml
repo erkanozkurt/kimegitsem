@@ -29,6 +29,12 @@
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 			</interceptor-stack>
+			<interceptor-stack name="unsecuredDefInterceptors">
+				<interceptor-ref name="contextInterceptor"></interceptor-ref>
+				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
+				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
 			<interceptor-stack name="poiInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
 				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
@@ -65,7 +71,7 @@
 			<result type="tiles" name="show">firstPage</result>
 		</action>
 		<action name="index" class="mainPageAction" method="execute">
-			<interceptor-ref name="defInterceptors"></interceptor-ref>
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">master</result>
 		</action>
 	</package>
@@ -179,6 +185,10 @@
 			<result type="tiles" name="show">poiMain</result>
 		</action>
 		<action name="/uimg/*" class="poiAction" method="uploadImage">
+			<interceptor-ref name="poiInterceptors"></interceptor-ref>
+			<result type="tiles" name="show">poiMain</result>
+		</action>
+		<action name="ulogo" class="poiAction" method="uploadLogo">
 			<interceptor-ref name="poiInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">poiMain</result>
 		</action>

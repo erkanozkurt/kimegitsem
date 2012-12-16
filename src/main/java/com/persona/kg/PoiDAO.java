@@ -3,7 +3,9 @@ package com.persona.kg;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.hibernate.HibernateException;
@@ -400,5 +402,27 @@ public class PoiDAO extends BaseDao {
 			logger.error("Database Exception", exp);
 		}
 		return result;
+	}
+	
+	public boolean setPoiLogo(final Integer poiId, final String logo){
+		 boolean result=false;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createSQLQuery("update tbl_poi set profile_image=? where poi_id=?");
+							query.setString(0, logo);
+							query.setInteger(1, poiId);
+							query.executeUpdate();
+							return true;
+						}
+					});
+			result=true;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return result;	
 	}
 }

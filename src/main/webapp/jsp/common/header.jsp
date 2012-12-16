@@ -9,6 +9,11 @@
 		<fb:login-button autologoutlink="true"
 			scope="email,user_likes,user_checkins,publish_stream"></fb:login-button>
 	</div>
+	
+	<div class="login" id="logout" style="diplay:none">
+		<a href="#" onclick="fblogout()"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/logout.jpg")%>"></a>
+	</div>
+	
 	<div class="searchArea" id="searchArea">
 		<s:form labelposition="left" theme="simple" action="search"
 			namespace="/s" id="searchHeaderform">
@@ -20,7 +25,7 @@
 					</td>
 					<td>
 						<s:url id="placeList" action="placeList" namespace="/ajax"/>
-						<sj:autocompleter id="where" list="json" name="where" href="%{placeList}" delay="50"  loadMinimumCount="2" placeholder="Nerede" maxlength="10" onkeypress="return sendSearchForm(event);"/>
+						<sj:autocompleter id="where" list="json" name="where" onSelectTopics="whereSelected" href="%{placeList}" delay="50"  loadMinimumCount="2" placeholder="Nerede" maxlength="10" onkeypress="return sendSearchForm(event);"/>
 					</td>
 					<td><a href="#" onclick="javascript:document.getElementById('searchHeaderform').submit();"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/search.jpg")%>"></a>
 					</td>
@@ -136,4 +141,8 @@
 		});
 		
 	}
+	
+	$.subscribe('whereSelected', function(event, data) {
+		alert(data);
+	        });
 </script>

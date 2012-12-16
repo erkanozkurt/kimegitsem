@@ -23,7 +23,7 @@
         src="<%=response.encodeURL(request.getContextPath()+"/js/highslide-full.packed.js")%>"></script>
 
 <title>kimegitsem?com - En iyisi, arkadaş tavsiyesi</title>
-<link href="<%=response.encodeURL(request.getContextPath()+"/css/style.css?v=2") %>" rel="stylesheet" type="text/css" />
+<link href="<%=response.encodeURL(request.getContextPath()+"/css/style.css?v=3") %>" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(request.getContextPath()+"/css/highslide.css")%>" />
 </head>
 <body>
@@ -72,6 +72,10 @@
 			FB.getLoginStatus(function(response) {
 						if (response.status == 'connected') {
 							login(response);
+							document.getElementById('login').style.display='none';
+							document.getElementById('logout').style.display = 'block';
+						}else{
+							hs.htmlExpand(this, {width: 400, contentId: 'facebookLoginDiv',wrapperClassName :'draggable-header'});
 						}
 					});
 		};
@@ -101,7 +105,11 @@
 			serverLogout();
 			facebookId=null;
 		}
-		
+		function fblogout() {
+		    FB.logout(function(response) {
+		    	serverLogout();
+		    });
+		}
 		
 		hs.graphicsDir = '<%=response.encodeURL(request.getContextPath())%>/img/highslide/graphics/';
 		hs.align = 'center';
