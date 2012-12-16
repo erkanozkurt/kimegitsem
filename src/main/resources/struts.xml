@@ -5,7 +5,7 @@
 
 <struts>
 	<constant name="struts.objectFactory" value="spring" />
-	<constant name="struts.devMode" value="true" />
+	<constant name="struts.devMode" value="false" />
 	<constant name="struts.action.extension" value="" />
 	<constant name="struts.enable.SlashesInActionNames" value="true" />
 	<package name="default" extends="struts-default" namespace="/">
@@ -251,7 +251,7 @@
 
 
 		<action name="listPoi" class="poiAction" method="listAjax">
-			<interceptor-ref name="defInterceptors"></interceptor-ref>
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result name="poiListAjax">/jsp/in/poiList.jsp</result>
 		</action>
 		<action name="placeList" class="ajaxAction" method="placeList">
