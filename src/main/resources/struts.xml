@@ -22,18 +22,21 @@
 			<interceptor name="authenticationInterceptor" class="authenticationInterceptor" />
 			<interceptor name="fakeUserInterceptor" class="fakeUserInterceptor" />
 			<interceptor name="talkInterceptor" class="talkInterceptor"></interceptor>
+			<interceptor name="exceptionHandlerInterceptor" class="exceptionHandlerInterceptor" />
 			<interceptor-stack name="defInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
 				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
 				<interceptor-ref name="authenticationInterceptor"></interceptor-ref>
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="unsecuredDefInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
 				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="poiInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -42,6 +45,7 @@
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="poiRetrieverInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="poiInterceptorsUnsecured">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -49,6 +53,7 @@
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="poiRetrieverInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="talkInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -56,16 +61,19 @@
 				<interceptor-ref name="authenticationInterceptor"></interceptor-ref>
 				<interceptor-ref name="talkInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="talkInterceptorsUnsecure">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
 				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
 				<interceptor-ref name="talkInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
 		<global-results>
 			<result type="tiles" name="login">firstPage</result>
+			<result type="tiles" name="error">errorPage</result>
 		</global-results>
 		<action name="welcome" class="mainPageAction" method="execute">
 			<result type="tiles" name="show">firstPage</result>
@@ -74,6 +82,7 @@
 			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">master</result>
 		</action>
+		
 	</package>
 
 	<package name="subscriber" extends="default" namespace="/subs">
