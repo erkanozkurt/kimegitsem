@@ -23,6 +23,7 @@
 			<interceptor name="fakeUserInterceptor" class="fakeUserInterceptor" />
 			<interceptor name="talkInterceptor" class="talkInterceptor"></interceptor>
 			<interceptor name="exceptionHandlerInterceptor" class="exceptionHandlerInterceptor" />
+			<interceptor name="facebookInterceptor" class="facebookInterceptor" />
 			<interceptor-stack name="defInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
 				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
@@ -30,6 +31,7 @@
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
+				<interceptor-ref name="facebookInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="unsecuredDefInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -37,6 +39,7 @@
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
+				<interceptor-ref name="facebookInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="poiInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -46,6 +49,7 @@
 				<interceptor-ref name="poiRetrieverInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
+				<interceptor-ref name="facebookInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="poiInterceptorsUnsecured">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -54,6 +58,7 @@
 				<interceptor-ref name="poiRetrieverInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
+				<interceptor-ref name="facebookInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="talkInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -62,6 +67,7 @@
 				<interceptor-ref name="talkInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
+				<interceptor-ref name="facebookInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="talkInterceptorsUnsecure">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -69,6 +75,7 @@
 				<interceptor-ref name="talkInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
+				<interceptor-ref name="facebookInterceptor"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
 		<global-results>

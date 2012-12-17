@@ -28,24 +28,24 @@ import com.persona.kg.common.CachedResources;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblCategory;
 
-public class ExceptionHandlerInterceptor extends BaseInterceptor implements
+public class FacebookInterceptor extends BaseInterceptor implements
 		StrutsStatics {
 
 	protected Log logger = LogFactory.getLog(CategoryInterceptor.class);
 
 	@Override
 	public String intercept(ActionInvocation action) throws Exception {
-
 		String result = "error";
 		logger.debug("enter");
 		try {
 			final HttpServletRequest request = (HttpServletRequest) ActionContext
             .getContext().get(ServletActionContext.HTTP_REQUEST);
-
-			Enumeration enumer=request.getHeaderNames();
-			while(enumer.hasMoreElements()){
-				String key=(String)enumer.nextElement();
-				logger.debug("key: "+key+" value:"+request.getHeader(key));
+			String userAgent=request.getHeader("user-agent");
+			logger.debug("user-agent: "+userAgent);
+			if(userAgent!=null && userAgent.indexOf("facebook")>-1){
+				request.setAttribute("facebookClient","true");
+			}else{
+				request.setAttribute("facebookClient","false");
 			}
 			result = action.invoke();
 		} catch (Exception e) {

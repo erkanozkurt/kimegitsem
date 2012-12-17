@@ -1,4 +1,11 @@
+import java.io.BufferedReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,12 +19,31 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import sun.net.www.http.HttpClient;
+import sun.security.krb5.Credentials;
+
 import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.dao.TblSubscriber;
 
 
 public class EmailTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		 
+
+		    URL url = new URL("http://kimegitsem.zapto.org/kimegitsem/in/Ekol_Otomotiv");
+		    URLConnection conn = url.openConnection();
+		    conn.setDoOutput(true);
+		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+		    wr.flush();
+
+		    // Get the response
+		    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		    String line;
+		    while ((line = rd.readLine()) != null) {
+		       System.out.println(line);
+		    }
+	}
+	public static void main1(String[] args) {
 				final ApplicationContext context=new ClassPathXmlApplicationContext("mailContext.xml");
 				System.setProperty("javax.net.ssl.trustStore", "c:/truststore");
 		     //   System.setProperty("javax.net.ssl.keyStorePassword", "turkiye51");
