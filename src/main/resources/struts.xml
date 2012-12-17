@@ -5,7 +5,7 @@
 
 <struts>
 	<constant name="struts.objectFactory" value="spring" />
-	<constant name="struts.devMode" value="true" />
+	<constant name="struts.devMode" value="false" />
 	<constant name="struts.action.extension" value="" />
 	<constant name="struts.enable.SlashesInActionNames" value="true" />
 	<package name="default" extends="struts-default" namespace="/">
@@ -22,12 +22,21 @@
 			<interceptor name="authenticationInterceptor" class="authenticationInterceptor" />
 			<interceptor name="fakeUserInterceptor" class="fakeUserInterceptor" />
 			<interceptor name="talkInterceptor" class="talkInterceptor"></interceptor>
+			<interceptor name="exceptionHandlerInterceptor" class="exceptionHandlerInterceptor" />
 			<interceptor-stack name="defInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
 				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
 				<interceptor-ref name="authenticationInterceptor"></interceptor-ref>
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
+			</interceptor-stack>
+			<interceptor-stack name="unsecuredDefInterceptors">
+				<interceptor-ref name="contextInterceptor"></interceptor-ref>
+				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
+				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="poiInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -36,6 +45,7 @@
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="poiRetrieverInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="poiInterceptorsUnsecured">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -43,6 +53,7 @@
 				<interceptor-ref name="categoryInterceptor"></interceptor-ref>
 				<interceptor-ref name="poiRetrieverInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="talkInterceptors">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
@@ -50,24 +61,28 @@
 				<interceptor-ref name="authenticationInterceptor"></interceptor-ref>
 				<interceptor-ref name="talkInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 			<interceptor-stack name="talkInterceptorsUnsecure">
 				<interceptor-ref name="contextInterceptor"></interceptor-ref>
 				<interceptor-ref name="fakeUserInterceptor"></interceptor-ref>
 				<interceptor-ref name="talkInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<interceptor-ref name="exceptionHandlerInterceptor"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
 		<global-results>
 			<result type="tiles" name="login">firstPage</result>
+			<result type="tiles" name="error">errorPage</result>
 		</global-results>
 		<action name="welcome" class="mainPageAction" method="execute">
 			<result type="tiles" name="show">firstPage</result>
 		</action>
 		<action name="index" class="mainPageAction" method="execute">
-			<interceptor-ref name="defInterceptors"></interceptor-ref>
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">master</result>
 		</action>
+		
 	</package>
 
 	<package name="subscriber" extends="default" namespace="/subs">
@@ -182,6 +197,10 @@
 			<interceptor-ref name="poiInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">poiMain</result>
 		</action>
+		<action name="ulogo" class="poiAction" method="uploadLogo">
+			<interceptor-ref name="poiInterceptors"></interceptor-ref>
+			<result type="tiles" name="show">poiMain</result>
+		</action>
 		<action name="follow" class="poiAction" method="addWatch">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/ajax/ajax.jsp</result>
@@ -241,7 +260,7 @@
 
 
 		<action name="listPoi" class="poiAction" method="listAjax">
-			<interceptor-ref name="defInterceptors"></interceptor-ref>
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result name="poiListAjax">/jsp/in/poiList.jsp</result>
 		</action>
 		<action name="placeList" class="ajaxAction" method="placeList">

@@ -7,7 +7,10 @@
 	<a href="<%=response.encodeURL(request.getContextPath()+ "/welcome")%>"><div class="logo" id="logo"></div></a>
 	<div class="login" id="login">
 		<fb:login-button autologoutlink="true"
-			scope="email,user_likes,user_checkins,publish_stream"></fb:login-button>
+			scope="email,user_likes,user_checkins,publish_stream">Facebook ile bağlan</fb:login-button>
+	</div>
+	<div class="login" id="logoutdiv" style="display:none">
+		<a href="#" onclick="fblogout()"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/logout.jpg")%>"></a>
 	</div>
 	<div class="searchArea" id="searchArea">
 		<s:form labelposition="left" theme="simple" action="search"
@@ -109,9 +112,9 @@
 
 <div id="facebookLoginDiv" class="popupDiv">			
 		<div class="popupHeader">kimegitsem?com'a bağlan!</div>
-		<div>
+		<div align="center">
 			<fb:login-button autologoutlink="true"
-				scope="email,user_likes,user_checkins,publish_stream"></fb:login-button>
+				scope="email,user_likes,user_checkins,publish_stream">Facebook ile bağlan</fb:login-button>
 		</div>
 </div>
 

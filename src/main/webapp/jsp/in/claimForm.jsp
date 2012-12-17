@@ -58,6 +58,60 @@
 			<td><s:textfield name="poi.website" id="website"></s:textfield></td>
 		</tr>
 		<tr>
+			<td colspan="2"><script type="text/javascript"
+										src="http://maps.googleapis.com/maps/api/js?key=<%=com.persona.kg.common.ApplicationConstants.getGoogleMapsKey()%>&sensor=true">
+									</script>
+									<script type="text/javascript">
+										var oldMarker;
+										var geocoder = null;
+										function initialize() {
+											var address = "Istanbul";
+											geocoder = new google.maps.Geocoder();
+											geocoder.geocode({ 'address': address }, function (results, status) {
+												if (status == google.maps.GeocoderStatus.OK) {
+													var latitude = results[0].geometry.location.lat();
+													var longitude = results[0].geometry.location.lng();
+													var poiLatlng = new google.maps.LatLng(latitude, longitude);
+													var mapOptions = {
+														center : poiLatlng,
+														zoom : 11,
+														mapTypeId : google.maps.MapTypeId.ROADMAP
+													};
+													var map = new google.maps.Map(document.getElementById("map_canvas"),mapOptions);
+													
+													google.maps.event.addListener(map, 'click', function(event) {
+														var lat = event.latLng.lat();
+														var lng = event.latLng.lng();
+														document.getElementById("lat").value = lat; 
+														document.getElementById("lng").value = lng; 
+														placeMarker(event.latLng);
+													});
+													
+													function placeMarker(location) {
+														marker = new google.maps.Marker({
+														position: location,
+														map: map
+														});
+														if (oldMarker != undefined){
+															oldMarker.setMap(null);
+														}
+														oldMarker = marker;
+														map.setCenter(location);
+													}
+												}
+											}	);
+										}
+									</script>
+									<div id="map_canvas" style="width: 500px; height: 400px">
+										<script type="text/javascript">
+											initialize();
+										</script>
+									</div>
+						<s:hidden name="poi.coordLat" id="lat" />
+						<s:hidden name="poi.coordLong" id="lng" />
+			</td>
+		</tr>
+		<tr>
 			<td><a href="#" onclick="validatePoiInfo()"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/save.jpg")%>"></a></td>
 		</tr>
 	</table>

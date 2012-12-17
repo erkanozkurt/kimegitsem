@@ -14,7 +14,7 @@
 	<div id="uploadImagePopup" class="popupDiv">
 		<div class="popupHeader">Logo Yükle</div>
 		<div>
-			<s:form action="ulogo/%{#session.userContext.selectedPoi.uniqueIdentifier}" method="post" enctype="multipart/form-data" id="uploadPicForm">
+			<s:form action="ulogo" method="post" enctype="multipart/form-data" id="uploadPicForm" namespace="/in">
 				<s:file name="uploadFile">Yüklenecek fotoğraf</s:file>
 				<s:hidden id="poiId" name="poiId"></s:hidden>
 				<table>

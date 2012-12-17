@@ -2,6 +2,7 @@ package com.persona.kg.common;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +70,7 @@ public class CachedResources {
 		if(getCache().get(ApplicationConstants.MERGED_PLACE_CACHE_KEY)!=null){
 			mergedPlaceList=(Map<String,String>)getCache().get(ApplicationConstants.MERGED_PLACE_CACHE_KEY).get();
 		}else{
-			mergedPlaceList=new HashMap<String, String>();
+			mergedPlaceList=new LinkedHashMap<String, String>();
 			List<TblCity> cityList=poiDao.retrieveCityList();
 			List<TblDistrict> districtList=poiDao.retrieveDistrictList();
 			Iterator<TblCity> cityIterator=cityList.iterator();

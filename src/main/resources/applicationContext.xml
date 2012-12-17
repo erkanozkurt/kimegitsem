@@ -29,40 +29,40 @@
 	<bean id="poiRetrieverInterceptor" class="com.persona.kg.interceptor.PoiRetrieverInterceptor">
 		<property name="poiDAO" ref="poiDao" />
 	</bean>
-	
+	<bean id="exceptionHandlerInterceptor" class="com.persona.kg.interceptor.ExceptionHandlerInterceptor" />
 
 	<!-- Interceptor section end -->
 
 	<!-- Action section start -->
 	<bean class="com.persona.kg.action.LandingPageAction" id="landingPageAction"
-		scope="prototype">
+		scope="request">
 		<property name="landingPageDao" ref="landingPageDao" />
 		<property name="PATH" value="C:/tomcat/webapps/image/" />
 	</bean>
 
-	<bean class="com.persona.kg.action.MainPageAction" id="mainPageAction">
+	<bean class="com.persona.kg.action.MainPageAction" id="mainPageAction" scope="request">
 	</bean>
 
-	<bean class="com.persona.kg.action.AjaxAction" id="ajaxAction" scope="prototype">
+	<bean class="com.persona.kg.action.AjaxAction" id="ajaxAction" scope="request">
 	</bean>
 
-	<bean class="com.persona.kg.action.FacebookAction" id="facebookAction">
+	<bean class="com.persona.kg.action.FacebookAction" id="facebookAction" scope="request">
 		<property name="subscriberDao" ref="subscriberDao" />
 	</bean>
 
-	<bean class="com.persona.kg.action.SearchAction" id="searchAction">
+	<bean class="com.persona.kg.action.SearchAction" id="searchAction" scope="request">
 	</bean>
 
-	<bean class="com.persona.kg.action.TalkAction" id="talkAction">
+	<bean class="com.persona.kg.action.TalkAction" id="talkAction" scope="request">
 	</bean>
 
-	<bean class="com.persona.kg.action.PoiAction" id="poiAction">
+	<bean class="com.persona.kg.action.PoiAction" id="poiAction" scope="request">
 		<property name="poiDAO" ref="poiDao"></property>
 		<property name="subscriberDAO" ref="subscriberDao"></property>
 		<property name="categoryDAO" ref="categoryDao"></property>
 	</bean>
 
-	<bean class="com.persona.kg.action.UserAction" id="subscriberAction">
+	<bean class="com.persona.kg.action.UserAction" id="subscriberAction" scope="request">
 		<property name="subscriberDAO" ref="subscriberDao"></property>
 	</bean>
 	<!-- Action section end -->

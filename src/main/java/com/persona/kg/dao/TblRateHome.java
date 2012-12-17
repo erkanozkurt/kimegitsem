@@ -1,6 +1,6 @@
 package com.persona.kg.dao;
 
-// Generated Sep 3, 2012 10:39:45 PM by Hibernate Tools 3.4.0.CR1
+// Generated 24-Nov-2012 13:57:32 by Hibernate Tools 3.4.0.CR1
 
 import java.util.List;
 import javax.naming.InitialContext;

@@ -13,6 +13,9 @@
 		<put-attribute name="categories" value="/jsp/categories.jsp"/>
 		<put-attribute name="body" value="/jsp/main.jsp"/>
 	</definition>
+	<definition name="error" extends="master">
+		<put-attribute name="body" value="/jsp/error.jsp"/>
+	</definition>
 	<definition name="filter" extends="master">
 		<put-attribute name="body" value="/jsp/search/searchResult.jsp"/>
 	</definition>

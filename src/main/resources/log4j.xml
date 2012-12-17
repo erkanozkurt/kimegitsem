@@ -15,7 +15,7 @@
 		<!-- Keep one backup file -->
 		<param name="MaxBackupIndex" value="1" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%p %t %c - %m%n" />
+			<param name="ConversionPattern" value="%d{HH:mm:ss.SSS} [%t] %-5l %l - %m%n" />
 		</layout>
 	</appender>
 
@@ -30,6 +30,7 @@
 
 	<logger name="org.apache.struts2">
 		<level value="debug" />
+		<appender-ref ref="file"/>
 	</logger>
 	<logger name="com.persona">
 		<level value="debug" />
@@ -39,7 +40,7 @@
 	<!-- for all other loggers log only warn and above log messages -->
 	<root>
 		<priority value="WARN" />
-		<appender-ref ref="STDOUT" />
+		<appender-ref ref="file"/>
 	</root>
 
 </log4j:configuration> 
