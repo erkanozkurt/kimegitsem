@@ -155,17 +155,25 @@ public class TalkAction extends BaseAction implements SessionAware {
 
 	public String suggest() {
 		String result="success";
+		logger.debug("suggest invoked");
 		try{
 			if(suggestion!=null){
+				logger.debug("suggestion "+suggestion);
 				Integer poiId=Integer.parseInt(suggestion);
 				UserContext userContext = getUserContext();
+				logger.debug("log1 "+suggestion);
 				FacebookClient facebookClient = new DefaultFacebookClient(userContext.getFacebookAccessToken());
 				TblPoi poi=poiDAO.findPoiById(poiId);
+				
+				String publishUrl= ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier();
+				logger.debug("after find poi "+publishUrl);
+				
 				FacebookType publishResponse = facebookClient
 						.publish(
 								"/me/"+ApplicationConstants.getProperty("facebookSuggest"),
 								Post.class,
-								Parameter.with("obje", ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier()));
+								Parameter.with("obje", publishUrl));
+				logger.debug("after publish "+ publishUrl);
 				if(publishResponse!=null && publishResponse.getId()!=null && publishResponse.getId().trim().length()>0){
 					result="success";
 				}else{
@@ -176,7 +184,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 			logger.warn("Facebook publish exception",e);
 			addActionError("error");
 		}
-		
+		logger.debug("suggest exit");
 		return result;
 	}
 

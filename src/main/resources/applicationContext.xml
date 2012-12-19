@@ -95,6 +95,7 @@
 		<property name="poiDAO" ref="poiDao" />
 	</bean>
 	<bean id="exceptionHandlerInterceptor" class="com.persona.kg.interceptor.ExceptionHandlerInterceptor" />
+	<bean id="facebookInterceptor" class="com.persona.kg.interceptor.FacebookInterceptor" />
 
 	<!-- Interceptor section end -->
 

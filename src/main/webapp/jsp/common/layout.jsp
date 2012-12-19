@@ -6,11 +6,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:fb="http://www.facebook.com/2008/fbml">
-<head prefix="og: http://ogp.me/ns# kgitsemtest: 
-                  http://ogp.me/ns/apps/kgitsemtest#">
+<head prefix="og: http://ogp.me/ns# kimegitsem: 
+                  http://ogp.me/ns/apps/kimegitsem#">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<tiles:insertAttribute name="meta" />
+<%if(request.getAttribute("facebookClient").equals("true")){ %>
+	<tiles:insertAttribute name="meta" />
+<%}%>
 <s:head/>
 <sj:head  compressed="false"/>
 
@@ -27,6 +29,7 @@
 <link rel="stylesheet" type="text/css" href="<%=response.encodeURL(request.getContextPath()+"/css/highslide.css")%>" />
 </head>
 <body>
+<%if(request.getAttribute("facebookClient").equals("false")){ %>
 	<div id="fb-root"></div>
 	<script type="text/javascript">
 		var index = 1;
@@ -156,5 +159,6 @@
 			</div>
 		</div>
 	</div>
+<%} %>
 </body>
 </html>

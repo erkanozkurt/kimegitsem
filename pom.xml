@@ -227,7 +227,7 @@
     	
 	</dependencies>
 	<build>
-		<finalName>KimeGitsemWeb</finalName>
+		<finalName>kimegitsem</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
