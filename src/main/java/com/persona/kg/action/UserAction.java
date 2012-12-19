@@ -12,6 +12,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -34,6 +35,7 @@ import com.persona.kg.dao.TblRate;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
 import com.persona.kg.model.Subscriber;
+//import com.persona.kgadmin.dao.TblPoi;
 
 public class UserAction extends BaseAction implements SessionAware,
 		ServletRequestAware, ServletResponseAware {
@@ -46,6 +48,7 @@ public class UserAction extends BaseAction implements SessionAware,
 	private JavaMailSender mailSender;
 	@Autowired
 	private VelocityEngine velocityEngine;
+	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
 
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -151,13 +154,13 @@ public class UserAction extends BaseAction implements SessionAware,
 								mimeMessage);
 						// mail sending parameters
 						message.setTo(address);
-						message.setFrom("davet@kimegitsem.com");
+						message.setFrom("ylcnarsln@gmail.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" sana kimegitsem?com’dan arkadaslik istegi gonderdi");
 						Map model = new HashMap();
 						model.put("name", authenticatedUser.getName());
 						model.put("surname", authenticatedUser.getSurname());
 						model.put("profile","https://graph.facebook.com/"+authenticatedUser.getFacebookId()+"/picture");
-						model.put("logo",ApplicationConstants.getContext()+"img/kimegitsem.jpg");
+						model.put("logo",ApplicationConstants.getContext()+"img/logo.jpg");
 						model.put("connect",ApplicationConstants.getContext()+"img/connect.jpg");
 						model.put("context",ApplicationConstants.getContext());
 						String mailContent = VelocityEngineUtils

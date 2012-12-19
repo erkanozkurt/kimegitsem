@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import com.persona.kg.dao.TblCategory;
 
 public class ApplicationConstants {
@@ -31,39 +35,29 @@ public class ApplicationConstants {
 	public static String context;
 	public static String domain;
 	
-	
-	private static Properties kgProperties=new Properties();
-	static{
-		try {
-			kgProperties.load(ApplicationConstants.class.getResourceAsStream("kg.properties"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+
 	
 	public static String getFacebookApiKey(){
-		return kgProperties.getProperty("facebookApiKey");
+		return getProperty("facebookApiKey");
 	}
 	public static String getGoogleMapsKey(){
-		return kgProperties.getProperty("googleMapsApiKey");
+		return getProperty("googleMapsApiKey");
 	}
 	public static String getDomainName(){
 		if(domain==null)
-			domain=kgProperties.getProperty("domainName");
+			domain=getProperty("domainName");
 		return domain;
 	}
 	
 	public static String getImageDir(){
-		return kgProperties.getProperty("imageDir");
+		return getProperty("imageDir");
 	}
 	public static String getImageUrl(){
 		return getDomainName()+"/content/";
 	}
 	public static String getContext(){
 		if(context==null){
-			context=kgProperties.getProperty("context");
+			context=getProperty("context");
 			if(context!=null && context.length()>0)
 				context+="/";
 			context=getDomainName()+"/"+context;
@@ -71,8 +65,26 @@ public class ApplicationConstants {
 		return context;
 	}
 	
-	public static String getProperty(String proppertyKey){
-		return kgProperties.getProperty(proppertyKey);
+
+	
+	public static String getProperty(String key){
+		Context initialContext=null;
+		try {
+			initialContext = new InitialContext();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String value = null;
+		if(initialContext!=null)
+			try {
+				value=(String) initialContext.lookup("java:comp/env/"+key);
+			} catch (NamingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		return value;
 	}
 	
 }

@@ -3,7 +3,9 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>
 <div class="upper" id="upper">
+	<!--  
 	<div class="slogan" id="slogan"></div>
+	-->
 	<a href="<%=response.encodeURL(request.getContextPath()+ "/welcome")%>"><div class="logo" id="logo"></div></a>
 	<div class="login" id="login">
 		<fb:login-button autologoutlink="true"

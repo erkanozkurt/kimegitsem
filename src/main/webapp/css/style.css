@@ -48,12 +48,12 @@ body {
 }
 
 .logo {
-	background-image: url(../img/kglogo.jpg);
+	background-image: url(../img/logo.jpg);
 	left: 0px;
-	top: 29px;
+	top: 17px;
 	position: absolute;
-	width: 348px;
-	height: 69px;
+	width: 263px;
+	height: 79px;
 }
 
 .searchArea {
