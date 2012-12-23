@@ -6,5 +6,4 @@
   		<meta property="og:type" content="<%=ApplicationConstants.getProperty("facebookObjectType")%>" /> 
   		<meta property="og:title" content="<s:property value="%{#request.conversation.subject}"/>"/> 
   		<meta property="og:description" content="<s:property value="%{#request.conversation.description}"/>"/> 
-  		<meta property="og:url" content="<%=ApplicationConstants.getDomainName()+request.getContextPath()%>/talk/show?talkId=<s:property value="%{#request.conversation.conversationId}"/>"/>
 </s:if>
