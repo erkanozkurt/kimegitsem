@@ -107,7 +107,7 @@ function suggest()
 									<script type="text/javascript">
 										function initialize() {
 											var lati = <s:property value="#session.userContext.selectedPoi.coordLat" escape="true" />;
-											var longi = <s:property value="#session.userContext.selectedPoi.coordLong" escape="true" />
+											var longi = <s:property value="#session.userContext.selectedPoi.coordLong" escape="true" />;
 											var poiLatlng = new google.maps.LatLng(
 													lati, longi);
 											var mapOptions = {
