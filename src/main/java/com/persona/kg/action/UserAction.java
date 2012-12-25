@@ -3,6 +3,7 @@ package com.persona.kg.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import com.persona.kg.SubscriberDAO;
 import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblLandingPagePoi;
+import com.persona.kg.dao.TblMessage;
 import com.persona.kg.dao.TblRate;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
@@ -49,6 +51,7 @@ public class UserAction extends BaseAction implements SessionAware,
 	@Autowired
 	private VelocityEngine velocityEngine;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
+	private List messageList;
 
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -177,6 +180,22 @@ public class UserAction extends BaseAction implements SessionAware,
 		return "success";
 	}
 
+	public String showInbox(){
+		messageList=new ArrayList<TblMessage>();
+		TblMessage message=new TblMessage();
+		message.setMessage("test234223");
+		message.setSubject("sdasdsadsdsd");
+		message.setSendDate(new Date());
+		messageList.add(message);
+		
+		message=new TblMessage();
+		message.setMessage("test234223");
+		message.setSubject("sdasdsadsdsd1");
+		message.setSendDate(new Date());
+		messageList.add(message);
+		return "success";
+	}
+	
 	public SubscriberDAO getSubscriberDAO() {
 		return subscriberDAO;
 	}
@@ -207,6 +226,14 @@ public class UserAction extends BaseAction implements SessionAware,
 
 	public void setMailAddressContainer(String mailAddressContainer) {
 		this.mailAddressContainer = mailAddressContainer;
+	}
+
+	public List getMessageList() {
+		return messageList;
+	}
+
+	public void setMessageList(List messageList) {
+		this.messageList = messageList;
 	}
 
 }

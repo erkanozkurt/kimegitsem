@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2012 7:33:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.persona.kg.dao.TblPoiAdministrator" table="tbl_poi_administrator" catalog="kimegitsem">
+        <id name="poiId" type="int">
+            <column name="poi_id" />
+            <generator class="foreign">
+                <param name="property">tblPoi</param>
+            </generator>
+        </id>
+        <many-to-one name="tblSubscriber" class="com.persona.kg.dao.TblSubscriber" fetch="select">
+            <column name="administrator_id" not-null="true" />
+        </many-to-one>
+        <one-to-one name="tblPoi" class="com.persona.kg.dao.TblPoi" constrained="true"></one-to-one>
+        <property name="isPrimary" type="java.lang.Boolean">
+            <column name="is_primary" />
+        </property>
+        <property name="status" type="short">
+            <column name="status" not-null="true">
+                <comment>Holds state information, 1- not approved, 2- rejected, 3- approved, 4-deleted</comment>
+            </column>
+        </property>
+    </class>
+</hibernate-mapping>

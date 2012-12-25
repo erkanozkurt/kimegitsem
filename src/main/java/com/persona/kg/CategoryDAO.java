@@ -128,7 +128,7 @@ public class CategoryDAO extends BaseDao {
 						public Object doInHibernate(Session session)
 								throws HibernateException, SQLException {
 							Query query = session
-									.createQuery("from TblCategory cat where cat.status=1 order by cat.categoryName");
+									.createQuery("from TblCategory cat where cat.status=1 order by cat.parentId");
 							return query.list();
 						}
 					});

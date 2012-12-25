@@ -21,6 +21,7 @@ public class ApplicationConstants {
 	public final static String MERGED_PLACE_CACHE_KEY="mergedPlacesKey";
 	public final static String CITY_LIST_CACHE_KEY="cityListKey";
 	public final static String DISTRICT_LIST_CACHE_KEY="districtListKey";
+	public final static String SUBDISTRICT_LIST_CACHE_KEY="subdistrictListKey";
 	public final static String TALK_CITY_KEY="cityId";
 	public final static String TALK_DISTRICT_KEY="districtId";
 	public final static String CITY_LIST_KEY="cityListKey";

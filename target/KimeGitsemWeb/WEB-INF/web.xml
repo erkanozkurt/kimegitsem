@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>Kimegitsem</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/lp/*</url-pattern>
+		<url-pattern>/in/*</url-pattern>
+		<url-pattern>/subs/*</url-pattern>
+		<url-pattern>/fb/*</url-pattern>
+		<url-pattern>/s/*</url-pattern>
+		<url-pattern>/ajax/*</url-pattern>
+		<url-pattern>/talk/*</url-pattern>
+		<url-pattern>/welcome</url-pattern>
+		<url-pattern>/index</url-pattern>
+	</filter-mapping>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>
+			org.apache.tiles.impl.BasicTilesContainer.DEFINITIONS_CONFIG</param-name>
+		<param-value>/WEB-INF/tiles.xml</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+
+
+	<listener>
+		<listener-class>org.apache.struts2.tiles.StrutsTilesListener</listener-class>
+	</listener>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Wildcard means whole app requires authentication</web-resource-name>
+			<url-pattern>/lp/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>kimegitsem</role-name>
+		</auth-constraint>
+
+		<user-data-constraint>
+			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+
+	
+	
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookApiKey</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>imageDir</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>googleMapsApiKey</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>domainName</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>context</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookObjectType</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookSuggest</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookAsk</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailhost</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailpassword</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailport</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailprotocol</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailusername</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>jdbcUrl</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>user</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>password</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	
+	
+	
+</web-app>

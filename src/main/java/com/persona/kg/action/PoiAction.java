@@ -27,6 +27,7 @@ import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblCity;
 import com.persona.kg.dao.TblComment;
 import com.persona.kg.dao.TblDistrict;
+import com.persona.kg.dao.TblSubdistrict;
 import com.persona.kg.dao.TblImage;
 import com.persona.kg.dao.TblLandingPagePoi;
 import com.persona.kg.dao.TblPoi;
@@ -54,6 +55,9 @@ public class PoiAction extends BaseAction implements SessionAware {
 	private TblPoi poi;
 	private boolean updateMode=false;
 	private int poiId;
+	private List jsonList;
+	private int districtId;
+	private int cityId;
 	
 	@Autowired
 	private CachedResources cachedResources;
@@ -368,6 +372,16 @@ public class PoiAction extends BaseAction implements SessionAware {
 		return result;
 	}
 
+	public String retrieveDistrictList(){
+		jsonList=poiDAO.retrieveDistrictListByCityId(cityId);
+		return "success";
+	}
+	
+	public String retrieveSubdistrictList(){
+		jsonList=poiDAO.retrieveSubdistrictListByDistrictId(districtId);
+		return "success";
+	}
+	
 	private String escapeSpaces(String source){
 		if(source!=null){
 			source=source.replaceAll("\\ ", "_");
@@ -455,6 +469,10 @@ public class PoiAction extends BaseAction implements SessionAware {
 		return cachedResources.getDistrictList();
 	}
 	
+	public List<TblSubdistrict> getSubdistrictList(){
+		return cachedResources.getSubdistrictList();
+	}
+	
 	public List<TblCategory> getCategoryList(){
 		return cachedResources.getCategoryList();
 	}
@@ -469,6 +487,24 @@ public class PoiAction extends BaseAction implements SessionAware {
 	}
 	public void setPoiId(int poiId) {
 		this.poiId = poiId;
+	}
+	public List getJsonList() {
+		return jsonList;
+	}
+	public void setJsonList(List jsonList) {
+		this.jsonList = jsonList;
+	}
+	public int getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(int districtId) {
+		this.districtId = districtId;
+	}
+	public int getCityId() {
+		return cityId;
+	}
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
 	}
 	
 
