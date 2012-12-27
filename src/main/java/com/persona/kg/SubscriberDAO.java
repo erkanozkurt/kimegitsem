@@ -19,8 +19,10 @@ import com.persona.kg.dao.TblFriendship;
 import com.persona.kg.dao.TblFriendshipId;
 import com.persona.kg.dao.TblLandingPage;
 import com.persona.kg.dao.TblLandingPagePoi;
+import com.persona.kg.dao.TblPoi;
 import com.persona.kg.dao.TblRate;
 import com.persona.kg.dao.TblSubscriber;
+import com.persona.kg.dao.TblMessage;
 import com.persona.kg.dao.TblWatchList;
 
 public class SubscriberDAO extends BaseDao {
@@ -59,6 +61,50 @@ public class SubscriberDAO extends BaseDao {
 			logger.error("Database Exception", exp);
 		}
 		return result;
+	}
+	
+	public List<TblCategory> retrieveCategoriesByPoi(final TblPoi poi){
+		List<TblCategory> results=new ArrayList<TblCategory>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblCategory cat where cat.categoryId in (select pc.id.categoryId from TblPoiCategory pc where pc.id.poiId=?)");
+							query.setInteger(0, poi.getPoiId());
+							return query.list();
+						}
+					});
+			results = (List<TblCategory>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	
+	public List<TblMessage> retrieveMessagesBySubscriber(final Integer subscriberId){
+		List<TblMessage> results=new ArrayList<TblMessage>();
+		logger.debug(subscriberId.toString());
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblMessage mess where mess.tblSubscriberByRecipientId in (select sub.tblMessage.tblSubscriberByRecipientId from TblSubscriber sub where sub.subscriberId=?)");
+						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
+ 							query.setInteger(0, subscriberId);
+							return query.list();
+						}
+					});
+			results = (List<TblMessage>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
 	}
 	
 	public boolean storeUser(final TblSubscriber subscriber){

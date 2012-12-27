@@ -139,7 +139,7 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/subs/messageList.jsp</result>
 		</action>
-		
+
 		<action name="showOutbox" class="subscriberAction" method="showOutbox">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/subs/messageList.jsp</result>

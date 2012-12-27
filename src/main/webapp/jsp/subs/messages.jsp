@@ -4,7 +4,7 @@
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>      
 <s:actionmessage/>
 <sj:tabbedpanel id="messagesPanel">
-			<s:url id="inboxUrl" action="showInbox" namespace="/subs"></s:url>
+  		   <s:url id="inboxUrl" action="showInbox" namespace="/subs"></s:url>
 		   <sj:tab id="profileTab" label="Gelen Kutusu" href="%{inboxUrl}" > </sj:tab>
 	       
 		   <s:url id="outboxUrl" action="showOutbox" namespace="/subs"></s:url>

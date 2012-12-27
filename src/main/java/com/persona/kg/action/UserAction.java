@@ -33,6 +33,7 @@ import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblLandingPagePoi;
 import com.persona.kg.dao.TblMessage;
+import com.persona.kg.dao.TblPoi;
 import com.persona.kg.dao.TblRate;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
@@ -51,7 +52,8 @@ public class UserAction extends BaseAction implements SessionAware,
 	@Autowired
 	private VelocityEngine velocityEngine;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
-	private List messageList;
+	private List<TblMessage> messageList;
+
 
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -180,7 +182,7 @@ public class UserAction extends BaseAction implements SessionAware,
 		return "success";
 	}
 
-	public String showInbox(){
+	/*public String showInbox(){
 		messageList=new ArrayList<TblMessage>();
 		TblMessage message=new TblMessage();
 		message.setMessage("test234223");
@@ -194,8 +196,20 @@ public class UserAction extends BaseAction implements SessionAware,
 		message.setSendDate(new Date());
 		messageList.add(message);
 		return "success";
+	}*/
+	
+	public String showInbox(){
+		String result="success";
+		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
+		UserContext context=getUserContext();
+		if(subscriberId!=null){
+			Integer intSubsId=123;
+			messageList=subscriberDAO.retrieveMessagesBySubscriber(intSubsId);
+		}
+		return result;
 	}
 	
+
 	public SubscriberDAO getSubscriberDAO() {
 		return subscriberDAO;
 	}
@@ -228,12 +242,13 @@ public class UserAction extends BaseAction implements SessionAware,
 		this.mailAddressContainer = mailAddressContainer;
 	}
 
-	public List getMessageList() {
+	public List<TblMessage> getMessageList() {
 		return messageList;
 	}
 
-	public void setMessageList(List messageList) {
+	public void setMessageList(List<TblMessage> messageList) {
 		this.messageList = messageList;
 	}
+
 
 }
