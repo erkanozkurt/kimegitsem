@@ -201,11 +201,10 @@ public class UserAction extends BaseAction implements SessionAware,
 	public String showInbox(){
 		String result="success";
 		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
-		UserContext context=getUserContext();
-		if(subscriberId!=null){
-			Integer intSubsId=123;
-			messageList=subscriberDAO.retrieveMessagesBySubscriber(intSubsId);
-		}
+		UserContext context=getUserContext();		
+                if(context.getAuthenticatedUser()!=null){			
+                    messageList=subscriberDAO.retrieveMessagesBySubscriber(context.getAuthenticatedUser().getSubscriberId());		
+                }
 		return result;
 	}
 	
