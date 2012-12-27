@@ -94,7 +94,7 @@ public class SubscriberDAO extends BaseDao {
 
 						public Object doInHibernate(Session session)
 								throws HibernateException, SQLException {
-							Query query=session.createQuery("from TblMessage mess where mess.tblSubscriberByRecipientId in (select sub.tblMessage.tblSubscriberByRecipientId from TblSubscriber sub where sub.subscriberId=?)");
+							Query query=session.createQuery("from TblMessage mess where mess.tblSubscriberByRecipientId.subscriberId=?");
 						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
  							query.setInteger(0, subscriberId);
 							return query.list();
