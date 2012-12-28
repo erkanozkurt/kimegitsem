@@ -48,12 +48,12 @@ function suggest()
 							</td>
 						</tr>
 						<tr>
-							<td valign="top"><span class="bold">Adress: </span><s:property
-									value="#session.userContext.selectedPoi.address" escape="true" />
+							<td valign="top"><span class="bold">Şehir/İlçe/Mahalle: </span><s:property
+									value="#session.userContext.selectedPoi.cityId" escape="true" />
 							</td>
 						</tr>
 						<tr>
-							<td valign="top"><span class="bold">Şehir/Semt: </span><s:property
+							<td valign="top"><span class="bold">Adress: </span><s:property
 									value="#session.userContext.selectedPoi.address" escape="true" />
 							</td>
 						</tr>

@@ -84,7 +84,7 @@ public class SubscriberDAO extends BaseDao {
 		return results;
 	}
 	
-	public List<TblMessage> retrieveMessagesBySubscriber(final Integer subscriberId){
+	public List<TblMessage> retrieveInboxMessagesBySubscriber(final Integer subscriberId){
 		List<TblMessage> results=new ArrayList<TblMessage>();
 		logger.debug(subscriberId.toString());
 		Integer parentId=0;
@@ -97,6 +97,95 @@ public class SubscriberDAO extends BaseDao {
 							Query query=session.createQuery("from TblMessage mess where mess.tblSubscriberByRecipientId.subscriberId=?");
 						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
  							query.setInteger(0, subscriberId);
+							return query.list();
+						}
+					});
+			results = (List<TblMessage>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	
+	public List<TblMessage> retrieveOutboxMessagesBySubscriber(final Integer subscriberId){
+		List<TblMessage> results=new ArrayList<TblMessage>();
+		logger.debug(subscriberId.toString());
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblMessage mess where mess.tblSubscriberBySenderId.subscriberId=?");
+						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
+ 							query.setInteger(0, subscriberId);
+							return query.list();
+						}
+					});
+			results = (List<TblMessage>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	
+	public boolean setRead(final Integer messageId){
+		logger.debug("daosetread");
+		 boolean result=false;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createSQLQuery("update tbl_message set state='2' where message_id=?");
+							query.setInteger(0, messageId);
+							query.executeUpdate();
+							return true;
+						}
+					});
+			result=true;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return result;	
+	}
+	
+	public List<TblMessage> showMessage(final Integer messageId){
+		List<TblMessage> results=new ArrayList<TblMessage>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblMessage mess where messageId=?");
+						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
+ 							query.setInteger(0, messageId);
+							return query.list();
+						}
+					});
+			results = (List<TblMessage>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	
+	public List<TblMessage> retrieveMessageBySubscriber(final Integer messageId){
+		List<TblMessage> results=new ArrayList<TblMessage>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblMessage mess where mess.messageId=?");
+						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
+ 							query.setInteger(0, messageId);
 							return query.list();
 						}
 					});

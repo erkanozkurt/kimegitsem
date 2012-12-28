@@ -38,5 +38,8 @@
                 <comment>1- subscriber, 2- poi</comment>
             </column>
         </property>
+         <property name="mainMessageId" type="int">
+            <column name="main_message_id" />
+        </property>
     </class>
 </hibernate-mapping>

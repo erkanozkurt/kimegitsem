@@ -8,11 +8,13 @@
             <column name="subdistrict_id" />
             <generator class="assigned" />
         </id>
+        
         <property name="districtId" type="int">
             <column name="district_id" not-null="true" />
         </property>
+        
         <property name="subdistrictName" type="string">
             <column name="subdistrict_name" length="100" not-null="true" />
         </property>
-    </class>
+     </class>
 </hibernate-mapping>

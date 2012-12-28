@@ -36,6 +36,16 @@ body {
 	vertical-align: middle;
 }
 
+.tabPanel {
+	height: 300px;
+	overflow: scroll;
+}
+
+.messageList {
+	height: 200px;
+	overflow: scroll;
+}
+
 .slogan {
 	width: 426px;
 	left: 0px;

@@ -53,6 +53,8 @@ public class UserAction extends BaseAction implements SessionAware,
 	private VelocityEngine velocityEngine;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
 	private List<TblMessage> messageList;
+	private int messageId;
+	private List jsonList;
 
 
 	public String profile() {
@@ -203,11 +205,26 @@ public class UserAction extends BaseAction implements SessionAware,
 		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
 		UserContext context=getUserContext();		
                 if(context.getAuthenticatedUser()!=null){			
-                    messageList=subscriberDAO.retrieveMessagesBySubscriber(context.getAuthenticatedUser().getSubscriberId());		
+                    messageList=subscriberDAO.retrieveInboxMessagesBySubscriber(context.getAuthenticatedUser().getSubscriberId());		
                 }
 		return result;
 	}
 	
+	public String showOutbox(){
+		String result="success";
+		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
+		UserContext context=getUserContext();		
+                if(context.getAuthenticatedUser()!=null){			
+                    messageList=subscriberDAO.retrieveOutboxMessagesBySubscriber(context.getAuthenticatedUser().getSubscriberId());		
+                }
+		return result;
+	}
+	
+	public String setRead(){
+		String result="success";	
+        subscriberDAO.setRead(1);
+		return result;
+	}
 
 	public SubscriberDAO getSubscriberDAO() {
 		return subscriberDAO;
