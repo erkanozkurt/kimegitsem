@@ -333,3 +333,14 @@ a.link1:hover {
 .bold{
 	font-weight: bold;
 }
+
+#Gelen_Kutusu{
+	height:400px;
+	overflow-y: scroll;
+}
+
+#Giden_Kutusu{
+	height:400px;
+	overflow-y: scroll;
+}
+
