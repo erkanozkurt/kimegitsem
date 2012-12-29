@@ -3,6 +3,7 @@ package com.persona.kg.action;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -30,10 +32,13 @@ import com.persona.kg.SubscriberDAO;
 import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblLandingPagePoi;
+import com.persona.kg.dao.TblMessage;
+import com.persona.kg.dao.TblPoi;
 import com.persona.kg.dao.TblRate;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
 import com.persona.kg.model.Subscriber;
+//import com.persona.kgadmin.dao.TblPoi;
 
 public class UserAction extends BaseAction implements SessionAware,
 		ServletRequestAware, ServletResponseAware {
@@ -46,6 +51,11 @@ public class UserAction extends BaseAction implements SessionAware,
 	private JavaMailSender mailSender;
 	@Autowired
 	private VelocityEngine velocityEngine;
+	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
+	private List<TblMessage> messageList;
+	private int messageId;
+	private List jsonList;
+
 
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -151,13 +161,13 @@ public class UserAction extends BaseAction implements SessionAware,
 								mimeMessage);
 						// mail sending parameters
 						message.setTo(address);
-						message.setFrom("davet@kimegitsem.com");
+						message.setFrom("ylcnarsln@gmail.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" sana kimegitsem?com’dan arkadaslik istegi gonderdi");
 						Map model = new HashMap();
 						model.put("name", authenticatedUser.getName());
 						model.put("surname", authenticatedUser.getSurname());
 						model.put("profile","https://graph.facebook.com/"+authenticatedUser.getFacebookId()+"/picture");
-						model.put("logo",ApplicationConstants.getContext()+"img/kimegitsem.jpg");
+						model.put("logo",ApplicationConstants.getContext()+"img/logo.jpg");
 						model.put("connect",ApplicationConstants.getContext()+"img/connect.jpg");
 						model.put("context",ApplicationConstants.getContext());
 						String mailContent = VelocityEngineUtils
@@ -172,6 +182,48 @@ public class UserAction extends BaseAction implements SessionAware,
 		}
 		addActionMessage("Davetiyeler başarıyla gönderilmiştir.");
 		return "success";
+	}
+
+	/*public String showInbox(){
+		messageList=new ArrayList<TblMessage>();
+		TblMessage message=new TblMessage();
+		message.setMessage("test234223");
+		message.setSubject("sdasdsadsdsd");
+		message.setSendDate(new Date());
+		messageList.add(message);
+		
+		message=new TblMessage();
+		message.setMessage("test234223");
+		message.setSubject("sdasdsadsdsd1");
+		message.setSendDate(new Date());
+		messageList.add(message);
+		return "success";
+	}*/
+	
+	public String showInbox(){
+		String result="success";
+		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
+		UserContext context=getUserContext();		
+                if(context.getAuthenticatedUser()!=null){			
+                    messageList=subscriberDAO.retrieveInboxMessagesBySubscriber(context.getAuthenticatedUser().getSubscriberId());		
+                }
+		return result;
+	}
+	
+	public String showOutbox(){
+		String result="success";
+		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
+		UserContext context=getUserContext();		
+                if(context.getAuthenticatedUser()!=null){			
+                    messageList=subscriberDAO.retrieveOutboxMessagesBySubscriber(context.getAuthenticatedUser().getSubscriberId());		
+                }
+		return result;
+	}
+	
+	public String setRead(){
+		String result="success";	
+        subscriberDAO.setRead(messageId);
+		return result;
 	}
 
 	public SubscriberDAO getSubscriberDAO() {
@@ -205,5 +257,22 @@ public class UserAction extends BaseAction implements SessionAware,
 	public void setMailAddressContainer(String mailAddressContainer) {
 		this.mailAddressContainer = mailAddressContainer;
 	}
+
+	public List<TblMessage> getMessageList() {
+		return messageList;
+	}
+
+	public void setMessageList(List<TblMessage> messageList) {
+		this.messageList = messageList;
+	}
+
+	public int getMessageId() {
+		return messageId;
+	}
+
+	public void setMessageId(int messageId) {
+		this.messageId = messageId;
+	}
+
 
 }

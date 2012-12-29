@@ -17,6 +17,7 @@ import com.persona.kg.LandingPageDAO;
 import com.persona.kg.PoiDAO;
 import com.persona.kg.common.CachedResources;
 import com.persona.kg.dao.TblCategory;
+import com.persona.kg.dao.TblCity;
 import com.persona.kg.dao.TblLandingPagePoi;
 import com.persona.kg.dao.TblPoi;
 import com.persona.kg.model.Subscriber;
@@ -37,6 +38,7 @@ public class SearchAction extends BaseAction implements SessionAware {
 	@Autowired
 	private CachedResources cachedResources;
 	private Integer category;
+	private Integer city;
 	
 	public String filter() {
 		if(category!=null){

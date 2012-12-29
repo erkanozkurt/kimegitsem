@@ -130,6 +130,26 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/ajax/ajax.jsp</result>
 		</action>
+		<action name="messages" class="subscriberAction" method="follow">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/jsp/subs/messages.jsp</result>
+		</action>
+		
+		<action name="showInbox" class="subscriberAction" method="showInbox">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/jsp/subs/messageList.jsp</result>
+		</action>
+
+		<action name="showOutbox" class="subscriberAction" method="showOutbox">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/jsp/subs/messageList.jsp</result>
+		</action>
+		
+		<action name="setRead" class="subscriberAction" method="setRead">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/jsp/subs/messageContent.jsp</result>
+		</action>
+		
 	</package>
 
 	<package name="facebook" extends="default" namespace="/fb">
@@ -164,6 +184,11 @@
 		<result-types>
 			<result-type name="tiles"
 				class="org.apache.struts2.views.tiles.TilesResult" />
+			<result-type name="json" class="org.apache.struts2.json.JSONResult">
+				  <param name="root">
+    				jsonList
+  				</param>
+			</result-type>
 		</result-types>
 
 		<action name="*" class="poiAction" method="show">
@@ -212,6 +237,7 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/ajax/ajax.jsp</result>
 		</action>
+	
 	</package>
 
 
@@ -288,6 +314,22 @@
 				<param name="excludeNullProperties">true</param>
 			</result>
 		</action>
+		
+			<action name="retrieveDistrictList" class="poiAction" method="retrieveDistrictList">
+			<result type="json" name="success">
+				<param name="excludeNullProperties">true</param>
+				 <param name="root">jsonList</param>
+			</result>
+		</action>
+		
+		<action name="retrieveSubdistrictList" class="poiAction" method="retrieveSubdistrictList">
+			<result type="json" name="success">
+				<param name="excludeNullProperties">true</param>
+				 <param name="root">jsonList</param>
+			</result>
+		</action>
+		
+		
 	</package>
 
 	<!-- Configuration for the default package. -->

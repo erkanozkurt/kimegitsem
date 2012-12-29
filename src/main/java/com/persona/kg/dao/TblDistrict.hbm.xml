@@ -8,17 +8,15 @@
             <column name="district_id" />
             <generator class="assigned" />
         </id>
-        <many-to-one name="tblCity" class="com.persona.kg.dao.TblCity" fetch="select">
+        
+      
+          <property name="cityId" type="int">
             <column name="city_id" not-null="true" />
-        </many-to-one>
+        </property>
         <property name="districtName" type="string">
             <column name="district_name" length="100" not-null="true" />
         </property>
-        <set name="tblPois" table="tbl_poi" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="district_id" />
-            </key>
-            <one-to-many class="com.persona.kg.dao.TblPoi" />
-        </set>
+        
+      
     </class>
 </hibernate-mapping>

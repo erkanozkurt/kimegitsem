@@ -224,7 +224,11 @@
             <artifactId>struts2-jquery-plugin</artifactId>
             <version>3.3.3</version>
         </dependency>
-    	
+    	<dependency>
+			<groupId>com.jgeppert.struts2.jquery</groupId>
+			<artifactId>struts2-jquery-grid-plugin</artifactId>
+			<version>3.5.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>kimegitsem</finalName>
@@ -237,6 +241,13 @@
 					<target>1.5</target>
 				</configuration>
 			</plugin>
+			<plugin>
+	        	<artifactId>maven-war-plugin</artifactId>
+	        	<version>2.3</version>
+	        	<configuration>
+	          	<packagingExcludes>WEB-INF/classes/*.properties</packagingExcludes>
+	        </configuration>
+	      </plugin>
 		</plugins>
 	</build>
 </project>

@@ -14,7 +14,7 @@
 	<tiles:insertAttribute name="meta" />
 <%}%>
 <s:head/>
-<sj:head  compressed="false"/>
+<sj:head  compressed="false" jqueryui="true"/>
 
 <s:url action="profile" namespace="/subs" id="profileUrl"></s:url>
 

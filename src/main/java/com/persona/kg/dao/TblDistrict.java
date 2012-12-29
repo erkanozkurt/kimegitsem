@@ -11,8 +11,10 @@ import java.util.Set;
 public class TblDistrict implements java.io.Serializable {
 
 	private int districtId;
-	private TblCity tblCity;
+	private TblCity tblCity;	
+	private int cityId;
 	private String districtName;
+	private Set tblSubdistricts = new HashSet(0);
 	private Set tblPois = new HashSet(0);
 
 	public TblDistrict() {
@@ -34,6 +36,14 @@ public class TblDistrict implements java.io.Serializable {
 
 	public int getDistrictId() {
 		return this.districtId;
+	}
+
+	public Set getTblSubdistricts() {
+		return tblSubdistricts;
+	}
+
+	public void setTblSubdistricts(Set tblSubdistricts) {
+		this.tblSubdistricts = tblSubdistricts;
 	}
 
 	public void setDistrictId(int districtId) {
@@ -63,5 +73,15 @@ public class TblDistrict implements java.io.Serializable {
 	public void setTblPois(Set tblPois) {
 		this.tblPois = tblPois;
 	}
+
+	public int getCityId() {
+		return cityId;
+	}
+
+	public void setCityId(int cityId) {
+		this.cityId = cityId;
+	}
+	
+	
 
 }

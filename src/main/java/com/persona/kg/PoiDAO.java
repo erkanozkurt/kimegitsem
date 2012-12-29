@@ -18,6 +18,7 @@ import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblCity;
 import com.persona.kg.dao.TblComment;
 import com.persona.kg.dao.TblDistrict;
+import com.persona.kg.dao.TblSubdistrict;
 import com.persona.kg.dao.TblImage;
 import com.persona.kg.dao.TblLandingPage;
 import com.persona.kg.dao.TblLandingPagePoi;
@@ -272,6 +273,25 @@ public class PoiDAO extends BaseDao {
 		return results;
 	}
 	
+	public List<TblSubdistrict> retrieveSubdistrictList(){
+		List<TblSubdistrict> results=new ArrayList<TblSubdistrict>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblSubdistrict tc order by tc.subdistrictName)");
+							return query.list();
+						}
+					});
+			results = (List<TblSubdistrict>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
 	
 	public List<TblPoi> searchPoi(final String categoryClause, final String placeId, final int start, final int limit){
 		List<TblPoi> results=new ArrayList<TblPoi>();
@@ -298,7 +318,7 @@ public class PoiDAO extends BaseDao {
 									String distrcitId=placeId.substring(0,placeId.indexOf(","));
 									querySQL+=" tc.tblDistrict.districtId="+distrcitId;
 								}else{
-									querySQL+=" tc.tblDistrict.districtId in (select td.districtId from TblDistrict td where td.tblCity.cityId ="+placeId+")";
+									querySQL+=" tc.tblDistrict.districtId in (select td.districtId from TblDistrict td where td.cityId ="+placeId+")";
 								}
 							
 							}
@@ -425,4 +445,47 @@ public class PoiDAO extends BaseDao {
 		}
 		return result;	
 	}
+	
+	public List<TblDistrict> retrieveDistrictListByCityId(final int cityId){
+		List<TblDistrict> results=new ArrayList<TblDistrict>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblDistrict tc where tc.cityId=? order by tc.districtName)");
+							query.setInteger(0, cityId);
+							return query.list();
+						}
+					});
+			results = (List<TblDistrict>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	
+	public List<TblSubdistrict> retrieveSubdistrictListByDistrictId(final int districtId){
+		List<TblSubdistrict> results=new ArrayList<TblSubdistrict>();
+		
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblSubdistrict tc where tc.districtId=? order by tc.subdistrictName)");
+							query.setInteger(0, districtId);
+							return query.list();
+						}
+					});
+			results = (List<TblSubdistrict>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+
 }

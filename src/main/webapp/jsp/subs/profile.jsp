@@ -49,6 +49,10 @@
 			<s:url id="poisLink" action="pois?subscriberId=%{#request.subscriber.subscriberId}" namespace="/in"></s:url>
 			<sj:tab id="pois" labelposition="top" label="Hizmet Noktalarım" href="%{poisLink}" loadingText="Yükleniyor..." >
 			</sj:tab>
+			
+			<s:url id="messagesLink" action="messages" namespace="/subs"></s:url>
+			<sj:tab id="messages" labelposition="top" label="Mesajlarım" href="%{messagesLink}" loadingText="Yükleniyor..." >
+			</sj:tab>
 			</s:if>
 			<s:else>
 				<sj:tab target="profile" id="profileTab" label="Profil Bilgileri"> </sj:tab>	
@@ -92,6 +96,7 @@
 				<s:url id="poisLink" action="pois?subscriberId=%{#request.subscriber.subscriberId}" namespace="/in"></s:url>
 				<sj:tab id="pois" labelposition="top" label="Hizmet Noktaları" href="%{poisLink}" loadingText="Yükleniyor...">
 				</sj:tab>
+				
 			</s:else>
 
 </sj:tabbedpanel>

@@ -1,5 +1,6 @@
 package com.persona.kg.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -16,6 +17,7 @@ import com.persona.kg.PoiDAO;
 import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblCity;
 import com.persona.kg.dao.TblDistrict;
+import com.persona.kg.dao.TblSubdistrict;
 
 public class CachedResources {
 	@Autowired
@@ -54,7 +56,7 @@ public class CachedResources {
 		return categories;
 	}
 	
-	public List<TblCategory> getCategoryList(){
+	/*public List<TblCategory> getCategoryList(){
 		List<TblCategory> categories=null;
 		if(getCache().get(ApplicationConstants.CATEGORY_LIST_CACHE_KEY)!=null){
 			categories=(List<TblCategory>)getCache().get(ApplicationConstants.CATEGORY_LIST_CACHE_KEY).get();
@@ -63,7 +65,55 @@ public class CachedResources {
 			getCache().put(ApplicationConstants.CATEGORY_LIST_CACHE_KEY, categories);
 		}
 		return categories;
+	}*/
+	
+	public List<TblCategory> getCategoryList(){
+		System.out.println("in getOrderedCategoryList3");
+		List<TblCategory> categories=categoryDao.getAvailableCategories();
+		HashMap<Integer, TblCategory> categoryMap=new HashMap<Integer, TblCategory>();
+		Iterator<TblCategory> iterator=categories.iterator();
+		while(iterator.hasNext()){
+			TblCategory cat=iterator.next();
+				if(categoryMap.containsKey(cat.getParentId())){
+					TblCategory parentCat=categoryMap.get(cat.getParentId());
+					parentCat.addChild(cat);
+				
+				}
+				categoryMap.put(cat.getCategoryId(), cat);
+		}
+		
+		iterator=categoryMap.values().iterator();
+		categories=new ArrayList<TblCategory>();
+		while(iterator.hasNext()){
+			TblCategory cat=iterator.next();
+			if(cat.getParentId()==0){
+				addCategory(cat, categories,0);
+			}
+		}
+		return categories;
 	}
+	
+	private void addCategory(TblCategory category, List<TblCategory> list, int depth){
+		category.setCategoryName(addSpace(depth)+category.getCategoryName());
+		list.add(category);
+		if(category.getChilds().size()>0){
+			Iterator<TblCategory> childIterator=category.getChilds().iterator();
+			while(childIterator.hasNext()){
+				addCategory(childIterator.next(), list,depth+1);
+			}		
+		}
+	}
+	
+	private String addSpace(int depth){
+		String temp=new String();
+		for(int i=0;i<depth;i++){
+			temp+="**";
+		}
+		return temp;
+	}
+	
+	
+	
 	
 	public Map<String,String> getMergedPlaceList(){
 		Map<String,String> mergedPlaceList=null;
@@ -109,6 +159,17 @@ public class CachedResources {
 		}else{
 			mergedPlaceList=poiDao.retrieveDistrictList();
 			getCache().put(ApplicationConstants.DISTRICT_LIST_CACHE_KEY, mergedPlaceList);
+		}
+		return mergedPlaceList;
+	}
+	
+	public List<TblSubdistrict> getSubdistrictList(){
+		List<TblSubdistrict> mergedPlaceList=null;
+		if(getCache().get(ApplicationConstants.SUBDISTRICT_LIST_CACHE_KEY)!=null){
+			mergedPlaceList=(List<TblSubdistrict>)getCache().get(ApplicationConstants.SUBDISTRICT_LIST_CACHE_KEY).get();
+		}else{
+			mergedPlaceList=poiDao.retrieveSubdistrictList();
+			getCache().put(ApplicationConstants.SUBDISTRICT_LIST_CACHE_KEY, mergedPlaceList);
 		}
 		return mergedPlaceList;
 	}

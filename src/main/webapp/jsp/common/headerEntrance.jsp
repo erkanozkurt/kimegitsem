@@ -3,6 +3,8 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@taglib prefix="sx" uri="/struts-dojo-tags"%>
 <div class="upper" id="upper" align="center">
-	<div class="slogan" id="slogan"></div>
+	<!--   
+	<div class="slogan" id="slogan"></div> 
+	-->
 	<div class="logo" id="logo"></div>
 </div>
