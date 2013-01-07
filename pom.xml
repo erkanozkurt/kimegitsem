@@ -228,6 +228,9 @@
 	</dependencies>
 	<build>
 		<finalName>kimegitsem</finalName>
+		<resources>
+			<resource><includes><include>**/*.xml</include></includes></resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
