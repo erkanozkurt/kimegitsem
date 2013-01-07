@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/kimegitsem">
+<Context path="/ROOT">
 	 <ResourceLink name="facebookApiKey" global="facebookApiKey"  type="java.lang.String"/>
 	 <ResourceLink name="imageDir" global="imageDir"  type="java.lang.String"/>
 	 <ResourceLink name="googleMapsApiKey" global="googleMapsApiKey" type="java.lang.String"/>
