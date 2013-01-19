@@ -207,11 +207,6 @@ function validatePoiInfo(){
 		alert("Lütfen bir şehir seçiniz!");
 		return false;
 	}
-	var address=document.getElementById("address").value;
-	if(address==null || address=='undefined' || address<1){
-		alert("Lüften geçerli bir adres giriniz!");
-		return false;
-	}
 	document.getElementById("claimForm").submit();
 }
 </script>

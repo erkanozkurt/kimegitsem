@@ -159,6 +159,7 @@ a.highslide-credits:hover i {
 	top: -50%;
 	left: -50%;
 }
+
 html>/**/body .highslide-gallery ul li {
 	display: table;
 	text-align: center;
@@ -226,7 +227,7 @@ html>/**/body .highslide-gallery ul img {
 .highslide-controls .highslide-previous a {
 	background-position: 0 0;
 }
-.highslide-controls .highslide-previous a:hover {
+.high -controls .highslide-previous a:hover {
 	background-position: 0 -30px;
 }
 .highslide-controls .highslide-previous a.disabled {

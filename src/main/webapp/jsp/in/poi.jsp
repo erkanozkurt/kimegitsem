@@ -32,10 +32,41 @@ function suggest()
 		<table width="100%" border="0">
 			<tr>
 				<td width="*" valign="top">
-					<div class="head1">
-						<s:property value="#session.userContext.selectedPoi.poiName" />
-					</div>
+					
+					
 					<table border="0" width="100%">
+					    <tr>
+							<td align="left">
+							<s:if test="%{#session.userContext.selectedPoi.images}">
+							<div class="highslide-gallery">
+							
+								<s:iterator value="%{#session.userContext.selectedPoi.images}" var="image" status="stat">
+									<s:if test="#stat.index<3">								
+										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this, { slideshowGroup: 'first-group'})">
+											<img border="0" src='<s:property value="thumbnail"/>' class="thumbnail" alt="Highslide JS" title="Büyütmek için tıklayın!"/>
+										</a>
+									</s:if>
+									<s:if test="#stat.index==3">
+										</div>
+										<div class="hidden-container">
+									</s:if>
+									<s:if test="#stat.index>=3">
+										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this,{ slideshowGroup: 'first-group'})"></a>
+									</s:if>
+								</s:iterator>
+							</div>
+							</s:if>
+							<br/>
+							<s:a
+									action="addPhoto/%{#session.userContext.selectedPoi.uniqueIdentifier}"
+									namespace="/in" cssClass="link1" onclick="hs.htmlExpand(this, {width: 400, contentId: 'uploadImagePopup',wrapperClassName :'draggable-header'} );return false;">
+								Fotoğraf Ekle
+								</s:a>
+							</td>
+						</tr>
+						<tr class="head1">
+							<td><s:property value="#session.userContext.selectedPoi.poiName" /></td>
+						</tr>
 						<tr>
 							<td valign="top"><span class="bold">Kategori: </span><s:iterator
 									value="#session.userContext.selectedPoi.categories"
@@ -76,6 +107,7 @@ function suggest()
 								</td>
 							</tr>
 						</s:if>
+						
 						<tr>
 							<td align="left">
 								<s:form action="suggest/%{#session.userContext.selectedPoi.uniqueIdentifier}">
@@ -94,8 +126,14 @@ function suggest()
 								</td>
 							</tr>
 						</s:if>
+						
+						
+						
 					</table>
+
 					</td>
+					
+					
 				<td width="250px" valign="top">
 					<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr>
@@ -112,7 +150,7 @@ function suggest()
 													lati, longi);
 											var mapOptions = {
 												center : poiLatlng,
-												zoom : 12,
+												zoom : 16,
 												mapTypeId : google.maps.MapTypeId.ROADMAP
 											};
 											var map = new google.maps.Map(
@@ -141,35 +179,7 @@ function suggest()
 								</s:else>
 							</td>
 						</tr>
-						<tr>
-							<td align="center">
-							<s:if test="%{#session.userContext.selectedPoi.images}">
-							<div class="highslide-gallery">
-							
-								<s:iterator value="%{#session.userContext.selectedPoi.images}" var="image" status="stat">
-									<s:if test="#stat.index<3">								
-										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this, { slideshowGroup: 'first-group'})">
-											<img border="0" src='<s:property value="thumbnail"/>' class="thumbnail" alt="Highslide JS" title="Büyütmek için tıklayın!"/>
-										</a>
-									</s:if>
-									<s:if test="#stat.index==3">
-										</div>
-										<div class="hidden-container">
-									</s:if>
-									<s:if test="#stat.index>=3">
-										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this,{ slideshowGroup: 'first-group'})"></a>
-									</s:if>
-								</s:iterator>
-							</div>
-							</s:if>
-							<br/>
-							<s:a
-									action="addPhoto/%{#session.userContext.selectedPoi.uniqueIdentifier}"
-									namespace="/in" cssClass="link1" onclick="hs.htmlExpand(this, {width: 400, contentId: 'uploadImagePopup',wrapperClassName :'draggable-header'} );return false;">
-								Fotoğraf Ekle
-								</s:a>
-							</td>
-						</tr>
+						
 					</table>
 				</td>
 			</tr>
@@ -183,7 +193,7 @@ function suggest()
 				<td>
 					<s:if test="#session.userContext.loggedIn">
 						<s:form action="post/%{#session.userContext.selectedPoi.uniqueIdentifier}" method="post" id="sendCommentForm">
-									<s:textarea name="userComment" id="userComment" rows="2" cols="50" value="Yorum ekle" onfocus="javascript:clearInput(this,'Yorum ekle');" onblur="javascript:restoreInputValue(this,'Yorum ekle');" cssStyle="width:100%;"></s:textarea>
+									<s:textarea name="userComment" id="userComment" rows="2" cols="50" value="Tavsiye yaz..." onfocus="javascript:clearInput(this,'Tavsiye yaz...');" onblur="javascript:restoreInputValue(this,'Tavsiye yaz...');" cssStyle="width:100%;"></s:textarea>
 							<tr>
 								<td align="right" colspan="2">
 									<a href="#" onclick="javascript:document.getElementById('sendCommentForm').submit();"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/send.jpg")%>"></a>

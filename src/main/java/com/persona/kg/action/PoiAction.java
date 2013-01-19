@@ -187,7 +187,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 						Parameter.with("message", userComment),
 						Parameter
 								.with("picture",
-										ApplicationConstants.getContext()+"img/banner.jpg"),
+										ApplicationConstants.getContext()+"img/logo.jpg"),
 						Parameter.with("link",
 								ApplicationConstants.getDomainName() + context),
 						Parameter.with("name", name), Parameter.with("caption",
@@ -385,6 +385,18 @@ public class PoiAction extends BaseAction implements SessionAware {
 	private String escapeSpaces(String source){
 		if(source!=null){
 			source=source.replaceAll("\\ ", "_");
+			source=source.replaceAll("ö", "o");
+			source=source.replaceAll("İ", "I");
+			source=source.replaceAll("ğ", "g");
+			source=source.replaceAll("Ö", "O");
+			source=source.replaceAll("Ğ", "G");
+			source=source.replaceAll("ı", "i");
+			source=source.replaceAll("Ü", "U");
+			source=source.replaceAll("ü", "u");
+			source=source.replaceAll("Ç", "C");
+			source=source.replaceAll("ç", "c");
+			source=source.replaceAll("Ş", "S");
+			source=source.replaceAll("ş", "s");
 		}
 		return source;
 	}
