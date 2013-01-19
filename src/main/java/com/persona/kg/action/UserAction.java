@@ -38,7 +38,7 @@ import com.persona.kg.dao.TblRate;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
 import com.persona.kg.model.Subscriber;
-//import com.persona.kgadmin.dao.TblPoi;
+
 
 public class UserAction extends BaseAction implements SessionAware,
 		ServletRequestAware, ServletResponseAware {
@@ -55,8 +55,11 @@ public class UserAction extends BaseAction implements SessionAware,
 	private List<TblMessage> messageList;
 	private int messageId;
 	private List jsonList;
-
-
+	private TblMessage message;
+	private String boxType;
+	private String messageIds;
+	
+	
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		TblSubscriber subscriber = null;
@@ -161,7 +164,7 @@ public class UserAction extends BaseAction implements SessionAware,
 								mimeMessage);
 						// mail sending parameters
 						message.setTo(address);
-						message.setFrom("ylcnarsln@gmail.com");
+						message.setFrom("info@kimegitsem.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" sana kimegitsem?com’dan arkadaslik istegi gonderdi");
 						Map model = new HashMap();
 						model.put("name", authenticatedUser.getName());
@@ -183,25 +186,10 @@ public class UserAction extends BaseAction implements SessionAware,
 		addActionMessage("Davetiyeler başarıyla gönderilmiştir.");
 		return "success";
 	}
-
-	/*public String showInbox(){
-		messageList=new ArrayList<TblMessage>();
-		TblMessage message=new TblMessage();
-		message.setMessage("test234223");
-		message.setSubject("sdasdsadsdsd");
-		message.setSendDate(new Date());
-		messageList.add(message);
-		
-		message=new TblMessage();
-		message.setMessage("test234223");
-		message.setSubject("sdasdsadsdsd1");
-		message.setSendDate(new Date());
-		messageList.add(message);
-		return "success";
-	}*/
 	
 	public String showInbox(){
 		String result="success";
+		boxType="inbox";
 		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
 		UserContext context=getUserContext();		
                 if(context.getAuthenticatedUser()!=null){			
@@ -212,6 +200,7 @@ public class UserAction extends BaseAction implements SessionAware,
 	
 	public String showOutbox(){
 		String result="success";
+		boxType="outbox";
 		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
 		UserContext context=getUserContext();		
                 if(context.getAuthenticatedUser()!=null){			
@@ -223,9 +212,30 @@ public class UserAction extends BaseAction implements SessionAware,
 	public String setRead(){
 		String result="success";	
         subscriberDAO.setRead(messageId);
+        message=subscriberDAO.retrieveMessageByMessageId(messageId);
 		return result;
 	}
 
+	public String sendMessage(){
+		String result="success";	
+        System.out.println("user action message");
+        message.setSendDate(new Date());
+        message.setSubject("RE-" + message.getSubject());
+        message.setState((short) 1);
+        subscriberDAO.sendMessage(message);
+		return result;
+	}
+	
+	public String deleteMessages(){
+		String result="success";
+		String[] words = messageIds.split(", ");
+		for(int i=0;i<words.length;i++){
+			int messageId=Integer.parseInt(words[i]);
+			subscriberDAO.deleteMessages(messageId);
+		}
+		return result;
+	}
+	
 	public SubscriberDAO getSubscriberDAO() {
 		return subscriberDAO;
 	}
@@ -272,6 +282,30 @@ public class UserAction extends BaseAction implements SessionAware,
 
 	public void setMessageId(int messageId) {
 		this.messageId = messageId;
+	}
+
+	public TblMessage getMessage() {
+		return message;
+	}
+
+	public void setMessage(TblMessage message) {
+		this.message = message;
+	}
+
+	public String getBoxType() {
+		return boxType;
+	}
+
+	public void setBoxType(String boxType) {
+		this.boxType = boxType;
+	}
+
+	public String getMessageIds() {
+		return messageIds;
+	}
+
+	public void setMessageIds(String messageIds) {
+		this.messageIds = messageIds;
 	}
 
 

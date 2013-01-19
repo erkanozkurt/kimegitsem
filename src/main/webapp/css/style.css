@@ -42,8 +42,8 @@ body {
 }
 
 .messageList {
-	height: 200px;
-	overflow: scroll;
+	height: 250px;
+	overflow-y: scroll;
 }
 
 .slogan {
@@ -333,3 +333,5 @@ a.link1:hover {
 .bold{
 	font-weight: bold;
 }
+
+

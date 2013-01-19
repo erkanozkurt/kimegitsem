@@ -54,13 +54,14 @@ public class EmailTest {
 						public void prepare(MimeMessage mimeMessage) throws Exception {
 							MimeMessageHelper message = new MimeMessageHelper(
 									mimeMessage);
-							// mail sending parameters
+							// mail sending parddddameters
+				         			
 							message.setTo(address);
 							message.setFrom("davet@kimegitsem.com");
-							message.setSubject("sana kimegitsem?com’dan arkadaslik istegi gonderdi");
+							message.setSubject("sana kimegitsem?comï¿½dan arkadaslik istegi gonderdi");
 							Map model = new HashMap();
 							model.put("name","erkan");
-							model.put("surname", "özkurt");
+							model.put("surname", "ï¿½zkurt");
 							model.put("profile","yok");
 							model.put("logo","yok");
 							model.put("connect","yoko");

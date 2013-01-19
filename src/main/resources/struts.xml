@@ -150,6 +150,16 @@
 			<result name="success">/jsp/subs/messageContent.jsp</result>
 		</action>
 		
+		<action name="delete" class="subscriberAction" method="deleteMessages">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/jsp/subs/messageContent.jsp</result>
+		</action>
+		
+		<action name="sendMessage" class="subscriberAction" method="sendMessage">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/jsp/subs/messageContent.jsp</result>
+		</action>
+		
 	</package>
 
 	<package name="facebook" extends="default" namespace="/fb">

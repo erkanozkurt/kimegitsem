@@ -69,4 +69,74 @@
 	<login-config>
 		<auth-method>BASIC</auth-method>
 	</login-config>
+
+	
+	
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookApiKey</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>imageDir</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>googleMapsApiKey</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>domainName</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>context</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookObjectType</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookSuggest</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>facebookAsk</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailhost</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailpassword</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailport</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailprotocol</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>emailusername</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>jdbcUrl</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>user</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	<resource-env-ref>
+	    <resource-env-ref-name>password</resource-env-ref-name>
+	    <resource-env-ref-type>java.lang.String</resource-env-ref-type>
+	</resource-env-ref>
+	
+	
+	
 </web-app>
