@@ -211,6 +211,28 @@ public class PoiDAO extends BaseDao {
 		return results;
 	}
 	
+	public List<TblPoi> retrievePoisByCategoryWithSubcategories(final String categoryList, final int limit){
+		List<TblPoi> results=new ArrayList<TblPoi>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblPoi poi where poi.poiId in (select pc.id.poiId from TblPoiCategory pc where pc.id.categoryId in ("+categoryList+"))");
+							query.setMaxResults(limit);
+							return query.list();
+						}
+					});
+			results = (List<TblPoi>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	
+	
 	public List<TblPoi> searchPoiByName(final String name, final int limit){
 		List<TblPoi> results=new ArrayList<TblPoi>();
 		try {

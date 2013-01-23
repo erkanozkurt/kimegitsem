@@ -222,7 +222,8 @@ public class CachedResources {
 		return builder.toString();
 	}
 	
-	private String getSubcategoryClause(TblCategory category){
+	public String getSubcategoryClause(TblCategory category){
+		getCategoryMap();
 		StringBuilder builder=new StringBuilder();
 		builder.append(category.getCategoryId());
 		if(category.getChilds().size()>0){

@@ -2,6 +2,7 @@ package com.persona.kg.dao;
 
 //Generated Jul 22, 2012 7:33:02 PM by Hibernate Tools 3.4.0.CR1
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -20,8 +21,8 @@ public class TblPoi implements java.io.Serializable {
 	private Integer cityId;
 	private Integer districtId;
 	private Integer subdistrictId;
-	private Float coordLat;
-	private Float coordLong;
+	private BigDecimal coordLat;
+	private BigDecimal coordLong;
 	private String info;
 	private String phone;
 	private Date dateAdded;
@@ -82,7 +83,7 @@ public class TblPoi implements java.io.Serializable {
 	}
 
 	public TblPoi(int poiId, TblDistrict tblDistrict, TblSubdistrict tblSubdistrict, String uniqueIdentifier,
-			String address, Integer cityId, Integer districtId, Integer subdistrictId, Float coordLat, Float coordLong,
+			String address, Integer cityId, Integer districtId, Integer subdistrictId, BigDecimal coordLat, BigDecimal coordLong,
 			String info, String phone, Date dateAdded,
 			TblPoiAdministrator tblPoiAdministrator, Set tblComments,
 			Set tblPoiCategories, Set tblListItemses, Set tblAttributeValues) {
@@ -190,19 +191,19 @@ public class TblPoi implements java.io.Serializable {
 	}
 	
 
-	public Float getCoordLat() {
+	public BigDecimal getCoordLat() {
 		return this.coordLat;
 	}
 
-	public void setCoordLat(Float coordLat) {
+	public void setCoordLat(BigDecimal coordLat) {
 		this.coordLat = coordLat;
 	}
 
-	public Float getCoordLong() {
+	public BigDecimal getCoordLong() {
 		return this.coordLong;
 	}
 
-	public void setCoordLong(Float coordLong) {
+	public void setCoordLong(BigDecimal coordLong) {
 		this.coordLong = coordLong;
 	}
 
@@ -315,6 +316,19 @@ public class TblPoi implements java.io.Serializable {
 	public void setWebsite(String website) {
 		this.website = website;
 	}
+	
+	public String getPlaceName(){
+		String placeId="";
+		if(subdistrictId!=null)
+			placeId+=subdistrictId+",";
+		if(districtId!=null){
+			placeId+=districtId+",";
+		}
+		if(cityId!=null)
+			placeId+=cityId;
+		return null;
+	}
+	
 
 }
 

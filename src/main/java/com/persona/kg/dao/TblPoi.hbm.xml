@@ -26,11 +26,11 @@
   <property generated="never" lazy="false" name="cityId" type="java.lang.Integer">
    <column name="city_id"/>
   </property>
-  <property generated="never" lazy="false" name="coordLat" type="java.lang.Float">
-   <column name="coord_lat" precision="12" scale="0"/>
+  <property generated="never" lazy="false" name="coordLat" type="java.math.BigDecimal">
+   <column name="coord_lat" precision="20" scale="0"/>
   </property>
-  <property generated="never" lazy="false" name="coordLong" type="java.lang.Float">
-   <column name="coord_long" precision="12" scale="0"/>
+  <property generated="never" lazy="false" name="coordLong" type="java.math.BigDecimal">
+   <column name="coord_long" precision="20" scale="0"/>
   </property>
   <property generated="never" lazy="false" name="info" type="string">
    <column length="65535" name="info"/>

@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class TblMessage implements java.io.Serializable {
 
-	private int messageId;
+	private Integer messageId;
 	private TblSubscriber tblSubscriberByRecipientId;
 	private TblSubscriber tblSubscriberBySenderId;
 	private String message;
@@ -46,11 +46,11 @@ public class TblMessage implements java.io.Serializable {
 		this.recipientType = recipientType;
 	}
 
-	public int getMessageId() {
+	public Integer getMessageId() {
 		return this.messageId;
 	}
 
-	public void setMessageId(int messageId) {
+	public void setMessageId(Integer messageId) {
 		this.messageId = messageId;
 	}
 

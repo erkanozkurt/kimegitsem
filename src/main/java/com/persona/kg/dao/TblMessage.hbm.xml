@@ -6,7 +6,7 @@
     <class name="com.persona.kg.dao.TblMessage" table="tbl_message" catalog="kimegitsem">
         <id name="messageId" type="int">
             <column name="message_id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <many-to-one name="tblSubscriberByRecipientId" class="com.persona.kg.dao.TblSubscriber" fetch="select">
             <column name="recipient_id" not-null="true" />
