@@ -152,7 +152,7 @@
 		
 		<action name="delete" class="subscriberAction" method="deleteMessages">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result name="success">/jsp/subs/messageContent.jsp</result>
+			<result name="success">/jsp/subs/messageList.jsp</result>
 		</action>
 		
 		<action name="sendMessage" class="subscriberAction" method="sendMessage">

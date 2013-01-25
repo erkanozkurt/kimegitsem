@@ -35,34 +35,10 @@ function suggest()
 					
 					
 					<table border="0" width="100%">
-					    <tr>
-							<td align="left">
-							<s:if test="%{#session.userContext.selectedPoi.images}">
-							<div class="highslide-gallery">
-							
-								<s:iterator value="%{#session.userContext.selectedPoi.images}" var="image" status="stat">
-									<s:if test="#stat.index<3">								
-										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this, { slideshowGroup: 'first-group'})">
-											<img border="0" src='<s:property value="thumbnail"/>' class="thumbnail" alt="Highslide JS" title="Büyütmek için tıklayın!"/>
-										</a>
-									</s:if>
-									<s:if test="#stat.index==3">
-										</div>
-										<div class="hidden-container">
-									</s:if>
-									<s:if test="#stat.index>=3">
-										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this,{ slideshowGroup: 'first-group'})"></a>
-									</s:if>
-								</s:iterator>
-							</div>
-							</s:if>
-							<br/>
-							<s:a
-									action="addPhoto/%{#session.userContext.selectedPoi.uniqueIdentifier}"
-									namespace="/in" cssClass="link1" onclick="hs.htmlExpand(this, {width: 400, contentId: 'uploadImagePopup',wrapperClassName :'draggable-header'} );return false;">
-								Fotoğraf Ekle
-								</s:a>
-							</td>
+						<tr>
+							<td> 
+					        	<img border="0" src="/content/<s:property value="#session.userContext.selectedPoi.profileImage"/>" width="125" length="200"/>
+					        </td>
 						</tr>
 						<tr class="head1">
 							<td><s:property value="#session.userContext.selectedPoi.poiName" /></td>
@@ -84,19 +60,22 @@ function suggest()
 							</td>
 						</tr>
 						<tr>
-							<td valign="top"><span class="bold">Adress: </span><s:property
-									value="#session.userContext.selectedPoi.address" escape="true" />
+							<td valign="top">
+								<img border="0" width="18" src="<%=response.encodeURL(request.getContextPath()+ "/img/address.png")%>"><s:property 
+									 value="#session.userContext.selectedPoi.address" escape="true" />
 							</td>
 						</tr>
 						<tr>
-							<td valign="top"><span class="bold">Telefon: </span><s:property
-									value="#session.userContext.selectedPoi.phone" escape="true" />
+							<td valign="top">
+								<img border="0" width="18" src="<%=response.encodeURL(request.getContextPath()+ "/img/phone.jpg")%>"><s:property 
+								     value="#session.userContext.selectedPoi.phone" escape="true" />
 							</td>
 						</tr>
 						<s:if test="#session.userContext.selectedPoi.website!=null">
 							<tr>
-								<td valign="top"><span class="bold">Site: </span><s:property
-										value="#session.userContext.selectedPoi.website" escape="true" />
+								<td valign="top">
+									<img border="0" width="20" src="<%=response.encodeURL(request.getContextPath()+ "/img/website.png")%>">   <s:property
+										 value="#session.userContext.selectedPoi.website" escape="true" />
 								</td>
 							</tr>
 						</s:if>
@@ -179,7 +158,35 @@ function suggest()
 								</s:else>
 							</td>
 						</tr>
-						
+						<tr>
+							<td align="center">
+							<s:if test="%{#session.userContext.selectedPoi.images}">
+							<div class="highslide-gallery">
+							
+								<s:iterator value="%{#session.userContext.selectedPoi.images}" var="image" status="stat">
+									<s:if test="#stat.index<3">								
+										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this, { slideshowGroup: 'first-group'})">
+											<img border="0" src='<s:property value="thumbnail"/>' class="thumbnail" alt="Highslide JS" title="Büyütmek için tıklayın!"/>
+										</a>
+									</s:if>
+									<s:if test="#stat.index==3">
+										</div>
+										<div class="hidden-container">
+									</s:if>
+									<s:if test="#stat.index>=3">
+										<a href="<s:property value="imageUrl"/>" class="highslide" onclick="return hs.expand(this,{ slideshowGroup: 'first-group'})"></a>
+									</s:if>
+								</s:iterator>
+							</div>
+							</s:if>
+							<br/>
+							<s:a
+									action="addPhoto/%{#session.userContext.selectedPoi.uniqueIdentifier}"
+									namespace="/in" cssClass="link1" onclick="hs.htmlExpand(this, {width: 400, contentId: 'uploadImagePopup',wrapperClassName :'draggable-header'} );return false;">
+								Fotoğraf Ekle
+								</s:a>
+							</td>
+						</tr>
 					</table>
 				</td>
 			</tr>
@@ -253,10 +260,12 @@ function suggest()
 				<table>
 					<tr>
 						<td>
-							<a href="#" onclick="return hs.close(this);" ><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/close.jpg")%>"></a>
-						</td>
-						<td>
 							<a href="#" onclick="javascript:document.getElementById('uploadPicForm').submit();"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/load.jpg")%>"></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="#" onclick="return hs.close(this);" ><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/close.jpg")%>"></a>
 						</td>
 					</tr>
 				</table>
