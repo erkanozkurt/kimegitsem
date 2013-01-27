@@ -123,6 +123,7 @@ public class CachedResources {
 			mergedPlaceList=new LinkedHashMap<String, String>();
 			List<TblCity> cityList=poiDao.retrieveCityList();
 			List<TblDistrict> districtList=poiDao.retrieveDistrictList();
+			List<TblSubdistrict> subdistrictList=poiDao.retrieveSubdistrictList();
 			Iterator<TblCity> cityIterator=cityList.iterator();
 			while(cityIterator.hasNext()){
 				TblCity city=cityIterator.next();
@@ -132,8 +133,18 @@ public class CachedResources {
 			Iterator<TblDistrict> districtIterator=districtList.iterator();
 			while(districtIterator.hasNext()){
 				TblDistrict district=districtIterator.next();
-				String city=mergedPlaceList.get(""+district.getTblCity().getCityId());
-				mergedPlaceList.put(district.getDistrictId()+","+district.getTblCity().getCityId(), district.getDistrictName()+", "+city);
+				String city=mergedPlaceList.get(""+district.getCityId());
+				mergedPlaceList.put(district.getDistrictId()+","+district.getCityId(), district.getDistrictName()+", "+city);
+			}
+			
+			Iterator<TblSubdistrict> subdistrictIterator=subdistrictList.iterator();
+			while(subdistrictIterator.hasNext()){
+				TblSubdistrict subdistrict=subdistrictIterator.next();
+				TblDistrict parentDistrict=findDistrict(subdistrict.getDistrictId());
+				if(parentDistrict!=null){
+					String city=mergedPlaceList.get(""+parentDistrict.getCityId());
+					mergedPlaceList.put(subdistrict.getSubdistrictId()+","+subdistrict.getDistrictId()+","+parentDistrict.getCityId(), subdistrict.getSubdistrictName()+", "+parentDistrict.getDistrictName()+", "+city);
+				}
 			}
 			
 			getCache().put(ApplicationConstants.MERGED_PLACE_CACHE_KEY, mergedPlaceList);
@@ -234,6 +245,17 @@ public class CachedResources {
 		return builder.toString();
 	}
 	
+	private TblDistrict findDistrict(int districtId){
+		List<TblDistrict> districtList=getDistrictList();
+		Iterator<TblDistrict> iterator=districtList.iterator();
+		while(iterator.hasNext()){
+			TblDistrict district=iterator.next();
+			if(districtId==district.getDistrictId()){
+				return district;
+			}
+		}
+		return null;
+	}
 	private Cache getCache(){
 		return cacheManager.getCache("default");
 	}

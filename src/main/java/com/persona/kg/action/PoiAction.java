@@ -382,12 +382,6 @@ public class PoiAction extends BaseAction implements SessionAware {
 		return "success";
 	}
 	
-	private String escapeSpaces(String source){
-		if(source!=null){
-			source=source.replaceAll("\\ ", "_");
-		}
-		return source;
-	}
 	
 	public String getUserComment() {
 		return userComment;

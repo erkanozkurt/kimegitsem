@@ -47,12 +47,9 @@ public class UserAction extends BaseAction implements SessionAware,
 	public final static int RATE_DISLIKE = 2;
 	private SubscriberDAO subscriberDAO;
 	private String mailAddressContainer;
-	@Autowired
-	private JavaMailSender mailSender;
-	@Autowired
-	private VelocityEngine velocityEngine;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
 	private List<TblMessage> messageList;
+	private List<TblSubscriber> friendList;
 	private int messageId;
 	private List jsonList;
 
@@ -171,13 +168,13 @@ public class UserAction extends BaseAction implements SessionAware,
 						model.put("connect",ApplicationConstants.getContext()+"img/connect.jpg");
 						model.put("context",ApplicationConstants.getContext());
 						String mailContent = VelocityEngineUtils
-								.mergeTemplateIntoString(velocityEngine,
+								.mergeTemplateIntoString(getVelocityEngine(),
 										"invitation.vm", "UTF-8", model);
 						message.setText(mailContent, true);
 	
 					}
 				};
-				this.mailSender.send(mimepreparator);
+				this.getMailSender().send(mimepreparator);
 			}
 		}
 		addActionMessage("Davetiyeler başarıyla gönderilmiştir.");
@@ -226,6 +223,16 @@ public class UserAction extends BaseAction implements SessionAware,
 		return result;
 	}
 
+	public String retrieveFriendList(){
+		String result=RESULT_SUCCESS;
+		UserContext userContext=getUserContext();
+		if(userContext.getAuthenticatedUser()!=null){
+			friendList=subscriberDAO.retrieveFriendsBySubscriberId(userContext.getAuthenticatedUser().getSubscriberId());
+		}
+		
+		return result;
+	}
+	
 	public SubscriberDAO getSubscriberDAO() {
 		return subscriberDAO;
 	}
@@ -234,21 +241,6 @@ public class UserAction extends BaseAction implements SessionAware,
 		this.subscriberDAO = subscriberDAO;
 	}
 
-	public JavaMailSender getMailSender() {
-		return mailSender;
-	}
-
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-	}
-
-	public VelocityEngine getVelocityEngine() {
-		return velocityEngine;
-	}
-
-	public void setVelocityEngine(VelocityEngine velocityEngine) {
-		this.velocityEngine = velocityEngine;
-	}
 
 	public String getMailAddressContainer() {
 		return mailAddressContainer;
@@ -272,6 +264,14 @@ public class UserAction extends BaseAction implements SessionAware,
 
 	public void setMessageId(int messageId) {
 		this.messageId = messageId;
+	}
+
+	public List<TblSubscriber> getFriendList() {
+		return friendList;
+	}
+
+	public void setFriendList(List<TblSubscriber> friendList) {
+		this.friendList = friendList;
 	}
 
 

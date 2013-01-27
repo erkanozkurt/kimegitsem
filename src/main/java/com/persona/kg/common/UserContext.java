@@ -17,6 +17,7 @@ public class UserContext {
 	private TblPoi selectedPoi;
 	private Map<String, Object> sessionObjects=new HashMap<String, Object>();
 	
+	
 	public TblPoi getSelectedPoi() {
 		return selectedPoi;
 	}

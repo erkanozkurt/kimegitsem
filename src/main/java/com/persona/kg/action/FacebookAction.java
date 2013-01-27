@@ -74,6 +74,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 					context.setLoggedIn(true);
 					context.setFacebookId(facebookUser.getId());
 					context.setAuthenticatedUser(subscriber);
+					context.putObject(ApplicationConstants.FRIENDLIST_KEY, getSubscriberDao().retrieveFriendsBySubscriberId(subscriber.getSubscriberId()));
 					putWatchList(context);
 				} else {
 					if (subscriber == null) {
@@ -93,6 +94,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 						context.setAuthenticatedUser(subscriber);
 						//create friends
 						populateFacebookFriends(facebookClient, subscriber.getSubscriberId());
+						context.putObject(ApplicationConstants.FRIENDLIST_KEY, getSubscriberDao().retrieveFriendsBySubscriberId(subscriber.getSubscriberId()));
 						getServletRequest().setAttribute("newMember", "true");
 					}
 

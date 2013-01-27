@@ -1,6 +1,9 @@
-#Sun Oct 07 23:45:34 EEST 2012
+#Tue Jan 22 23:29:39 EET 2013
 eclipse.preferences.version=1
 encoding//src/main/java/com/persona/kg/action/PoiAction.java=UTF-8
+encoding//src/main/java/com/persona/kg/action/TalkAction.java=UTF-8
 encoding//src/main/java/com/persona/kg/action/UserAction.java=UTF-8
 encoding//src/main/resources/invitation.vm=UTF-8
 encoding//src/main/webapp/WEB-INF/velocity/invitation.vm=UTF-8
+encoding//src/main/webapp/WEB-INF/velocity/requestSuggestion.vm=UTF-8
+encoding//src/main/webapp/WEB-INF/velocity/suggestion.vm=UTF-8

@@ -29,6 +29,7 @@ public class ApplicationConstants {
 	public final static String TALK_ID_KEY="talkId";
 	public final static String POI_ID="poiId";
 	public final static String SUBSCRIBER_ID="subscriberId";
+	public final static String FRIENDLIST_KEY="friendList";
 	public final static short POI_TYPE=2;
 	public final static boolean DEV_MODE=false;
 	public final static short SUBSCRIBER_TYPE=1;

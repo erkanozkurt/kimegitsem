@@ -208,6 +208,18 @@ public class SubscriberDAO extends BaseDao {
 		
 	}
 	
+	public boolean storeMessage(final TblMessage message){
+		boolean result=false;
+		try {
+			 getHibernateTemplate().saveOrUpdate(message);
+			 result=true;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return result;
+		
+	}
+	
 	public boolean createFriend(final int initiatorId, final int friendId, final short status){
 		boolean result=false;
 		try {
@@ -357,4 +369,27 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return result;
 	}
+	
+	
+	public List<TblSubscriber> retrieveFriendsBySubscriberId(final Integer subscriberId){
+		List<TblSubscriber> results=new ArrayList<TblSubscriber>();
+		
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblSubscriber subs where subs.subscriberId in (select fri.id.friendId from TblFriendship fri where fri.id.initiatorId=?) and subs.activated=1");
+ 							query.setInteger(0, subscriberId);
+							return query.list();
+						}
+					});
+			results = (List<TblSubscriber>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	
 }

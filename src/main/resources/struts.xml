@@ -237,7 +237,12 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/ajax/ajax.jsp</result>
 		</action>
-	
+		<action name="showSuggestPopup">
+			<result name="success">/jsp/common/suggestPopup.jsp</result>
+		</action>
+		<action name="requestSuggestionPopup">
+			<result name="success">/jsp/common/requestSuggestion.jsp</result>
+		</action>
 	</package>
 
 
@@ -280,7 +285,7 @@
 		</action>
 			<action name="suggest" class="talkAction" method="suggest">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result name="success">/jsp/ajax/ajax.jsp</result>
+			<result name="success">/jsp/ajax/ajaxResult.jsp</result>
 		</action>
 	</package>
 
@@ -311,7 +316,7 @@
 		<action name="poiList" class="ajaxAction" method="poiList">
 			<interceptor-ref name="defInterceptors"></interceptor-ref>
 			<result type="json" name="success">
-				<param name="excludeNullProperties">true</param>
+				<param name="root">jsonResult</param>
 			</result>
 		</action>
 		
@@ -326,6 +331,17 @@
 			<result type="json" name="success">
 				<param name="excludeNullProperties">true</param>
 				 <param name="root">jsonList</param>
+			</result>
+		</action>
+		<action name="poiDetails" class="ajaxAction" method="poiDetails">
+			<result type="json" name="success">
+				<param name="excludeNullProperties">true</param>
+				 <param name="root">poi</param>
+			</result>
+		</action>
+		<action name="categoryAll" class="ajaxAction" method="categoryListAll">
+			<result type="json" name="success">
+				<param name="excludeNullProperties">true</param>
 			</result>
 		</action>
 		

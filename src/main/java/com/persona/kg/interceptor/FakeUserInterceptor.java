@@ -23,8 +23,9 @@ public class FakeUserInterceptor extends AbstractInterceptor{
 			UserContext context=(UserContext)action.getInvocationContext().getSession().get(ApplicationConstants.USER_CONTEXT_KEY);
 			if(context.isLoggedIn()==false){
 				context.setLoggedIn(true);
-				context.setAuthenticatedUser(subscriberDAO.retrieveUserById(122));
+				context.setAuthenticatedUser(subscriberDAO.retrieveUserById(1));
 				context.setFacebookAccessToken("asdasdsdasdsad");
+				context.putObject(ApplicationConstants.FRIENDLIST_KEY, subscriberDAO.retrieveFriendsBySubscriberId(context.getAuthenticatedUser().getSubscriberId()));
 			}
 		}
 		return action.invoke();
