@@ -11,29 +11,27 @@
 	</s:if>
 	<table width="100%">
 		<tr>
-			<td>İşletmenin adı</td>
-			<td><s:textfield name="poi.poiName" id="poiName"></s:textfield></td>
+			<td>Hizmetveren Adı<font color="red"> ***</font></td>
+			<td><s:textfield name="poi.poiName" id="poiName" size="40"></s:textfield></td>
 		</tr>
 		<tr>
-			<td>Kategori</td>
+			<td valign="top">Bilgi</td>
+			<td><s:textarea name="poi.info" id="info" cols="40" rows="10"></s:textarea></td>
+		</tr>
+		<tr>
+			<td>Kategori<font color="red"> ***</font></td>
 			<td><select id="category" name="poi.category">
+					<option value=''>Lütfen Seçiniz</option>
 					<s:iterator value="categoryList">
 						<option value='<s:property value="categoryId" />'><s:property value="categoryName" /></option>
 					</s:iterator>
 				</select></td>
 		</tr>
 		<tr>
-			<td>Tanıtım metni</td>
-			<td><s:textarea name="poi.info" id="info"></s:textarea></td>
-		</tr>
-		<tr>
-			<td>Adres</td>
-			<td><s:textfield name="poi.address" id="address"></s:textfield></td>
-		</tr>
-		<tr>
-			<td>İl</td>
+			<td>İl<font color="red"> ***</font></td>
 			<td>
-				<select id="cityList" name="poi.cityId" onchange="populateDistricts()">
+			
+				<select id="cityList" name="poi.cityId" onchange="populateDistrictList()">
 					<option value=''>Lütfen Seçiniz</option>
 					<s:iterator value="cityList">
 						<option value='<s:property value="cityId" />'><s:property value="cityName" /></option>
@@ -43,21 +41,42 @@
 		</tr>
 		<tr>
 			<td>İlçe</td>
-			<td><select id="districtList" name="poi.districtId"></select></td>
+			<!--   <td><select id="districtList" name="poi.districtId"></select></td> -->
+			<td>
+				<select id="districtList" name="poi.districtId" list="{'İlçe Seçiniz'}" onchange="populateSubdistrictList()" disabled="true">
+					<option value=''>Lütfen Seçiniz</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Mahalle</td>
+			<!--   <td><select id="districtList" name="poi.districtId"></select></td> -->
+			<td>
+				<select id="subdistrictList" name="poi.subdistrictId" list="{'Mahalle Seçiniz'}" disabled="true">
+					<option value=''>Lütfen Seçiniz</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">Adres</td>
+			<td><s:textarea name="poi.address" id="address" cols="40" rows="3"></s:textarea></td>
 		</tr>
 		<tr>
 			<td>Telefon</td>
-			<td><s:textfield name="poi.phone" id="phone"></s:textfield></td>
+			<td><s:textfield name="poi.phone" id="phone" size="30"></s:textfield></td>
 		</tr>
 		<tr>
-			<td>Anahtar kelimeler</td>
-			<td><s:textfield name="poi.keywords" id="keywords"></s:textfield></td>
+			<td>Web Sitesi</td>
+			<td><s:textfield name="poi.website" id="website" size="30"></s:textfield></td>
 		</tr>
 		<tr>
-			<td>Site</td>
-			<td><s:textfield name="poi.website" id="website"></s:textfield></td>
+			<td>Anahtar Kelimeler</td>
+			<td><s:textfield name="poi.keywords" id="keywords" size="30"></s:textfield></td>
 		</tr>
 		<tr>
+			<tr>
+				<td valign="top">Haritadaki Yeri</td>
+			<tr>
 			<td colspan="2"><script type="text/javascript"
 										src="http://maps.googleapis.com/maps/api/js?key=<%=com.persona.kg.common.ApplicationConstants.getGoogleMapsKey()%>&sensor=true">
 									</script>
@@ -96,7 +115,6 @@
 															oldMarker.setMap(null);
 														}
 														oldMarker = marker;
-														map.setCenter(location);
 													}
 												}
 											}	);
@@ -111,25 +129,65 @@
 						<s:hidden name="poi.coordLong" id="lng" />
 			</td>
 		</tr>
+		<tr><td><u><font color="red"> *** </font><b>ile işaretlenmiş bilgilerin yazılması zorunludur.</b></u></td></tr>
 		<tr>
 			<td><a href="#" onclick="validatePoiInfo()"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/save.jpg")%>"></a></td>
 		</tr>
+		
 	</table>
 	</s:form>
 </div>
 
 <script type="text/javascript">
-function populateDistricts(){
+<!--
+function populateDistrictList(){
 	var cityComponent=document.getElementById("cityList");
 	var cityId=cityComponent.options[cityComponent.selectedIndex].value;
+	retrieveDistrictList(cityId);
+}
+
+
+function retrieveDistrictList(cityId){
+	$.ajax({
+		   url: servletUrl+"/ajax/retrieveDistrictList?cityId="+cityId, 
+		   success: function (data) {
+				if(data!=null){
+					var districtComponent=document.getElementById("districtList");
+					districtComponent.options.length = 0;
+					districtComponent.options[districtComponent.options.length] = new Option("Lütfen Seçiniz","");
+					for(var i=0;i<data.length;i++){
+								districtComponent.options[districtComponent.options.length] = new Option(data[i].districtName,data[i].districtId);
+						}
+					}  
+					districtComponent.disabled=false;
+				}
+		   }
+		); 
+}
+
+function populateSubdistrictList(){
 	var districtComponent=document.getElementById("districtList");
-	districtComponent.options.length = 0; 
-	for(var i=0;i<districtList.length;i++){
-		var item=districtList[i];
-		if(item[0]==cityId){
-			districtComponent.options[districtComponent.options.length] = new Option(item[2], item[1]);
-		}
-	}
+	var districtId=districtComponent.options[districtComponent.selectedIndex].value;
+	retrieveSubdistrictList(districtId);
+}
+
+
+function retrieveSubdistrictList(districtId){
+	$.ajax({
+		   url: servletUrl+"/ajax/retrieveSubdistrictList?districtId="+districtId, 
+		   success: function (data) {
+				if(data!=null){
+					var subdistrictComponent=document.getElementById("subdistrictList");
+					subdistrictComponent.options.length = 0;
+					subdistrictComponent.options[subdistrictComponent.options.length] = new Option("Lütfen Seçiniz","");
+					for(var i=0;i<data.length;i++){
+						subdistrictComponent.options[subdistrictComponent.options.length] = new Option(data[i].subdistrictName,data[i].subdistrictId);
+						}
+					}  
+					subdistrictComponent.disabled=false;
+				}
+		   }
+		); 
 }
 function validatePoiInfo(){
 	var poiName=document.getElementById("poiName").value;
@@ -137,24 +195,10 @@ function validatePoiInfo(){
 		alert("Lüften geçerli bir işletme adı giriniz!");
 		return false;
 	}
-	var info=document.getElementById("info").value;
-	if(info==null || info=='undefined' || info<1){
-		alert("Lüften geçerli bir tanıtım metni giriniz!");
-		return false;
-	}
-	var address=document.getElementById("address").value;
-	if(address==null || address=='undefined' || address<1){
-		alert("Lüften geçerli bir adres giriniz!");
-		return false;
-	}
-	var phone=document.getElementById("phone").value;
-	if(phone==null || phone=='undefined' || phone<1){
-		alert("Lüften geçerli bir telefon giriniz!");
-		return false;
-	}
-	var keywords=document.getElementById("keywords").value;
-	if(keywords==null || keywords=='undefined' || keywords<1){
-		alert("Lütfen işletmenizi tanımlayan anahtar kelimeleri virgül ile ayrılmış şekilde giriniz!");
+	var categoryComponent=document.getElementById("category");
+	var categoryId=categoryComponent.options[categoryComponent.selectedIndex].value;
+	if(categoryId==''){
+		alert("Lütfen bir kategori seçiniz!");
 		return false;
 	}
 	var cityComponent=document.getElementById("cityList");
@@ -165,15 +209,4 @@ function validatePoiInfo(){
 	}
 	document.getElementById("claimForm").submit();
 }
-</script>
-
-
-<script type="text/javascript">
-var districtList=new Array();
-<s:iterator value="districtList"  status="counter">
-districtList[<s:property value="#counter.index"/>]=new Array();
-districtList[<s:property value="#counter.index"/>][0]=<s:property value="tblCity.cityId"/>;
-districtList[<s:property value="#counter.index"/>][1]=<s:property value="districtId"/>;
-districtList[<s:property value="#counter.index"/>][2]='<s:property value="districtName" escape="false"/>';
-</s:iterator>
 </script>

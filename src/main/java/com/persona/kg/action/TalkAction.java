@@ -103,38 +103,65 @@ public class TalkAction extends BaseAction implements SessionAware {
 
 			if (userContext.isLoggedIn()) {
 				TblConversation conv = new TblConversation();
-				if (what != null && where != null) {
-					conv.setCategory(Integer.parseInt(what));
-					if (where.indexOf(",") > -1) {
-						conv.setDistrictId(Integer.parseInt(where.substring(0,
-								where.indexOf(","))));
-						conv.setCityId(Integer.parseInt(where.substring(where
-								.indexOf(",") + 1)));
+				TblCategory selectedCategory=categoryDAO.findCategoryById(suggestedCategory);
+				String placeName=getCachedResources().getMergedPlaceList().get(suggestionPlace);
+				if (suggestedCategory!=null && suggestionPlace != null) {
+					conv.setCategory(Integer.parseInt(suggestedCategory));
+					String[] placeArray=suggestionPlace.split("\\,");
+					if(placeArray.length==3){
+						conv.setDistrictId(Integer.parseInt(placeArray[1]));
+						conv.setCityId(Integer.parseInt(placeArray[2]));
+					}
+					if(placeArray.length==2){
+						conv.setDistrictId(Integer.parseInt(placeArray[0]));
+						conv.setCityId(Integer.parseInt(placeArray[1]));
+					}
+					if(placeArray.length==1){
+						conv.setCityId(Integer.parseInt(placeArray[0]));
+					}
+					
+					if (suggestionPlace.indexOf(",") > -1) {
+						
 					} else {
-						conv.setCityId(Integer.parseInt(where));
+						conv.setCityId(Integer.parseInt(suggestionPlace));
 					}
 
-					String subject = " (" + what_widget + " / " + where_widget
-							+ ") kime gitsem?";
+					
 					conv.setBody(description);
 					conv.setDateStarted(new Date());
 					conv.setStatus((short) 1);
-					if (description != null && description.length() > 30) {
-						subject = description.substring(0, 29) + "... "
-								+ subject;
-					} else if (description != null) {
-						subject = description + subject;
-					}
-					conv.setSubject(subject);
-					conv.setTblSubscriber(subscriber);
+					conv.setSubject(getSubjectForRequest(selectedCategory.getCategoryName()));
+					conv.setTblSubscriber(userContext.getAuthenticatedUser());
+					
 					if (talkDAO.storeConversation(conv)) {
-						getServletRequest().setAttribute("conversation", conv);
-						boolean facebookPublish = askFacebookSuggestion(
-								userContext.getFacebookAccessToken(),
-								conv.getConversationId());
-						if (facebookPublish == true) {
-							result = "success";
+						
+						
+						
+						if("A".equals(getSuggestionVisibility())){
+							if(askFacebookSuggestion(userContext.getFacebookAccessToken(),conv.getConversationId())==false){
+								addActionMessage("Facebook paylaşımı sırasında hata oluştu!");
+							}else{
+								addActionMessage("Tavsiyen facebookta başarıyla paylaşıldı!");
+							}
+						}else{
+							String selectedPlaceName=getCachedResources().getMergedPlaceList().get(suggestionPlace);
+							if(StringUtils.isNotBlank(emailList)){
+								if(askMailSuggestion(selectedCategory,selectedPlaceName)==false){
+									addActionMessage("Mail paylaşımı sırasında hata oluştu!");
+								}else{
+									addActionMessage("Mail gönderimi başarılı!");
+								}
+									
+							}
+							if(StringUtils.isNotBlank(selectedFriends)){
+								if(askPrivateSuggestion(selectedCategory,selectedPlaceName)==false){
+									addActionMessage("Seçilen arkadaşlara mesaj gönderimi sırasında hata oluştu!");
+								}else{
+									addActionMessage("Mesaj seçilen arkadaşlara başarıyla gönderildi!");
+								}
+							}
 						}
+						getServletRequest().setAttribute("conversation", conv);
 					}
 				}
 			}
@@ -273,14 +300,42 @@ public class TalkAction extends BaseAction implements SessionAware {
 					recipient.setSubscriberId(Integer.parseInt(friend.trim()));
 					message.setTblSubscriberByRecipientId(recipient);
 					message.setTblSubscriberBySenderId(userContext.getAuthenticatedUser());
-					message.setSubject("");
-					message.setMessage("");
+					List<TblCategory> categories=poiDAO.retrieveCategoriesByPoi(poi);
+					message.setSubject(getSubjectForSuggestion(poi.getPoiName(), categories.get(0).getCategoryName()));					
+					Map model = new HashMap();
+					model.put("name", userContext.getAuthenticatedUser().getName());
+					model.put("surname", userContext.getAuthenticatedUser().getSurname());
+					model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+					model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.jpg");
+					model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.jpg");
+					model.put("description", description);
+					model.put("poi", poi.getPoiName());
+					model.put("url", ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier());
+					message.setMessage(getMergedTemplate("suggestion",model));
 					message.setSendDate(new Date());
 					subscriberDAO.storeMessage(message);
 				}
 			}
 		}
 		return result;
+	}
+	
+	private String getSubjectForSuggestion(String poiName, String category){
+		StringBuilder sb=new StringBuilder();
+		UserContext context=getUserContext();
+		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
+		sb.append(" kimegitsem?com'da ");
+		sb.append(poiName);
+		sb.append("("+category+") tavsiye ediyor.");
+		return sb.toString();
+	}
+	private String getSubjectForRequest( String category){
+		StringBuilder sb=new StringBuilder();
+		UserContext context=getUserContext();
+		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
+		sb.append(" kimegitsem?com'da ");
+		sb.append(category+" tavsiyesi istiyor.");
+		return sb.toString();
 	}
 	
 	private boolean shareMailSuggestion(TblPoi poi){
@@ -300,12 +355,71 @@ public class TalkAction extends BaseAction implements SessionAware {
 						model.put("description", description);
 						model.put("poi", poi.getPoiName());
 						model.put("url", ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier());
-						sendMail(model, "suggestion", email, "kimegitsem?com tavsiye!");
+						List<TblCategory> categories=poiDAO.retrieveCategoriesByPoi(poi);
+						sendMail(model, "suggestion", email, getSubjectForSuggestion(poi.getPoiName(), categories.get(0).getCategoryName()));
 					}
 				}
 			}
 		}
 		
+		return result;
+	}	
+	
+	
+	private boolean askMailSuggestion(TblCategory selectedCategory, String placeName){
+		boolean result=true;
+		UserContext userContext = getUserContext();
+		if(emailList!=null){
+			String[] list=emailList.split("\\,");
+			if(list!=null && list.length>0){
+				for(String email:list){
+					if(EmailValidator.getInstance().isValid(email)==true){
+						Map model = new HashMap();
+						model.put("name", userContext.getAuthenticatedUser().getName());
+						model.put("surname", userContext.getAuthenticatedUser().getSurname());
+						model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.jpg");
+						model.put("category", selectedCategory.getCategoryName());
+						model.put("place",placeName);
+						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.jpg");
+						model.put("description", description);
+						sendMail(model, "requestSuggestion", email, getSubjectForRequest(selectedCategory.getCategoryName()));
+					}
+				}
+			}
+		}
+		
+		return result;
+	}	
+
+private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeName){
+		boolean result=true;
+		UserContext userContext = getUserContext();
+		if(getSelectedFriends()!=null){
+			String[] list=getSelectedFriends().split("\\,");
+			if(list!=null && list.length>0){
+				for(String friend:list){
+					TblMessage message=new TblMessage();
+					TblSubscriber recipient=new TblSubscriber();
+					recipient.setSubscriberId(Integer.parseInt(friend.trim()));
+					message.setTblSubscriberByRecipientId(recipient);
+					message.setTblSubscriberBySenderId(userContext.getAuthenticatedUser());
+					message.setSubject(getSubjectForRequest(selectedCategory.getCategoryName()));					
+					Map model = new HashMap();
+					model.put("name", userContext.getAuthenticatedUser().getName());
+					model.put("surname", userContext.getAuthenticatedUser().getSurname());
+					model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+					model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.jpg");
+					model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.jpg");
+					model.put("category", selectedCategory.getCategoryName());
+					model.put("place",placeName);
+					model.put("description", description);
+					message.setMessage(getMergedTemplate("requestSuggestion",model));
+					message.setSendDate(new Date());
+					subscriberDAO.storeMessage(message);
+				}
+			}
+		}
 		return result;
 	}
 	public String addWatch() {

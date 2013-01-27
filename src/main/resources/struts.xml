@@ -266,7 +266,7 @@
 		
 		<action name="ask" class="talkAction" method="ask">
 			<interceptor-ref name="talkInterceptors"></interceptor-ref>
-			<result type="tiles" name="success">talkShow</result>
+			<result name="success">/jsp/ajax/ajaxResult.jsp</result>
 		</action>
 		
 		<action name="show" class="talkAction" method="show">

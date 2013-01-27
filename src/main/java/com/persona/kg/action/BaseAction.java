@@ -226,6 +226,13 @@ public class BaseAction  extends ActionSupport implements ServletRequestAware,Se
 		this.mailSender.send(mimepreparator);
 		return sendingResult;
 	}
+	
+	public String getMergedTemplate(String template, Map<String, String> attributes){
+		String mailContent = VelocityEngineUtils
+		.mergeTemplateIntoString(velocityEngine,
+				template+".vm", "UTF-8", attributes);
+		return mailContent;
+	}
 	public JavaMailSender getMailSender() {
 		return mailSender;
 	}

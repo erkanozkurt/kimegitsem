@@ -8,7 +8,7 @@
 					<tr>
 						<td colspan="2">
 							<s:url var="poiList" action="poiList" namespace="/ajax"/>
-							<sj:autocompleter labelposition="left" label="Hizmet veren adı" id="suggestion" list="map" name="suggestion" href="%{poiList}" delay="50"  loadMinimumCount="2" placeholder="Ne" maxlength="10"  onSelectTopics="poiSelected" title="Hizmet veren adı"/>
+							<sj:autocompleter labelposition="left" label="Hizmet veren adı" id="suggestion" list="map" name="suggestion" href="%{poiList}" delay="50"  loadMinimumCount="2" placeholder="Ne" maxlength="10"  onSelectTopics="poiSelected" title="Hizmet veren adı"/> hizmet veren ismi otomatik tamamlanmıyorsa, girdiğiniz isimde bir kayıt otomatik olarak oluşacaktır.
 					</td>
 					<tr>
 						<td colspan="2">

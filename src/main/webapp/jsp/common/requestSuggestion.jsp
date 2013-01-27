@@ -57,7 +57,7 @@
 	var poiSel=false;
 	
 	$.subscribe('askSuggestion', function(event, data) {
-		alert("send");
+	
 		 //event.originalEvent.options.submit = false;
 		});
 	
