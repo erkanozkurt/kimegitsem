@@ -18,7 +18,7 @@ public class TblMessage implements java.io.Serializable {
 	private Short state;
 	private Short senderType;
 	private Short recipientType;
-	private int mainMessageId;
+	private int mainMessageId=-1;
 	
 	public TblMessage() {
 	}
@@ -46,8 +46,9 @@ public class TblMessage implements java.io.Serializable {
 		this.recipientType = recipientType;
 	}
 
+
 	public Integer getMessageId() {
-		return this.messageId;
+		return messageId;
 	}
 
 	public void setMessageId(Integer messageId) {

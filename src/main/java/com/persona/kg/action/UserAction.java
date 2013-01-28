@@ -38,7 +38,7 @@ import com.persona.kg.dao.TblRate;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
 import com.persona.kg.model.Subscriber;
-
+//import com.persona.kgadmin.dao.TblPoi;
 
 public class UserAction extends BaseAction implements SessionAware,
 		ServletRequestAware, ServletResponseAware {
@@ -47,19 +47,13 @@ public class UserAction extends BaseAction implements SessionAware,
 	public final static int RATE_DISLIKE = 2;
 	private SubscriberDAO subscriberDAO;
 	private String mailAddressContainer;
-	@Autowired
-	private JavaMailSender mailSender;
-	@Autowired
-	private VelocityEngine velocityEngine;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
 	private List<TblMessage> messageList;
+	private List<TblSubscriber> friendList;
 	private int messageId;
 	private List jsonList;
-	private TblMessage message;
-	private String boxType;
-	private String messageIds;
-	
-	
+
+
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		TblSubscriber subscriber = null;
@@ -164,7 +158,7 @@ public class UserAction extends BaseAction implements SessionAware,
 								mimeMessage);
 						// mail sending parameters
 						message.setTo(address);
-						message.setFrom("info@kimegitsem.com");
+						message.setFrom("ylcnarsln@gmail.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" sana kimegitsem?com’dan arkadaslik istegi gonderdi");
 						Map model = new HashMap();
 						model.put("name", authenticatedUser.getName());
@@ -174,22 +168,37 @@ public class UserAction extends BaseAction implements SessionAware,
 						model.put("connect",ApplicationConstants.getContext()+"img/connect.jpg");
 						model.put("context",ApplicationConstants.getContext());
 						String mailContent = VelocityEngineUtils
-								.mergeTemplateIntoString(velocityEngine,
+								.mergeTemplateIntoString(getVelocityEngine(),
 										"invitation.vm", "UTF-8", model);
 						message.setText(mailContent, true);
 	
 					}
 				};
-				this.mailSender.send(mimepreparator);
+				this.getMailSender().send(mimepreparator);
 			}
 		}
 		addActionMessage("Davetiyeler başarıyla gönderilmiştir.");
 		return "success";
 	}
+
+	/*public String showInbox(){
+		messageList=new ArrayList<TblMessage>();
+		TblMessage message=new TblMessage();
+		message.setMessage("test234223");
+		message.setSubject("sdasdsadsdsd");
+		message.setSendDate(new Date());
+		messageList.add(message);
+		
+		message=new TblMessage();
+		message.setMessage("test234223");
+		message.setSubject("sdasdsadsdsd1");
+		message.setSendDate(new Date());
+		messageList.add(message);
+		return "success";
+	}*/
 	
 	public String showInbox(){
 		String result="success";
-		boxType="inbox";
 		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
 		UserContext context=getUserContext();		
                 if(context.getAuthenticatedUser()!=null){			
@@ -200,7 +209,6 @@ public class UserAction extends BaseAction implements SessionAware,
 	
 	public String showOutbox(){
 		String result="success";
-		boxType="outbox";
 		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
 		UserContext context=getUserContext();		
                 if(context.getAuthenticatedUser()!=null){			
@@ -212,27 +220,16 @@ public class UserAction extends BaseAction implements SessionAware,
 	public String setRead(){
 		String result="success";	
         subscriberDAO.setRead(messageId);
-        message=subscriberDAO.retrieveMessageByMessageId(messageId);
 		return result;
 	}
 
-	public String sendMessage(){
-		String result="success";	
-        System.out.println("user action message");
-        message.setSendDate(new Date());
-        message.setSubject("RE-" + message.getSubject());
-        message.setState((short) 1);
-        subscriberDAO.sendMessage(message);
-		return result;
-	}
-	
-	public String deleteMessages(){
-		String result="success";
-		String[] words = messageIds.split(", ");
-		for(int i=0;i<words.length;i++){
-			int messageId=Integer.parseInt(words[i]);
-			subscriberDAO.deleteMessages(messageId);
+	public String retrieveFriendList(){
+		String result=RESULT_SUCCESS;
+		UserContext userContext=getUserContext();
+		if(userContext.getAuthenticatedUser()!=null){
+			friendList=subscriberDAO.retrieveFriendsBySubscriberId(userContext.getAuthenticatedUser().getSubscriberId());
 		}
+		
 		return result;
 	}
 	
@@ -244,21 +241,6 @@ public class UserAction extends BaseAction implements SessionAware,
 		this.subscriberDAO = subscriberDAO;
 	}
 
-	public JavaMailSender getMailSender() {
-		return mailSender;
-	}
-
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-	}
-
-	public VelocityEngine getVelocityEngine() {
-		return velocityEngine;
-	}
-
-	public void setVelocityEngine(VelocityEngine velocityEngine) {
-		this.velocityEngine = velocityEngine;
-	}
 
 	public String getMailAddressContainer() {
 		return mailAddressContainer;
@@ -284,28 +266,12 @@ public class UserAction extends BaseAction implements SessionAware,
 		this.messageId = messageId;
 	}
 
-	public TblMessage getMessage() {
-		return message;
+	public List<TblSubscriber> getFriendList() {
+		return friendList;
 	}
 
-	public void setMessage(TblMessage message) {
-		this.message = message;
-	}
-
-	public String getBoxType() {
-		return boxType;
-	}
-
-	public void setBoxType(String boxType) {
-		this.boxType = boxType;
-	}
-
-	public String getMessageIds() {
-		return messageIds;
-	}
-
-	public void setMessageIds(String messageIds) {
-		this.messageIds = messageIds;
+	public void setFriendList(List<TblSubscriber> friendList) {
+		this.friendList = friendList;
 	}
 
 

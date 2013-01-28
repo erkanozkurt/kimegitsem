@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
 encoding//src/main/java/com/persona/kg/PoiDAO.java=UTF-8
 encoding//src/main/java/com/persona/kg/action/PoiAction.java=UTF-8
+encoding//src/main/java/com/persona/kg/action/TalkAction.java=UTF-8
 encoding//src/main/java/com/persona/kg/action/UserAction.java=UTF-8
 encoding//src/main/webapp/WEB-INF/velocity/invitation.vm=UTF-8
+encoding//src/main/webapp/WEB-INF/velocity/requestSuggestion.vm=UTF-8
+encoding//src/main/webapp/WEB-INF/velocity/suggestion.vm=UTF-8
