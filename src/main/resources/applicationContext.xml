@@ -27,7 +27,7 @@
             <bean class="java.util.Properties">
 
                 <constructor-arg>
-                    <map>
+                    <map> 
                         <entry key="facebookApiKey">
                             <jee:jndi-lookup jndi-name="java:comp/env/facebookApiKey"/>
                         </entry>
@@ -83,7 +83,7 @@
         </property>
     </bean>
 
-	
+
 	<bean id="talkInterceptor" class="com.persona.kg.interceptor.TalkInterceptor"/>
 	<bean id="authenticationInterceptor" class="com.persona.kg.interceptor.AuthenticationInterceptor"/>
 	<bean id="contextInterceptor" class="com.persona.kg.interceptor.ContextInterceptor" />
@@ -146,9 +146,9 @@
 			value="${jdbcUrl}" />
 		<property name="user" value="${user}" />
 		<property name="password" value="${password}" />
-		<property name="minPoolSize" value="5" />
-		<property name="initialPoolSize" value="5" />
-		<property name="maxPoolSize" value="10" />
+		<property name="minPoolSize" value="40" />
+		<property name="initialPoolSize" value="40" />
+		<property name="maxPoolSize" value="40" />
 		<property name="maxStatements" value="100" />
 		<property name="checkoutTimeout" value="10000" />
 		<property name="idleConnectionTestPeriod" value="60" />
@@ -214,9 +214,9 @@
 	</bean>
 
 	<!-- Cache config begin -->
-	
+
 	<bean id="cachedResources" class="com.persona.kg.common.CachedResources"/>
-	
+
 	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
 		<property name="caches">
 			<set>
@@ -227,9 +227,8 @@
 		</property>
 	</bean>
 	<!-- Cache config end -->
-	
-	<!-- Mail Config start -->
 
+	<!-- Mail Config start -->
 	<bean class="org.springframework.mail.javamail.JavaMailSenderImpl" id="mailSender">
         <property name="host" value="${emailhost}"/>
         <property name="protocol" value="${emailprotocol}"/>
@@ -246,14 +245,12 @@
         </property>
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
-
-    <!-- Mail Config end -->
     
     <bean id="velocityEngine" 
     class="org.springframework.ui.velocity.VelocityEngineFactoryBean" p:resourceLoaderPath="/WEB-INF/velocity">
-	
+
     </bean>
     
 
-	
+	<!-- Mail Config end -->
 </beans>

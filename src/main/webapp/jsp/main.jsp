@@ -5,16 +5,16 @@
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>
 <div class="contentDiv" id="contentDiv">
 
-    <div class="redHeading2" style="width: 561px ; top: 250px; height: 25px; top:10px" align="center">
-    Arkadaş çevrenize danışmak hiç bu kadar kolay olmamıştı !
+    <div align="center">
+    <font face="Helvetica" size="6"><i>Arkadaş çevrenize danışmak hiç bu kadar kolay olmamıştı!</i></font>
     </div>
 
-    <div class="blueHeading" style="width: 561px; height: 70px;  top:30px" align="center">Kimegitsem ile hizmet sektöründe aradığınız her konuda güvenebileceğiniz hizmet verenleri
-                                                  arkadaşlarınızın tavsiyesi ile bulun.
+    <div class="blueHeading" align="center" >
+   				Kimegitsem ile hizmet sektöründe aradığınız her konuda güvenebileceğiniz hizmet verenleri arkadaşlarınızın tavsiyesi ile bulun.
     </div>
     
     <div class="redHeading2" style="width: 561px ; height: 25px; top:50px" align="center">
-    	Kimegitsem'de kullanabileceğiniz temel özellikler:
+    	Kimegitsem'in temel fonksiyonları:
     </div>
     
 	<div class="banner" style="width:576px; top:52px;">

@@ -53,21 +53,23 @@ public class PoiAction extends BaseAction implements SessionAware {
 	private List<TblPoi> poiList;
 	private String categoryId;
 	private TblPoi poi;
-	private boolean updateMode=false;
+	private boolean updateMode = false;
 	private int poiId;
 	private List jsonList;
 	private int districtId;
 	private int cityId;
-	
+
 	@Autowired
 	private CachedResources cachedResources;
-	
+
 	public CachedResources getCachedResources() {
 		return cachedResources;
 	}
+
 	public void setCachedResources(CachedResources cachedResources) {
 		this.cachedResources = cachedResources;
 	}
+
 	public String show() {
 		logger.debug("show invoked");
 		return "show";
@@ -75,7 +77,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 
 	public String edit() {
 		logger.debug("edit invoked");
-		poi=getUserContext().getSelectedPoi();
+		poi = getUserContext().getSelectedPoi();
 		return "show";
 	}
 
@@ -96,8 +98,8 @@ public class PoiAction extends BaseAction implements SessionAware {
 				comment.setDateAdded(new Date());
 				comment.setTblPoi(poi);
 				comment.setTblSubscriber(subscriber);
-				comment.setStatus((short)2);
-				
+				comment.setStatus((short) 2);
+
 				if (poiDAO.addComment(comment)) {
 					poi.setComments(poiDAO.retrieveCommentsByPoi(poi));
 					sendFacebookFeed(accessToken, context, poi.getPoiName());
@@ -114,84 +116,102 @@ public class PoiAction extends BaseAction implements SessionAware {
 		logger.debug("claim invoked");
 		UserContext userContext = getUserContext();
 		if (userContext.isLoggedIn()) {
-			TblPoi selectedPoi=userContext.getSelectedPoi();
-			if(selectedPoi!=null){
-				if(selectedPoi.getAdministrator()==null){
-					TblPoiAdministrator admin=new TblPoiAdministrator();
+			TblPoi selectedPoi = userContext.getSelectedPoi();
+			if (selectedPoi != null) {
+				if (selectedPoi.getAdministrator() == null) {
+					TblPoiAdministrator admin = new TblPoiAdministrator();
 					admin.setTblSubscriber(userContext.getAuthenticatedUser());
 					admin.setTblPoi(selectedPoi);
 					admin.setIsPrimary(true);
-					admin.setStatus((short)2);
-					if(poiDAO.setAdmin(admin)){
+					admin.setStatus((short) 2);
+					if (poiDAO.setAdmin(admin)) {
 						addActionMessage("Başvurunuz alınmıştır");
-						selectedPoi.setAdministrator(userContext.getAuthenticatedUser());
+						selectedPoi.setAdministrator(userContext
+								.getAuthenticatedUser());
 					}
-				}else{
+				} else {
 					addActionMessage("Seçili hizmet veren için başvuru yapılmış!");
 				}
-			}else{
+			} else {
 				addActionMessage("Seçili hizmet veren bulunamadı!");
 			}
-		}else{
+		} else {
 			addActionMessage("Lütfen giriş yapınız!");
 		}
 		return "show";
 	}
-	
+
 	public String addPoi() {
 		logger.debug("claimForm invoked");
 		UserContext userContext = getUserContext();
 		if (userContext.isLoggedIn()) {
-			if(updateMode==false){		
+			if (updateMode == false) {
 				poi.setUniqueIdentifier(escapeSpaces(poi.getPoiName()));
 				poi.setDateAdded(new Date());
-				if(poiDAO.addPoi(poi)){
-					TblPoiCategory poiCategory=new TblPoiCategory();
-					TblPoiCategoryId id=new TblPoiCategoryId();
+				if (poiDAO.addPoi(poi)) {
+					TblPoiCategory poiCategory = new TblPoiCategory();
+					TblPoiCategoryId id = new TblPoiCategoryId();
 					id.setPoiId(poi.getPoiId());
 					id.setCategoryId(poi.getCategory());
 					poiCategory.setId(id);
 					poiDAO.addPoiCategory(poiCategory);
 					poi.setAdministrator(userContext.getAuthenticatedUser());
-					TblPoiAdministrator admin=new TblPoiAdministrator();
+					TblPoiAdministrator admin = new TblPoiAdministrator();
 					admin.setTblSubscriber(userContext.getAuthenticatedUser());
 					admin.setTblPoi(poi);
 					admin.setIsPrimary(true);
-					admin.setStatus((short)2);
+					admin.setStatus((short) 2);
 					poiDAO.setAdmin(admin);
 					addActionMessage("İşletme başarıyla kaydedildi!");
 				}
-			}else{
-				if(poiDAO.updatePoi(poi)){
-					TblPoiCategory poiCategory=new TblPoiCategory();
-					TblPoiCategoryId id=new TblPoiCategoryId();
+			} else {
+				if (poiDAO.updatePoi(poi)) {
+					TblPoiCategory poiCategory = new TblPoiCategory();
+					TblPoiCategoryId id = new TblPoiCategoryId();
 					id.setPoiId(poi.getPoiId());
 					id.setCategoryId(poi.getCategory());
 					poiCategory.setId(id);
 					poiDAO.addPoiCategory(poiCategory);
 				}
 			}
-		}else{
+		} else {
 			addActionError("Lütfen giriş yapınız!");
 		}
 		return "show";
 	}
-	
+
+	private String escapeSpaces(String name) {
+		if (name != null) {
+			name.replaceAll("\\ ", "_");
+			name.replaceAll("İ", "I");
+			name.replaceAll("ı", "i");
+			name.replaceAll("Ş", "S");
+			name.replaceAll("ş", "s");
+			name.replaceAll("Ç", "C");
+			name.replaceAll("ç", "c");
+			name.replaceAll("Ü", "U");
+			name.replaceAll("ü", "u");
+			name.replaceAll("Ö", "O");
+			name.replaceAll("ö", "o");
+			name.replaceAll("Ğ", "G");
+			name.replaceAll("ğ", "g");
+		}
+		return name;
+	}
+
 	private void sendFacebookFeed(String accessToken, String context,
 			String name) {
 		FacebookClient facebookClient = new DefaultFacebookClient(accessToken);
-		FacebookType publishResponse = facebookClient
-				.publish(
-						"me/feed",
-						FacebookType.class,
-						Parameter.with("message", userComment),
-						Parameter
-								.with("picture",
-										ApplicationConstants.getContext()+"img/banner.jpg"),
-						Parameter.with("link",
-								ApplicationConstants.getDomainName() + context),
-						Parameter.with("name", name), Parameter.with("caption",
-								"kg"), Parameter.with("description", "kgtest"));
+		FacebookType publishResponse = facebookClient.publish(
+				"me/feed",
+				FacebookType.class,
+				Parameter.with("message", userComment),
+				Parameter.with("picture", ApplicationConstants.getContext()
+						+ "img/banner.jpg"),
+				Parameter.with("link", ApplicationConstants.getDomainName()
+						+ context), Parameter.with("name", name),
+				Parameter.with("caption", "kg"),
+				Parameter.with("description", "kgtest"));
 	}
 
 	public String uploadImage() {
@@ -263,7 +283,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 		return "show";
 	}
 
-	public String uploadLogo(){
+	public String uploadLogo() {
 		UserContext userContext = getUserContext();
 		if (getUploadFile() != null) {
 			if (userContext.isLoggedIn()) {
@@ -316,7 +336,8 @@ public class PoiAction extends BaseAction implements SessionAware {
 								img.setFilename(fileName);
 								poiDAO.addImage(img);
 								poi.setImages(poiDAO.retrieveImagesByPoi(poi));
-								poiDAO.setPoiLogo(poi.getPoiId(), img.getFilename());
+								poiDAO.setPoiLogo(poi.getPoiId(),
+										img.getFilename());
 								poi.setProfileImage(img.getFilename());
 								userContext.setSelectedPoi(poi);
 							} else {
@@ -333,7 +354,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 		}
 		return "show";
 	}
-	
+
 	public String listAjax() {
 		logger.debug("postcomment invoked" + userComment);
 		TblCategory category = categoryDAO.findCategoryById(categoryId);
@@ -343,46 +364,49 @@ public class PoiAction extends BaseAction implements SessionAware {
 		}
 		return "poiListAjax";
 	}
-	
-	public String addWatch(){
-		String result="success";
-		TblWatchList watch=new TblWatchList();
-		String poiId=getServletRequest().getParameter(ApplicationConstants.POI_ID);
-		UserContext context=getUserContext();
-		if(poiId!=null && context.isLoggedIn()){
+
+	public String addWatch() {
+		String result = "success";
+		TblWatchList watch = new TblWatchList();
+		String poiId = getServletRequest().getParameter(
+				ApplicationConstants.POI_ID);
+		UserContext context = getUserContext();
+		if (poiId != null && context.isLoggedIn()) {
 			watch.setDateAdded(new Date());
 			watch.setItemId(Integer.parseInt(poiId));
 			watch.setTblSubscriber(context.getAuthenticatedUser());
 			watch.setItemType(ApplicationConstants.POI_TYPE);
-			if(poiDAO.addWatch(watch)){
-				context.putObject("poiWatchList", subscriberDAO.retrievePoiWatchListBysubscriberId(context.getAuthenticatedUser().getSubscriberId()));
+			if (poiDAO.addWatch(watch)) {
+				context.putObject("poiWatchList", subscriberDAO
+						.retrievePoiWatchListBysubscriberId(context
+								.getAuthenticatedUser().getSubscriberId()));
 			}
 		}
 		return result;
 	}
-	
-	public String showSubscriberPoi(){
-		String result="success";
-		String subscriberId=getServletRequest().getParameter(ApplicationConstants.SUBSCRIBER_ID);
-		UserContext context=getUserContext();
-		if(subscriberId!=null){
-			Integer intSubsId=Integer.parseInt(subscriberId);
-			poiList=poiDAO.retrievePoisBySubscriber(intSubsId);
+
+	public String showSubscriberPoi() {
+		String result = "success";
+		String subscriberId = getServletRequest().getParameter(
+				ApplicationConstants.SUBSCRIBER_ID);
+		UserContext context = getUserContext();
+		if (subscriberId != null) {
+			Integer intSubsId = Integer.parseInt(subscriberId);
+			poiList = poiDAO.retrievePoisBySubscriber(intSubsId);
 		}
 		return result;
 	}
 
-	public String retrieveDistrictList(){
-		jsonList=poiDAO.retrieveDistrictListByCityId(cityId);
+	public String retrieveDistrictList() {
+		jsonList = poiDAO.retrieveDistrictListByCityId(cityId);
 		return "success";
 	}
-	
-	public String retrieveSubdistrictList(){
-		jsonList=poiDAO.retrieveSubdistrictListByDistrictId(districtId);
+
+	public String retrieveSubdistrictList() {
+		jsonList = poiDAO.retrieveSubdistrictListByDistrictId(districtId);
 		return "success";
 	}
-	
-	
+
 	public String getUserComment() {
 		return userComment;
 	}
@@ -454,52 +478,61 @@ public class PoiAction extends BaseAction implements SessionAware {
 	public void setPoi(TblPoi poi) {
 		this.poi = poi;
 	}
-	
-	public List<TblCity> getCityList(){
+
+	public List<TblCity> getCityList() {
 		return cachedResources.getCityList();
 	}
-	
-	public List<TblDistrict> getDistrictList(){
+
+	public List<TblDistrict> getDistrictList() {
 		return cachedResources.getDistrictList();
 	}
-	
-	public List<TblSubdistrict> getSubdistrictList(){
+
+	public List<TblSubdistrict> getSubdistrictList() {
 		return cachedResources.getSubdistrictList();
 	}
-	
-	public List<TblCategory> getCategoryList(){
+
+	public List<TblCategory> getCategoryList() {
 		return cachedResources.getCategoryList();
 	}
+
 	public boolean isUpdateMode() {
 		return updateMode;
 	}
+
 	public void setUpdateMode(boolean updateMode) {
 		this.updateMode = updateMode;
 	}
+
 	public int getPoiId() {
 		return poiId;
 	}
+
 	public void setPoiId(int poiId) {
 		this.poiId = poiId;
 	}
+
 	public List getJsonList() {
 		return jsonList;
 	}
+
 	public void setJsonList(List jsonList) {
 		this.jsonList = jsonList;
 	}
+
 	public int getDistrictId() {
 		return districtId;
 	}
+
 	public void setDistrictId(int districtId) {
 		this.districtId = districtId;
 	}
+
 	public int getCityId() {
 		return cityId;
 	}
+
 	public void setCityId(int cityId) {
 		this.cityId = cityId;
 	}
-	
 
 }

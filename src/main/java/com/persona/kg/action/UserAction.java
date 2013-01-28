@@ -47,12 +47,15 @@ public class UserAction extends BaseAction implements SessionAware,
 	public final static int RATE_DISLIKE = 2;
 	private SubscriberDAO subscriberDAO;
 	private String mailAddressContainer;
+	@Autowired
+	private JavaMailSender mailSender;
+	@Autowired
+	private VelocityEngine velocityEngine;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
 	private List<TblMessage> messageList;
 	private List<TblSubscriber> friendList;
 	private int messageId;
 	private List jsonList;
-
 
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -222,9 +225,16 @@ public class UserAction extends BaseAction implements SessionAware,
         subscriberDAO.setRead(messageId);
 		return result;
 	}
+	
+	public String deleteMessages(){
+		String result="success";
+		System.out.print(messageId);
+        subscriberDAO.deleteMessages(messageId);
+		return result;
+	}
 
 	public String retrieveFriendList(){
-		String result=RESULT_SUCCESS;
+		String result="success";
 		UserContext userContext=getUserContext();
 		if(userContext.getAuthenticatedUser()!=null){
 			friendList=subscriberDAO.retrieveFriendsBySubscriberId(userContext.getAuthenticatedUser().getSubscriberId());
@@ -272,6 +282,22 @@ public class UserAction extends BaseAction implements SessionAware,
 
 	public void setFriendList(List<TblSubscriber> friendList) {
 		this.friendList = friendList;
+	}
+
+	public JavaMailSender getMailSender() {
+		return mailSender;
+	}
+
+	public void setMailSender(JavaMailSender mailSender) {
+		this.mailSender = mailSender;
+	}
+
+	public VelocityEngine getVelocityEngine() {
+		return velocityEngine;
+	}
+
+	public void setVelocityEngine(VelocityEngine velocityEngine) {
+		this.velocityEngine = velocityEngine;
 	}
 
 

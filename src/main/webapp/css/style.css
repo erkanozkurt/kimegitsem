@@ -144,16 +144,9 @@ a.menuInner:hover {
 }
 
 .blueHeading {
-	background: #33A6E9;
-	font-family: Verdana, Geneva, sans-serif;
-	font-size: 16px;
-	color: #ffffff;
-	font-style: italic;
+	font-family: Halvetica, Geneva, sans-serif;
+	font-size: 20px;
 	width: 100%;
-	border-width: 5px;
-	border-style: groove;
-	border-color: transparent;
-	border-radius: 8px;
 	padding-left: 5px;
 	padding-top: 5px;
 	position:relative;
@@ -175,16 +168,10 @@ a.menuInner:hover {
 }
 
 .redHeading2 {
-	background: #fe6801;
-	font-family: Verdana, Geneva, sans-serif;
-	font-size: 16px;
-	color: #ffffff;
+	font-family: Halvetica, Geneva, sans-serif;
+	font-size: 20px;
 	font-style: italic;
 	width: 100%;
-	border-width: 5px;
-	border-style: groove;
-	border-color: transparent;
-	border-radius: 8px;
 	padding-left: 5px;
 	padding-top: 5px;
 	position:relative;
