@@ -183,19 +183,19 @@ public class PoiAction extends BaseAction implements SessionAware {
 	
 	private String escapeSpace(String name) {
 		if (name != null) {
-			name.replaceAll("\\ ", "_");
-			name.replaceAll("İ", "I");
-			name.replaceAll("ı", "i");
-			name.replaceAll("Ş", "S");
-			name.replaceAll("ş", "s");
-			name.replaceAll("Ç", "C");
-			name.replaceAll("ç", "c");
-			name.replaceAll("Ü", "U");
-			name.replaceAll("ü", "u");
-			name.replaceAll("Ö", "O");
-			name.replaceAll("ö", "o");
-			name.replaceAll("Ğ", "G");
-			name.replaceAll("ğ", "g");
+			name=name.replaceAll("\\ ", "_");
+			name=name.replaceAll("İ", "I");
+			name=name.replaceAll("ı", "i");
+			name=name.replaceAll("Ş", "S");
+			name=name.replaceAll("ş", "s");
+			name=name.replaceAll("Ç", "C");
+			name=name.replaceAll("ç", "c");
+			name=name.replaceAll("Ü", "U");
+			name=name.replaceAll("ü", "u");
+			name=name.replaceAll("Ö", "O");
+			name=name.replaceAll("ö", "o");
+			name=name.replaceAll("Ğ", "G");
+			name=name.replaceAll("ğ", "g");
 		}
 		return name;
 	}

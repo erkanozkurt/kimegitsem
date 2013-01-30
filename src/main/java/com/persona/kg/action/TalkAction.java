@@ -378,10 +378,10 @@ public class TalkAction extends BaseAction implements SessionAware {
 						model.put("name", userContext.getAuthenticatedUser().getName());
 						model.put("surname", userContext.getAuthenticatedUser().getSurname());
 						model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
-						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.jpg");
+						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
 						model.put("category", selectedCategory.getCategoryName());
 						model.put("place",placeName);
-						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.jpg");
+						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
 						model.put("description", description);
 						sendMail(model, "requestSuggestion", email, getSubjectForRequest(selectedCategory.getCategoryName()));
 					}
@@ -409,8 +409,8 @@ private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeNa
 					model.put("name", userContext.getAuthenticatedUser().getName());
 					model.put("surname", userContext.getAuthenticatedUser().getSurname());
 					model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
-					model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.jpg");
-					model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.jpg");
+					model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
+					model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
 					model.put("category", selectedCategory.getCategoryName());
 					model.put("place",placeName);
 					model.put("description", description);
