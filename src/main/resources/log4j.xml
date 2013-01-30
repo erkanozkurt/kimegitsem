@@ -19,6 +19,13 @@
 		</layout>
 	</appender>
 
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-5p %c{1} - %m%n" />
+		</layout>
+	</appender>
+
 	<logger name="org.hibernate.type">
 		<level value="WARN" />
 	</logger>
@@ -30,18 +37,18 @@
 
 	<logger name="org.apache.struts2">
 		<level value="debug" />
-		<appender-ref ref="file"/>
+		<appender-ref ref="file" />
 	</logger>
 	<logger name="com.persona">
 		<level value="debug" />
-		<appender-ref ref="file"/>
+		<appender-ref ref="file" />
+		<appender-ref ref="console"/>
 	</logger>
 
 	<!-- for all other loggers log only warn and above log messages -->
 	<root>
 		<priority value="WARN" />
-		<appender-ref ref="file"/>
+		<appender-ref ref="file" />
 	</root>
 
 </log4j:configuration> 
-

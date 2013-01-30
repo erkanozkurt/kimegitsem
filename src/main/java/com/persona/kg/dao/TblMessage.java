@@ -19,7 +19,7 @@ public class TblMessage implements java.io.Serializable {
 	private Short senderType;
 	private Short recipientType;
 	private int mainMessageId=-1;
-	
+
 	public TblMessage() {
 	}
 

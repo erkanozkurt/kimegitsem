@@ -66,7 +66,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 			FacebookClient facebookClient = new DefaultFacebookClient(
 					accessToken);
 			User facebookUser = retrieveUserDetails(facebookClient);
-			
+
 			if (facebookUser != null) {
 				TblSubscriber subscriber = subscriberDao
 						.retrieveFacebookSubscriber(facebookUser.getId());
@@ -74,6 +74,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 					context.setLoggedIn(true);
 					context.setFacebookId(facebookUser.getId());
 					context.setAuthenticatedUser(subscriber);
+					context.putObject(ApplicationConstants.FRIENDLIST_KEY, getSubscriberDao().retrieveFriendsBySubscriberId(subscriber.getSubscriberId()));
 					putWatchList(context);
 				} else {
 					if (subscriber == null) {
@@ -85,7 +86,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 					subscriber.setJoinDate(new Date());
 					subscriber.setGender(facebookUser.getGender().substring(0,1));
 					subscriber.setActivated(1);
-					
+
 					if (subscriberDao.storeUser(subscriber)) {
 						subscriber=subscriberDao.retrieveFacebookSubscriber(facebookUser.getId());
 						context.setLoggedIn(true);
@@ -93,6 +94,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 						context.setAuthenticatedUser(subscriber);
 						//create friends
 						populateFacebookFriends(facebookClient, subscriber.getSubscriberId());
+						context.putObject(ApplicationConstants.FRIENDLIST_KEY, getSubscriberDao().retrieveFriendsBySubscriberId(subscriber.getSubscriberId()));
 						getServletRequest().setAttribute("newMember", "true");
 					}
 
@@ -101,7 +103,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 		}
 		return "success";
 	}
-	
+
 	public String logout() {
 		logger.debug("access_token: " + request.getParameter("access_token"));
 		UserContext context = (UserContext) request.getSession().getAttribute(
@@ -142,19 +144,19 @@ public class FacebookAction extends BaseAction implements SessionAware,
 			}
 		}
 	}
-	
-	
+
+
 	private void putWatchList(UserContext userContext){
 		TblSubscriber subscriber=userContext.getAuthenticatedUser();
 		userContext.putObject("poiWatchList", subscriberDao.retrievePoiWatchListBysubscriberId(subscriber.getSubscriberId()));
 		userContext.putObject("subscriberWatchList", subscriberDao.retrieveSubscriberWatchListBysubscriberId(subscriber.getSubscriberId()));
 		userContext.putObject("talkWatchList", subscriberDao.retrieveTalkWatchListBysubscriberId(subscriber.getSubscriberId()));
 	}
-	
+
 	private User retrieveUserDetails(FacebookClient client) {
 		TblSubscriber subscriber = new TblSubscriber();
 		User user = client.fetchObject("me", User.class);
-		
+
 		return user;
 	}
 

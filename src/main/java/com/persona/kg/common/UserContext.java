@@ -16,7 +16,8 @@ public class UserContext {
 	private String facebookId;	
 	private TblPoi selectedPoi;
 	private Map<String, Object> sessionObjects=new HashMap<String, Object>();
-	
+
+
 	public TblPoi getSelectedPoi() {
 		return selectedPoi;
 	}
@@ -35,7 +36,7 @@ public class UserContext {
 	public void setFacebookAccessToken(String facebookAccessToken) {
 		this.facebookAccessToken = facebookAccessToken;
 	}
-	
+
 
 	public TblSubscriber getAuthenticatedUser() {
 		return authenticatedUser;
@@ -56,13 +57,13 @@ public class UserContext {
 	public void setSelectedCategory(TblCategory selectedCategory) {
 		this.selectedCategory = selectedCategory;
 	}
-	
+
 	public void putObject(String key, Object value){
 		sessionObjects.put(key, value);
 	}
-	
+
 	public Object getObject(String key){
 		return sessionObjects.get(key);
 	}
-	
+
 }

@@ -47,7 +47,7 @@
 					</tr>
 					<tr>
 						<td align="center">	
-							<sj:submit value="Gönder" targets="askSuggestionResult"  src="/kimegitsem/img/asksuggestion.jpg" type="image" onBeforeTopics="askSuggestion"></sj:submit>
+							<sj:submit value="Gönder" targets="askSuggestionResult"  src="/img/asksuggestion.jpg" type="image" onBeforeTopics="askSuggestion"></sj:submit>
 						</td>
 					</tr>
 				</table>

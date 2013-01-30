@@ -42,6 +42,7 @@ import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.types.FacebookType;
 
+
 public class PoiAction extends BaseAction implements SessionAware {
 
 	private SubscriberDAO subscriberDAO;
@@ -69,7 +70,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 	public void setCachedResources(CachedResources cachedResources) {
 		this.cachedResources = cachedResources;
 	}
-
+	
 	public String show() {
 		logger.debug("show invoked");
 		return "show";
@@ -111,7 +112,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 		}
 		return "show";
 	}
-
+	
 	public String claim() {
 		logger.debug("claim invoked");
 		UserContext userContext = getUserContext();
@@ -140,13 +141,13 @@ public class PoiAction extends BaseAction implements SessionAware {
 		}
 		return "show";
 	}
-
+	
 	public String addPoi() {
 		logger.debug("claimForm invoked");
 		UserContext userContext = getUserContext();
 		if (userContext.isLoggedIn()) {
 			if (updateMode == false) {
-				poi.setUniqueIdentifier(escapeSpaces(poi.getPoiName()));
+				poi.setUniqueIdentifier(escapeSpace(poi.getPoiName()));
 				poi.setDateAdded(new Date());
 				if (poiDAO.addPoi(poi)) {
 					TblPoiCategory poiCategory = new TblPoiCategory();
@@ -179,8 +180,8 @@ public class PoiAction extends BaseAction implements SessionAware {
 		}
 		return "show";
 	}
-
-	private String escapeSpaces(String name) {
+	
+	private String escapeSpace(String name) {
 		if (name != null) {
 			name.replaceAll("\\ ", "_");
 			name.replaceAll("İ", "I");
@@ -364,7 +365,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 		}
 		return "poiListAjax";
 	}
-
+	
 	public String addWatch() {
 		String result = "success";
 		TblWatchList watch = new TblWatchList();

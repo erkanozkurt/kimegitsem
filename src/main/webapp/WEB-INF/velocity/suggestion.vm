@@ -7,6 +7,19 @@
 .FF {
 	font-family: Arial, Helvetica, sans-serif;
 }
+.addPoi {	
+
+	padding:9px 10px;
+	border:1px solid #016799; -webkit-border-radius: 5px; -moz-border-radius: 3px;border-radius: 3px;font-family:arial, helvetica, sans-serif; text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; font-size:16px; text-align: center; text-decoration: none; color: #FFFFFF; background-color: #016799;
+ 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #016799), color-stop(100%, #016799));
+ 	background-image: -webkit-linear-gradient(top, #016799, #016799);
+ 	background-image: -moz-linear-gradient(top, #016799, #016799);
+ 	background-image: -ms-linear-gradient(top, #016799, #016799);
+ 	background-image: -o-linear-gradient(top, #016799, #016799);
+ 	background-image: linear-gradient(top, #016799, #016799);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#016799, endColorstr=#016799);
+ 	vertical-align: middle;
+	position:relative;
+}
 </style>
 </head>
 
@@ -19,13 +32,12 @@
   <tr>
     <td><table width="100%" border="0">
       <tr>
-        <td valign="top">&nbsp;</td>
+        <td valign="top"><img src="$profile"/></td>
         <td><p><strong>$name $surname</strong>,  güvendiği bir arkadaşı olarak kimegitsem?com’da size <a href="$url">$poi</a></p>
           <p>tavsiye ediyor.</p>
-<p>Açıklama;</p>
-          <p>$description</p>
-          <p><strong>$name $surname</strong>’e  yardım edin, bir tavsiye yazın.</p>
-          <p>kimegitsem?com’da  tavsiye istemek ve tavsiye yazmak çok kolay! Siz de tamamen ücretsiz  kimegitsem?com’a üye olun, sosyal medyadaki arkadaş çevrenizin gücünü keşfedin.</p></td>
+          <p>kimegitsem?com’da  tavsiye istemek ve tavsiye yazmak çok kolay! Siz de tamamen ücretsiz  kimegitsem?com’a üye olun, sosyal medyadaki arkadaş çevrenizin gücünü keşfedin.Hala üye olmadıysanız</p>
+          <p><a href="web1.kimegitsem.com" class="addPoi">kimegitsem'i kullanmaya başlayın</a></p></td>
+          
       </tr>
     </table></td>
   </tr>

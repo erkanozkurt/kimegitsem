@@ -138,6 +138,9 @@ public class CategoryDAO extends BaseDao {
 		}
 		return results;
 	}
-	
+	public void addCategory(TblCategory category){
+		System.out.print("sss");
+		getHibernateTemplate().save(category);
+	}
 
 }

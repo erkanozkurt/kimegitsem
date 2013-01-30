@@ -16,15 +16,16 @@ import com.persona.kg.common.UserContext;
 public class FakeUserInterceptor extends AbstractInterceptor{
 	@Autowired
 	private SubscriberDAO subscriberDAO;
-	
+
 	@Override
 	public String intercept(ActionInvocation action) throws Exception {
 		if(ApplicationConstants.DEV_MODE){
 			UserContext context=(UserContext)action.getInvocationContext().getSession().get(ApplicationConstants.USER_CONTEXT_KEY);
 			if(context.isLoggedIn()==false){
 				context.setLoggedIn(true);
-				context.setAuthenticatedUser(subscriberDAO.retrieveUserById(122));
+				context.setAuthenticatedUser(subscriberDAO.retrieveUserById(1));
 				context.setFacebookAccessToken("asdasdsdasdsad");
+				context.putObject(ApplicationConstants.FRIENDLIST_KEY, subscriberDAO.retrieveFriendsBySubscriberId(context.getAuthenticatedUser().getSubscriberId()));
 			}
 		}
 		return action.invoke();
@@ -37,5 +38,5 @@ public class FakeUserInterceptor extends AbstractInterceptor{
 	public void setSubscriberDAO(SubscriberDAO subscriberDAO) {
 		this.subscriberDAO = subscriberDAO;
 	}
-	
+
 }

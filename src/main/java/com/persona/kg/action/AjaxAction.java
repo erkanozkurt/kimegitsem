@@ -23,6 +23,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
@@ -37,6 +38,8 @@ import com.persona.kg.PoiDAO;
 import com.persona.kg.SubscriberDAO;
 import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.common.CachedResources;
+import com.persona.kg.common.HibernateUtil;
+import com.persona.kg.common.JsonObject;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblLandingPagePoi;
@@ -62,10 +65,13 @@ public class AjaxAction extends BaseAction implements SessionAware,
 	private String where;
 	private String suggestion;
 	private String term;
-	
+	private List<TblPoi> poiList;
+ 	private JsonObject jsonResult;
+ 	private TblPoi poi;
 	@Autowired
 	private CachedResources cachedResources;
-	
+ 	
+
 	public CachedResources getCachedResources() {
 		return cachedResources;
 	}
@@ -84,7 +90,7 @@ public class AjaxAction extends BaseAction implements SessionAware,
 	public void setWhere(String where) {
 		this.where = where;
 	}
-	
+
 	public String getSuggestion() {
 		return suggestion;
 	}
@@ -92,7 +98,7 @@ public class AjaxAction extends BaseAction implements SessionAware,
 		this.suggestion = suggestion;
 	}
 
-	
+
 	public String getTerm() {
 		return term;
 	}
@@ -125,7 +131,7 @@ public class AjaxAction extends BaseAction implements SessionAware,
 			searchString=true;
 			term=term.toLowerCase();
 		}
-	
+
 		Iterator<String> placeIterator=placeList.keySet().iterator();
 		while(placeIterator.hasNext() && json.size()<MAX_RESULT){
 			String placeId=placeIterator.next();
@@ -150,11 +156,11 @@ public class AjaxAction extends BaseAction implements SessionAware,
 			searchString=true;
 			term=term.toLowerCase();
 		}
-	
+
 		Iterator<TblCategory> categoryIterator=categories.values().iterator();
 		while(categoryIterator.hasNext() && json.size()<MAX_RESULT){
 			TblCategory category=categoryIterator.next();
-			
+
 			if(searchString){
 				if(category.getCategoryName().toLowerCase().indexOf(term)>-1){
 					json.put(""+category.getCategoryId(),category.getCategoryName());
@@ -162,6 +168,20 @@ public class AjaxAction extends BaseAction implements SessionAware,
 			}else{
 				json.put(""+category.getCategoryId(),category.getCategoryName());
 			}
+		}
+		setNull();
+		return SUCCESS;
+	}
+
+	public String categoryListAll(){
+		logger.debug("received term: "+term);
+		json=new HashMap<String,String>();
+		Map<Integer, TblCategory> categories=cachedResources.getCategoryMap();
+
+		Iterator<TblCategory> categoryIterator=categories.values().iterator();
+		while(categoryIterator.hasNext()){
+			TblCategory category=categoryIterator.next();
+			json.put(""+category.getCategoryId(),category.getCategoryName());
 		}
 		setNull();
 		return SUCCESS;
@@ -179,22 +199,69 @@ public class AjaxAction extends BaseAction implements SessionAware,
 		this.poiDao = poiDao;
 	}
 	public String poiList(){
+		jsonResult=new JsonObject();
 		json=new HashMap<String,String>();
 		List<TblPoi> list=poiDao.searchPoiByName(suggestion,5);
 		if(list!=null && list.size()>0){
-			Iterator<TblPoi> iterator=list.iterator();
-			while(iterator.hasNext()){
-				TblPoi poi=iterator.next();
-				json.put(""+poi.getPoiId(),poi.getPoiName());
+			Iterator<TblPoi> poiIterator=list.iterator();
+			while(poiIterator.hasNext()){
+				TblPoi poi=poiIterator.next();
+				json.put(""+poi.getPoiId(), poi.getPoiName());
+			}
+			jsonResult.setMap(json);
+		}
+
+		return SUCCESS;
+	}
+
+	public String poiDetails(){
+		String result="success";
+		if(poi!=null && poi.getPoiId()>0){
+			poi=poiDao.findPoiById(poi.getPoiId());
+			if(poi!=null){
+				List<TblCategory> categoryList=poiDao.retrieveCategoriesByPoi(poi);
+				if(categoryList!=null && categoryList.size()>0){
+					poi.setCategory(categoryList.get(0).getCategoryId());
+					poi.setCategories(null);
+					poi.setAdministrator(null);
+					poi.setComments(null);
+					poi.setImages(null);
+					poi.setTblAttributeValues(null);
+					poi.setTblComments(null);
+					poi.setTblDistrict(null);
+					poi.setTblListItemses(null);
+					poi.setTblPoiCategories(null);
+					poi.setTblSubdistrict(null);
+				}
 			}
 		}
-		setNull();
-		return SUCCESS;
+		return result;
 	}
 	private void setNull(){
 		cachedResources=null;
 		poiDao=null;
 		categoryDao=null;
 	}
-	
+	public List<TblPoi> getPoiList() {
+		return poiList;
+	}
+	public void setPoiList(List<TblPoi> poiList) {
+		this.poiList = poiList;
+	}
+	public JsonObject getJsonResult() {
+		return jsonResult;
+	}
+	public void setJsonResult(JsonObject jsonResult) {
+		this.jsonResult = jsonResult;
+	}
+	public TblPoi getPoi() {
+		return poi;
+	}
+	public void setPoi(TblPoi poi) {
+		this.poi = poi;
+	}
+
+
+
+
 }

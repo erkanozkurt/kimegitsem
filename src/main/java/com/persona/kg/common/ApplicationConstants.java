@@ -29,15 +29,16 @@ public class ApplicationConstants {
 	public final static String TALK_ID_KEY="talkId";
 	public final static String POI_ID="poiId";
 	public final static String SUBSCRIBER_ID="subscriberId";
+	public final static String FRIENDLIST_KEY="friendList";
 	public final static short POI_TYPE=2;
 	public final static boolean DEV_MODE=false;
 	public final static short SUBSCRIBER_TYPE=1;
 	public final static short TALK_TYPE=3;
 	public static String context;
 	public static String domain;
-	
 
-	
+
+
 	public static String getFacebookApiKey(){
 		return getProperty("facebookApiKey");
 	}
@@ -49,7 +50,7 @@ public class ApplicationConstants {
 			domain=getProperty("domainName");
 		return domain;
 	}
-	
+
 	public static String getImageDir(){
 		return getProperty("imageDir");
 	}
@@ -65,9 +66,9 @@ public class ApplicationConstants {
 		}
 		return context;
 	}
-	
 
-	
+
+
 	public static String getProperty(String key){
 		Context initialContext=null;
 		try {
@@ -84,8 +85,8 @@ public class ApplicationConstants {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
+
 		return value;
 	}
-	
+
 }

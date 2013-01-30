@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +34,10 @@ import com.persona.kg.dao.TblConversation;
 import com.persona.kg.dao.TblConversationReply;
 import com.persona.kg.dao.TblImage;
 import com.persona.kg.dao.TblLandingPagePoi;
+import com.persona.kg.dao.TblMessage;
 import com.persona.kg.dao.TblPoi;
+import com.persona.kg.dao.TblPoiCategory;
+import com.persona.kg.dao.TblPoiCategoryId;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
 import com.persona.kg.model.Subscriber;
@@ -66,6 +72,11 @@ public class TalkAction extends BaseAction implements SessionAware {
 	private String suggestion;
 	private String suggestion_widget;
 	private String replyText;
+	private String suggestionVisibility;
+	private String emailList;
+	private String selectedFriends;
+	private String suggestedCategory;
+	private String suggestionPlace;
 
 	public String show() {
 		String result = "list";
@@ -75,7 +86,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 		if(getServletRequest().getAttribute("conversation")!=null){
 			result = "show";
 		}
-		
+
 		return result;
 	}
 
@@ -92,38 +103,65 @@ public class TalkAction extends BaseAction implements SessionAware {
 
 			if (userContext.isLoggedIn()) {
 				TblConversation conv = new TblConversation();
-				if (what != null && where != null) {
-					conv.setCategory(Integer.parseInt(what));
-					if (where.indexOf(",") > -1) {
-						conv.setDistrictId(Integer.parseInt(where.substring(0,
-								where.indexOf(","))));
-						conv.setCityId(Integer.parseInt(where.substring(where
-								.indexOf(",") + 1)));
-					} else {
-						conv.setCityId(Integer.parseInt(where));
+				TblCategory selectedCategory=categoryDAO.findCategoryById(suggestedCategory);
+				String placeName=getCachedResources().getMergedPlaceList().get(suggestionPlace);
+				if (suggestedCategory!=null && suggestionPlace != null) {
+					conv.setCategory(Integer.parseInt(suggestedCategory));
+					String[] placeArray=suggestionPlace.split("\\,");
+					if(placeArray.length==3){
+						conv.setDistrictId(Integer.parseInt(placeArray[1]));
+						conv.setCityId(Integer.parseInt(placeArray[2]));
+					}
+					if(placeArray.length==2){
+						conv.setDistrictId(Integer.parseInt(placeArray[0]));
+						conv.setCityId(Integer.parseInt(placeArray[1]));
+					}
+					if(placeArray.length==1){
+						conv.setCityId(Integer.parseInt(placeArray[0]));
 					}
 
-					String subject = " (" + what_widget + " / " + where_widget
-							+ ") kime gitsem?";
+					if (suggestionPlace.indexOf(",") > -1) {
+
+					} else {
+						conv.setCityId(Integer.parseInt(suggestionPlace));
+					}
+
+
 					conv.setBody(description);
 					conv.setDateStarted(new Date());
 					conv.setStatus((short) 1);
-					if (description != null && description.length() > 30) {
-						subject = description.substring(0, 29) + "... "
-								+ subject;
-					} else if (description != null) {
-						subject = description + subject;
-					}
-					conv.setSubject(subject);
-					conv.setTblSubscriber(subscriber);
+					conv.setSubject(getSubjectForRequest(selectedCategory.getCategoryName()));
+					conv.setTblSubscriber(userContext.getAuthenticatedUser());
+
 					if (talkDAO.storeConversation(conv)) {
-						getServletRequest().setAttribute("conversation", conv);
-						boolean facebookPublish = askFacebookSuggestion(
-								userContext.getFacebookAccessToken(),
-								conv.getConversationId());
-						if (facebookPublish == true) {
-							result = "success";
+
+
+
+						if("A".equals(getSuggestionVisibility())){
+							if(askFacebookSuggestion(userContext.getFacebookAccessToken(),conv.getConversationId())==false){
+								addActionMessage("Facebook paylaşımı sırasında hata oluştu!");
+							}else{
+								addActionMessage("Tavsiyen facebookta başarıyla paylaşıldı!");
+							}
+						}else{
+							String selectedPlaceName=getCachedResources().getMergedPlaceList().get(suggestionPlace);
+							if(StringUtils.isNotBlank(emailList)){
+								if(askMailSuggestion(selectedCategory,selectedPlaceName)==false){
+									addActionMessage("Mail paylaşımı sırasında hata oluştu!");
+								}else{
+									addActionMessage("Mail gönderimi başarılı!");
+								}
+
+							}
+							if(StringUtils.isNotBlank(selectedFriends)){
+								if(askPrivateSuggestion(selectedCategory,selectedPlaceName)==false){
+									addActionMessage("Seçilen arkadaşlara mesaj gönderimi sırasında hata oluştu!");
+								}else{
+									addActionMessage("Mesaj seçilen arkadaşlara başarıyla gönderildi!");
+								}
+							}
 						}
+						getServletRequest().setAttribute("conversation", conv);
 					}
 				}
 			}
@@ -156,30 +194,71 @@ public class TalkAction extends BaseAction implements SessionAware {
 	public String suggest() {
 		String result="success";
 		logger.debug("suggest invoked");
+		TblPoi poiToPublish=null;
 		try{
-			if(suggestion!=null){
+			if(StringUtils.isNotBlank(suggestion)){
 				logger.debug("suggestion "+suggestion);
 				Integer poiId=Integer.parseInt(suggestion);
-				UserContext userContext = getUserContext();
 				logger.debug("log1 "+suggestion);
-				FacebookClient facebookClient = new DefaultFacebookClient(userContext.getFacebookAccessToken());
 				TblPoi poi=poiDAO.findPoiById(poiId);
-				
-				String publishUrl= ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier();
-				logger.debug("after find poi "+publishUrl);
-				
-				FacebookType publishResponse = facebookClient
-						.publish(
-								"/me/"+ApplicationConstants.getProperty("facebookSuggest"),
-								Post.class,
-								Parameter.with("obje", publishUrl));
-				logger.debug("after publish "+ publishUrl);
-				if(publishResponse!=null && publishResponse.getId()!=null && publishResponse.getId().trim().length()>0){
-					result="success";
-				}else{
-					addActionError("error");
+				poiToPublish=poi;
+
+			}else{
+				if(StringUtils.isNotBlank(suggestion_widget)){
+					TblPoi newPoi=new TblPoi();
+					newPoi.setUniqueIdentifier(escapeSpaces(suggestion_widget));
+					newPoi.setPoiName(suggestion_widget);
+					newPoi.setCategory(Integer.parseInt(suggestedCategory));
+					newPoi.setDateAdded(new Date());
+					if(suggestionPlace!=null){
+						String[] placeList=suggestionPlace.split("\\,");
+						if(placeList.length==3){
+							newPoi.setSubdistrictId(Integer.parseInt(placeList[0]));
+							newPoi.setDistrictId(Integer.parseInt(placeList[1]));
+							newPoi.setCityId(Integer.parseInt(placeList[2]));
+						}
+						if(placeList.length==2){
+							newPoi.setDistrictId(Integer.parseInt(placeList[0]));
+							newPoi.setCityId(Integer.parseInt(placeList[1]));
+						}
+						if(placeList.length==1){
+							newPoi.setCityId(Integer.parseInt(placeList[0]));
+						}
+					}
+					poiDAO.addPoi(newPoi);
+					TblPoiCategory poiCategory=new TblPoiCategory();
+					TblPoiCategoryId poiCategoryId=new TblPoiCategoryId();
+					poiCategoryId.setPoiId(newPoi.getPoiId());
+					poiCategoryId.setCategoryId(Integer.parseInt(suggestedCategory));
+					poiCategory.setId(poiCategoryId);
+					poiDAO.addPoiCategory(poiCategory);
+					poiToPublish=newPoi;
 				}
 			}
+			if("A".equals(getSuggestionVisibility())){
+				if(shareFacebookSuggestion(poiToPublish)==false){
+					addActionMessage("Facebook paylaşımı sırasında hata oluştu!");
+				}else{
+					addActionMessage("Tavsiyen facebookta başarıyla paylaşıldı!");
+				}
+			}else{
+				if(StringUtils.isNotBlank(emailList)){
+					if(shareMailSuggestion(poiToPublish)==false){
+						addActionMessage("Mail paylaşımı sırasında hata oluştu!");
+					}else{
+						addActionMessage("Mail gönderimi başarılı!");
+					}
+
+				}
+				if(StringUtils.isNotBlank(selectedFriends)){
+					if(sharePrivateSuggestion(poiToPublish)==false){
+						addActionMessage("Seçilen arkadaşlara mesaj gönderimi sırasında hata oluştu!");
+					}else{
+						addActionMessage("Mesaj seçilen arkadaşlara başarıyla gönderildi!");
+					}
+				}
+			}
+
 		}catch(Exception e){
 			logger.warn("Facebook publish exception",e);
 			addActionError("error");
@@ -188,6 +267,161 @@ public class TalkAction extends BaseAction implements SessionAware {
 		return result;
 	}
 
+
+	private boolean shareFacebookSuggestion(TblPoi poi){
+		boolean result=true;
+		UserContext userContext = getUserContext();
+		String publishUrl= ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier();
+		logger.debug("after find poi "+publishUrl);
+		FacebookClient facebookClient = new DefaultFacebookClient(userContext.getFacebookAccessToken());
+		FacebookType publishResponse = facebookClient
+				.publish(
+						"/me/"+ApplicationConstants.getProperty("facebookSuggest"),
+						Post.class,
+						Parameter.with("obje", publishUrl));
+		logger.debug("after publish "+ publishUrl);
+		if(publishResponse!=null && publishResponse.getId()!=null && publishResponse.getId().trim().length()>0){
+			result=true;
+		}else{
+			result=false;
+		}
+		return result;
+	}
+
+	private boolean sharePrivateSuggestion(TblPoi poi){
+		boolean result=true;
+		UserContext userContext = getUserContext();
+		if(getSelectedFriends()!=null){
+			String[] list=getSelectedFriends().split("\\,");
+			if(list!=null && list.length>0){
+				for(String friend:list){
+					TblMessage message=new TblMessage();
+					TblSubscriber recipient=new TblSubscriber();
+					recipient.setSubscriberId(Integer.parseInt(friend.trim()));
+					message.setTblSubscriberByRecipientId(recipient);
+					message.setTblSubscriberBySenderId(userContext.getAuthenticatedUser());
+					List<TblCategory> categories=poiDAO.retrieveCategoriesByPoi(poi);
+					message.setSubject(getSubjectForSuggestion(poi.getPoiName(), categories.get(0).getCategoryName()));					
+					Map model = new HashMap();
+					model.put("name", userContext.getAuthenticatedUser().getName());
+					model.put("surname", userContext.getAuthenticatedUser().getSurname());
+					model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+					model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
+					model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
+					model.put("description", description);
+					model.put("poi", poi.getPoiName());
+					model.put("url", ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier());
+					message.setMessage(getMergedTemplate("suggestion",model));
+					message.setSendDate(new Date());
+					subscriberDAO.sendMessage(message);
+				}
+			}
+		}
+		return result;
+	}
+
+	private String getSubjectForSuggestion(String poiName, String category){
+		StringBuilder sb=new StringBuilder();
+		UserContext context=getUserContext();
+		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
+		sb.append(" kimegitsem?com'da ");
+		sb.append(poiName);
+		sb.append("("+category+") tavsiye ediyor.");
+		return sb.toString();
+	}
+	private String getSubjectForRequest( String category){
+		StringBuilder sb=new StringBuilder();
+		UserContext context=getUserContext();
+		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
+		sb.append(" kimegitsem?com'da ");
+		sb.append(category+" tavsiyesi istiyor.");
+		return sb.toString();
+	}
+
+	private boolean shareMailSuggestion(TblPoi poi){
+		boolean result=true;
+		UserContext userContext = getUserContext();
+		if(emailList!=null){
+			String[] list=emailList.split("\\,");
+			if(list!=null && list.length>0){
+				for(String email:list){
+					if(EmailValidator.getInstance().isValid(email)==true){
+						Map model = new HashMap();
+						model.put("name", userContext.getAuthenticatedUser().getName());
+						model.put("surname", userContext.getAuthenticatedUser().getSurname());
+						model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
+						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
+						model.put("description", description);
+						model.put("poi", poi.getPoiName());
+						model.put("url", ApplicationConstants.getContext()+"in/"+poi.getUniqueIdentifier());
+						List<TblCategory> categories=poiDAO.retrieveCategoriesByPoi(poi);
+						sendMail(model, "suggestion", email, getSubjectForSuggestion(poi.getPoiName(), categories.get(0).getCategoryName()));
+					}
+				}
+			}
+		}
+
+		return result;
+	}	
+
+
+	private boolean askMailSuggestion(TblCategory selectedCategory, String placeName){
+		boolean result=true;
+		UserContext userContext = getUserContext();
+		if(emailList!=null){
+			String[] list=emailList.split("\\,");
+			if(list!=null && list.length>0){
+				for(String email:list){
+					if(EmailValidator.getInstance().isValid(email)==true){
+						Map model = new HashMap();
+						model.put("name", userContext.getAuthenticatedUser().getName());
+						model.put("surname", userContext.getAuthenticatedUser().getSurname());
+						model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.jpg");
+						model.put("category", selectedCategory.getCategoryName());
+						model.put("place",placeName);
+						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.jpg");
+						model.put("description", description);
+						sendMail(model, "requestSuggestion", email, getSubjectForRequest(selectedCategory.getCategoryName()));
+					}
+				}
+			}
+		}
+
+		return result;
+	}	
+
+private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeName){
+		boolean result=true;
+		UserContext userContext = getUserContext();
+		if(getSelectedFriends()!=null){
+			String[] list=getSelectedFriends().split("\\,");
+			if(list!=null && list.length>0){
+				for(String friend:list){
+					TblMessage message=new TblMessage();
+					TblSubscriber recipient=new TblSubscriber();
+					recipient.setSubscriberId(Integer.parseInt(friend.trim()));
+					message.setTblSubscriberByRecipientId(recipient);
+					message.setTblSubscriberBySenderId(userContext.getAuthenticatedUser());
+					message.setSubject(getSubjectForRequest(selectedCategory.getCategoryName()));					
+					Map model = new HashMap();
+					model.put("name", userContext.getAuthenticatedUser().getName());
+					model.put("surname", userContext.getAuthenticatedUser().getSurname());
+					model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+					model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.jpg");
+					model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.jpg");
+					model.put("category", selectedCategory.getCategoryName());
+					model.put("place",placeName);
+					model.put("description", description);
+					message.setMessage(getMergedTemplate("requestSuggestion",model));
+					message.setSendDate(new Date());
+					subscriberDAO.sendMessage(message);
+				}
+			}
+		}
+		return result;
+	}
 	public String addWatch() {
 		String result = "success";
 		TblWatchList watch = new TblWatchList();
@@ -203,7 +437,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 		}
 		return result;
 	}
-	
+
 	public String reply(){
 		String result="show";
 		TblConversationReply reply=new TblConversationReply();
@@ -364,6 +598,54 @@ public class TalkAction extends BaseAction implements SessionAware {
 
 	public void setReplyText(String replyText) {
 		this.replyText = replyText;
+	}
+
+	public String getUserComment() {
+		return userComment;
+	}
+
+	public void setUserComment(String userComment) {
+		this.userComment = userComment;
+	}
+
+	public String getSuggestionVisibility() {
+		return suggestionVisibility;
+	}
+
+	public void setSuggestionVisibility(String suggestionVisibility) {
+		this.suggestionVisibility = suggestionVisibility;
+	}
+
+	public String getEmailList() {
+		return emailList;
+	}
+
+	public void setEmailList(String emailList) {
+		this.emailList = emailList;
+	}
+
+	public String getSelectedFriends() {
+		return selectedFriends;
+	}
+
+	public void setSelectedFriends(String selectedFriends) {
+		this.selectedFriends = selectedFriends;
+	}
+
+	public String getSuggestedCategory() {
+		return suggestedCategory;
+	}
+
+	public void setSuggestedCategory(String suggestedCategory) {
+		this.suggestedCategory = suggestedCategory;
+	}
+
+	public String getSuggestionPlace() {
+		return suggestionPlace;
+	}
+
+	public void setSuggestionPlace(String suggestionPlace) {
+		this.suggestionPlace = suggestionPlace;
 	}
 
 }

@@ -1,44 +1,50 @@
-?<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www7.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+.FF {
+	font-family: Arial, Helvetica, sans-serif;
+}
+.addPoi {	
 
+	padding:9px 10px;
+	border:1px solid #016799; -webkit-border-radius: 5px; -moz-border-radius: 3px;border-radius: 3px;font-family:arial, helvetica, sans-serif; text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; font-size:16px; text-align: center; text-decoration: none; color: #FFFFFF; background-color: #016799;
+ 	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #016799), color-stop(100%, #016799));
+ 	background-image: -webkit-linear-gradient(top, #016799, #016799);
+ 	background-image: -moz-linear-gradient(top, #016799, #016799);
+ 	background-image: -ms-linear-gradient(top, #016799, #016799);
+ 	background-image: -o-linear-gradient(top, #016799, #016799);
+ 	background-image: linear-gradient(top, #016799, #016799);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#016799, endColorstr=#016799);
+ 	vertical-align: middle;
+	position:relative;
+}
+</style>
 </head>
 
 <body>
-<table border="0">
-<tr>
-  <td><a href="$context"><img src="$logo" width="350" height="101" border="0" /></a></td></tr>
-<tr>
-<td>
-<pre><font face="Arial, Helvetica, sans-serif">
-<img src="$profile" />
-$name $surname seni kimegitsem?com sisteminde tavsiyelerine güvendigi kisilerden biri 
-olarak seçti ve arkadas olarak eklemek istiyor. 
-
-<a href="$context"><img src="$connect" border="0" /></a>
-
-kimegitsem, çagimizda en degerli ve az bulunur unsur olan güvenilebilecek hizmetveren 
-arayisinda en güvenilir bilgi kaynagi olan arkadaslarin tavsiyelerini temel alan konusunda 
-dünyada ilk ve tek sosyal medya merkezli yenilikçi internet yazilimidir.
-
-Doktordan, avukata, mali müsavirden, ev dekorasyon firmasina hizmet sektöründe akliniza 
-gelebilecek hemen her konuda arkadaslarinizdan tavsiye isteyebileceginiz, deneyimlerinizle 
-ilgili begendiginiz hizmetverenler için tavsiye yazabileceginiz ve çevrenizde yerel 
-hizmetverenlerle ilgili kim kimi tavsiye etmis takip edebileceginiz essiz bir deneyim sunan 
-kimegitsem'i ücretsiz kullanmak için hemen tikla! </font>
-</pre>
-</td>
-</tr>
-<tr>
-<td><pre><font face="Arial, Helvetica, sans-serif"><font color="#0033CC">Sosyal</font>"lesen,"<font color="#0033CC">begen</font>"ilen,
-hakettigi ilgiyi gören <font color="#fe6801">yerel hizmetverenler</font>…
-Günlük ihtiyaçlarinda,  <font color="#fe6801">güvenilir</font> hizmetveren arayisinda  <font color="#fe6801">arkadas aginin</font> destegini yaninda
-hisseden mutlu tüketiciler…
-</font>
-</pre>
-</td>
-</tr>
+<p>&nbsp;</p>
+<table border="0" style="width:654px; font-family: Arial, Helvetica, sans-serif; font-size: 16px;">
+  <tr>
+    <td><img src="$logo" width="293" height="75" /></td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0">
+      <tr>
+        <td valign="top"><img src="$profile"/></td>
+        <td><p><strong>$name $surname</strong>,  seni kimegitsem?com'da tavsiyelerine güvendiği arkadaş listesine eklemek istiyor.</p>
+        
+          <p><a href="web1.kimegitsem.com" class="addPoi">Arkadaşlık İsteğini Kabul Et</a></p>
+          <p>kimegitsem?com’da  tavsiye istemek ve tavsiye yazmak çok kolay! Siz de tamamen ücretsiz  kimegitsem?com’a üye olun, sosyal medyadaki arkadaş çevrenizin gücünü keşfedin.</p></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr><td>
+  	<table border="0" cellpadding="0" cellspacing="0" background="$footer" style="width:654px; height:75px; font-size: 11px; color: #FFF;"> 
+    <tr><td><p class="FF">kimegitsem?com,  en güvenilir referans kaynağı olan arkadaş tavsiyelerini &lsquo;sosyal&rsquo;leştiren  internet hizmetidir. Yeme  içmeden, kişisel bakıma, doktordan, eve dair her şeye yerel çevrenizde  güvenebileceğiniz hizmet verenleri kimegitsem?com&rsquo;da sosyal ağlardan  yararlanarak arkadaşlarınızın geçmiş tavsiyelerinden yola çıkarak bulun.  Cevabını alamadığınız soruları tüm arkadaş çevrenize anında danışın, arkadaş  tavsiyelerini hiç olmadığı kadar hızlı toplayın</p>
+</td><td style="width:100px">&nbsp;</td></tr></table>
+     </td></tr>
 </table>
 </body>
 </html>

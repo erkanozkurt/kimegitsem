@@ -26,6 +26,8 @@ import com.opensymphony.xwork2.ActionContext;
 import com.persona.kg.LandingPageDAO;
 import com.persona.kg.dao.TblLandingPagePoi;
 import com.persona.kg.model.Subscriber;
+import com.persona.kg.CategoryDAO;
+import com.persona.kg.dao.TblCategory;
 import com.sun.org.apache.xpath.internal.operations.Gte;
 
 public class MainPageAction extends BaseAction implements SessionAware,
@@ -37,12 +39,21 @@ public class MainPageAction extends BaseAction implements SessionAware,
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private static final String FACEBOOK_USER_CLIENT = "facebook.user.client";
+	private CategoryDAO categoryDao;
+	private TblCategory category;
 
 	public static FacebookXmlRestClient getUserClient(HttpSession session) {
         return (FacebookXmlRestClient) session
                         .getAttribute(FACEBOOK_USER_CLIENT);
 }
-
+	public String addCategory(){
+		System.out.print("aaa");
+		System.out.print(category.getCategoryName());
+		System.out.print("sss");
+		String result="success";
+		categoryDao.addCategory(category);
+		return result;
+	}
 	public String execute() {
 		logger.debug("execute");
        		return "show";

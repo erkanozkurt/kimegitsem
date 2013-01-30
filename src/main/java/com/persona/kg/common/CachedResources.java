@@ -44,7 +44,7 @@ public class CachedResources {
 	public void setPoiDao(PoiDAO poiDao) {
 		this.poiDao = poiDao;
 	}
-	
+
 	public Map<Integer,TblCategory> getCategoryMap(){
 		Map<Integer,TblCategory> categories=null;
 		if(getCache().get(ApplicationConstants.CATEGORY_CACHE_KEY)!=null){
@@ -55,7 +55,7 @@ public class CachedResources {
 		}
 		return categories;
 	}
-	
+
 	/*public List<TblCategory> getCategoryList(){
 		List<TblCategory> categories=null;
 		if(getCache().get(ApplicationConstants.CATEGORY_LIST_CACHE_KEY)!=null){
@@ -66,7 +66,7 @@ public class CachedResources {
 		}
 		return categories;
 	}*/
-	
+
 	public List<TblCategory> getCategoryList(){
 		System.out.println("in getOrderedCategoryList3");
 		List<TblCategory> categories=categoryDao.getAvailableCategories();
@@ -77,11 +77,11 @@ public class CachedResources {
 				if(categoryMap.containsKey(cat.getParentId())){
 					TblCategory parentCat=categoryMap.get(cat.getParentId());
 					parentCat.addChild(cat);
-				
+
 				}
 				categoryMap.put(cat.getCategoryId(), cat);
 		}
-		
+
 		iterator=categoryMap.values().iterator();
 		categories=new ArrayList<TblCategory>();
 		while(iterator.hasNext()){
@@ -92,7 +92,7 @@ public class CachedResources {
 		}
 		return categories;
 	}
-	
+
 	private void addCategory(TblCategory category, List<TblCategory> list, int depth){
 		category.setCategoryName(addSpace(depth)+category.getCategoryName());
 		list.add(category);
@@ -103,7 +103,7 @@ public class CachedResources {
 			}		
 		}
 	}
-	
+
 	private String addSpace(int depth){
 		String temp=new String();
 		for(int i=0;i<depth;i++){
@@ -111,10 +111,10 @@ public class CachedResources {
 		}
 		return temp;
 	}
-	
-	
-	
-	
+
+
+
+
 	public Map<String,String> getMergedPlaceList(){
 		Map<String,String> mergedPlaceList=null;
 		if(getCache().get(ApplicationConstants.MERGED_PLACE_CACHE_KEY)!=null){
@@ -123,24 +123,35 @@ public class CachedResources {
 			mergedPlaceList=new LinkedHashMap<String, String>();
 			List<TblCity> cityList=poiDao.retrieveCityList();
 			List<TblDistrict> districtList=poiDao.retrieveDistrictList();
+			List<TblSubdistrict> subdistrictList=poiDao.retrieveSubdistrictList();
 			Iterator<TblCity> cityIterator=cityList.iterator();
 			while(cityIterator.hasNext()){
 				TblCity city=cityIterator.next();
 				mergedPlaceList.put(""+city.getCityId(),city.getCityName());
 			}
-			
+
 			Iterator<TblDistrict> districtIterator=districtList.iterator();
 			while(districtIterator.hasNext()){
 				TblDistrict district=districtIterator.next();
-				String city=mergedPlaceList.get(""+district.getTblCity().getCityId());
-				mergedPlaceList.put(district.getDistrictId()+","+district.getTblCity().getCityId(), district.getDistrictName()+", "+city);
+				String city=mergedPlaceList.get(""+district.getCityId());
+				mergedPlaceList.put(district.getDistrictId()+","+district.getCityId(), district.getDistrictName()+", "+city);
 			}
-			
+
+			Iterator<TblSubdistrict> subdistrictIterator=subdistrictList.iterator();
+			while(subdistrictIterator.hasNext()){
+				TblSubdistrict subdistrict=subdistrictIterator.next();
+				TblDistrict parentDistrict=findDistrict(subdistrict.getDistrictId());
+				if(parentDistrict!=null){
+					String city=mergedPlaceList.get(""+parentDistrict.getCityId());
+					mergedPlaceList.put(subdistrict.getSubdistrictId()+","+subdistrict.getDistrictId()+","+parentDistrict.getCityId(), subdistrict.getSubdistrictName()+", "+parentDistrict.getDistrictName()+", "+city);
+				}
+			}
+
 			getCache().put(ApplicationConstants.MERGED_PLACE_CACHE_KEY, mergedPlaceList);
 		}
 		return mergedPlaceList;
 	}
-	
+
 	public List<TblCity> getCityList(){
 		List<TblCity> mergedPlaceList=null;
 		if(getCache().get(ApplicationConstants.CITY_LIST_CACHE_KEY)!=null){
@@ -151,7 +162,7 @@ public class CachedResources {
 		}
 		return mergedPlaceList;
 	}
-	
+
 	public List<TblDistrict> getDistrictList(){
 		List<TblDistrict> mergedPlaceList=null;
 		if(getCache().get(ApplicationConstants.DISTRICT_LIST_CACHE_KEY)!=null){
@@ -162,7 +173,7 @@ public class CachedResources {
 		}
 		return mergedPlaceList;
 	}
-	
+
 	public List<TblSubdistrict> getSubdistrictList(){
 		List<TblSubdistrict> mergedPlaceList=null;
 		if(getCache().get(ApplicationConstants.SUBDISTRICT_LIST_CACHE_KEY)!=null){
@@ -173,7 +184,7 @@ public class CachedResources {
 		}
 		return mergedPlaceList;
 	}
-	
+
 	public TblCategory getCategoryByCategoryName(String categoryName){
 		TblCategory category=null;
 		Map<Integer, TblCategory> categories=getCategoryMap();
@@ -187,7 +198,7 @@ public class CachedResources {
 		}
 		return category;
 	}
-	
+
 	public String getPlaceIdByPlaceName(String placeName){
 		String placeId=null;
 		Map<String, String> places=getMergedPlaceList();
@@ -202,7 +213,7 @@ public class CachedResources {
 		}
 		return placeId;
 	}
-	
+
 	public String getCategoryInStatementByCategoryName(String categoryName){
 		StringBuilder builder=new StringBuilder();
 		TblCategory category=null;
@@ -218,12 +229,11 @@ public class CachedResources {
 		if(category!=null){
 			builder.append(getSubcategoryClause(category));
 		}
-		
+
 		return builder.toString();
 	}
-	
-	public String getSubcategoryClause(TblCategory category){
-		getCategoryMap();
+
+	private String getSubcategoryClause(TblCategory category){
 		StringBuilder builder=new StringBuilder();
 		builder.append(category.getCategoryId());
 		if(category.getChilds().size()>0){
@@ -234,7 +244,18 @@ public class CachedResources {
 		}
 		return builder.toString();
 	}
-	
+
+	private TblDistrict findDistrict(int districtId){
+		List<TblDistrict> districtList=getDistrictList();
+		Iterator<TblDistrict> iterator=districtList.iterator();
+		while(iterator.hasNext()){
+			TblDistrict district=iterator.next();
+			if(districtId==district.getDistrictId()){
+				return district;
+			}
+		}
+		return null;
+	}
 	private Cache getCache(){
 		return cacheManager.getCache("default");
 	}

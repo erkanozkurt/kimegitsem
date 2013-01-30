@@ -13,7 +13,7 @@
 			<result-type name="tiles"
 				class="org.apache.struts2.views.tiles.TilesResult" />
 		</result-types>
-		
+
 
 		<interceptors>
 			<interceptor name="contextInterceptor" class="contextInterceptor" />
@@ -89,7 +89,7 @@
 			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">master</result>
 		</action>
-		
+
 	</package>
 
 	<package name="subscriber" extends="default" namespace="/subs">
@@ -101,7 +101,7 @@
 			<interceptor-ref name="defInterceptors"></interceptor-ref>
 			<result type="tiles" name="success">profile</result>
 		</action>
-		
+
 		<action name="friends" class="subscriberAction" method="friends">
 			<interceptor-ref name="defInterceptors"></interceptor-ref>
 			<result name="success">/jsp/subs/friends.jsp</result>
@@ -134,7 +134,7 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/subs/messages.jsp</result>
 		</action>
-		
+
 		<action name="showInbox" class="subscriberAction" method="showInbox">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/subs/messageList.jsp</result>
@@ -144,22 +144,15 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/subs/messageList.jsp</result>
 		</action>
-		
+
 		<action name="setRead" class="subscriberAction" method="setRead">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/subs/messageContent.jsp</result>
 		</action>
 		
-		<action name="delete" class="subscriberAction" method="deleteMessages">
-			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result name="success">/jsp/subs/messageList.jsp</result>
+		<action name="addCategory" class="mainPageAction" method="addCategory">
+			<result name="success">master</result>
 		</action>
-		
-		<action name="sendMessage" class="subscriberAction" method="sendMessage">
-			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result name="success">/jsp/subs/messageContent.jsp</result>
-		</action>
-		
 	</package>
 
 	<package name="facebook" extends="default" namespace="/fb">
@@ -221,12 +214,12 @@
 			<interceptor-ref name="poiInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">claimForm</result>
 		</action>
-		
+
 		<action name="addPoi" class="poiAction" method="addPoi">
 			<interceptor-ref name="poiInterceptors"></interceptor-ref>
 			<result type="tiles" name="show">claimForm</result>
 		</action>
-		
+
 		<action name="pois" class="poiAction" method="showSubscriberPoi">
 			<interceptor-ref name="poiInterceptors"></interceptor-ref>
 			<result name="success">/jsp/in/subscriberPoiList.jsp</result>
@@ -247,7 +240,12 @@
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="success">/jsp/ajax/ajax.jsp</result>
 		</action>
-	
+		<action name="showSuggestPopup">
+			<result name="success">/jsp/common/suggestPopup.jsp</result>
+		</action>
+		<action name="requestSuggestionPopup">
+			<result name="success">/jsp/common/requestSuggestion.jsp</result>
+		</action>
 	</package>
 
 
@@ -262,24 +260,24 @@
 			<result type="tiles" name="list">talkMain</result>
 			<result type="tiles" name="show">talkMain</result>
 		</action>
-		
+
 		<action name="filter" class="talkAction" method="filter">
 			<interceptor-ref name="talkInterceptors"></interceptor-ref>
 			<result type="tiles" name="list">talkMain</result>
 			<result type="tiles" name="show">talkMain</result>
 		</action>
-		
+
 		<action name="ask" class="talkAction" method="ask">
 			<interceptor-ref name="talkInterceptors"></interceptor-ref>
-			<result type="tiles" name="success">talkShow</result>
+			<result name="success">/jsp/ajax/ajaxResult.jsp</result>
 		</action>
-		
+
 		<action name="show" class="talkAction" method="show">
 			<interceptor-ref name="talkInterceptorsUnsecure"></interceptor-ref>
 			<result type="tiles" name="list">talkMain</result>
 			<result type="tiles" name="show">talkShow</result>
 		</action>
-		
+
 		<action name="reply" class="talkAction" method="reply">
 			<interceptor-ref name="talkInterceptorsUnsecure"></interceptor-ref>
 			<result type="tiles" name="show">talkShow</result>
@@ -290,7 +288,7 @@
 		</action>
 			<action name="suggest" class="talkAction" method="suggest">
 			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result name="success">/jsp/ajax/ajax.jsp</result>
+			<result name="success">/jsp/ajax/ajaxResult.jsp</result>
 		</action>
 	</package>
 
@@ -321,25 +319,36 @@
 		<action name="poiList" class="ajaxAction" method="poiList">
 			<interceptor-ref name="defInterceptors"></interceptor-ref>
 			<result type="json" name="success">
-				<param name="excludeNullProperties">true</param>
+				<param name="root">jsonResult</param>
 			</result>
 		</action>
-		
+
 			<action name="retrieveDistrictList" class="poiAction" method="retrieveDistrictList">
 			<result type="json" name="success">
 				<param name="excludeNullProperties">true</param>
 				 <param name="root">jsonList</param>
 			</result>
 		</action>
-		
+
 		<action name="retrieveSubdistrictList" class="poiAction" method="retrieveSubdistrictList">
 			<result type="json" name="success">
 				<param name="excludeNullProperties">true</param>
 				 <param name="root">jsonList</param>
 			</result>
 		</action>
-		
-		
+		<action name="poiDetails" class="ajaxAction" method="poiDetails">
+			<result type="json" name="success">
+				<param name="excludeNullProperties">true</param>
+				 <param name="root">poi</param>
+			</result>
+		</action>
+		<action name="categoryAll" class="ajaxAction" method="categoryListAll">
+			<result type="json" name="success">
+				<param name="excludeNullProperties">true</param>
+			</result>
+		</action>
+
+
 	</package>
 
 	<!-- Configuration for the default package. -->

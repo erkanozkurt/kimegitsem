@@ -44,6 +44,8 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return result;
 	}
+
+	
 	public TblSubscriber retrieveUserById(final Integer subscriberId){
 		TblSubscriber result=null;
 		try {
@@ -173,7 +175,53 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return result;
 	}
+	/* erkan abi ilave
+	public List<TblMessage> showMessage(final Integer messageId){
+		List<TblMessage> results=new ArrayList<TblMessage>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblMessage mess where messageId=?");
+						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
+ 							query.setInteger(0, messageId);
+							return query.list();
+						}
+					});
+			results = (List<TblMessage>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
 	
+	
+	
+	public List<TblMessage> retrieveMessageBySubscriber(final Integer messageId){
+		List<TblMessage> results=new ArrayList<TblMessage>();
+		Integer parentId=0;
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblMessage mess where mess.messageId=?");
+						    //select * from tbl_message where recipient_id in (select tbl_message.recipient_id from tbl_subscriber where subscriber_id='123')
+ 							query.setInteger(0, messageId);
+							return query.list();
+						}
+					});
+			results = (List<TblMessage>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	*/
 	public boolean deleteMessages(final int messageId){
 		System.out.println(messageId);
 		System.out.println("dao deleteMessages");
@@ -197,12 +245,6 @@ public class SubscriberDAO extends BaseDao {
 		return result;	
 	}
 	
-	public void sendMessage(TblMessage message){
-		//System.out.println(messageId);
-		System.out.println("dao sendMessages");
-		getHibernateTemplate().save(message);	
-	}
-	
 	public boolean storeUser(final TblSubscriber subscriber){
 		boolean result=false;
 		try {
@@ -213,6 +255,18 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return result;
 		
+	}
+	
+	public boolean sendMessage(final TblMessage message){
+		boolean result=false;
+		try {
+			 getHibernateTemplate().saveOrUpdate(message);
+			 result=true;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return result;
+
 	}
 	
 	public boolean createFriend(final int initiatorId, final int friendId, final short status){
@@ -253,6 +307,7 @@ public class SubscriberDAO extends BaseDao {
 		return results;
 		
 	}
+
 	
 	public Map<Integer, Object[]> retrievePoiWatchListBysubscriberId(final Integer subscriberId){
 		 Map<Integer, Object[]> results=new HashMap<Integer,Object[]>();
@@ -310,16 +365,16 @@ public class SubscriberDAO extends BaseDao {
 							return query.list();
 						}
 					});
-		
+
 			List<Object[]> queryResult=(List<Object[]>) obj;
 			results=getMapFromList(queryResult);
 		} catch (Exception exp) {
 			logger.error("Database Exception", exp);
 		}
 		return results;
-		
+
 	}
-	
+
 	private Map<Integer, Object[]> getMapFromList(List<Object[]> sourceList){
 		Map<Integer, Object[]> resultMap=new HashMap<Integer, Object[]>();
 		if(sourceList!=null && sourceList.size()>0){
@@ -331,7 +386,7 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return resultMap;
 	}
-	
+
 	public boolean storeRate(final TblRate rate){
 		boolean result=false;
 		try {
@@ -342,7 +397,7 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return result;	
 	}
-	
+
 	public boolean checkRate(final int userId, final int commentId){
 		boolean result=false;
 		try {
@@ -364,6 +419,8 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return result;
 	}
+
+
 	public List<TblSubscriber> retrieveFriendsBySubscriberId(final Integer subscriberId){
 		List<TblSubscriber> results=new ArrayList<TblSubscriber>();
 
@@ -374,7 +431,7 @@ public class SubscriberDAO extends BaseDao {
 						public Object doInHibernate(Session session)
 								throws HibernateException, SQLException {
 							Query query=session.createQuery("from TblSubscriber subs where subs.subscriberId in (select fri.id.friendId from TblFriendship fri where fri.id.initiatorId=?) and subs.activated=1");
- 							query.setInteger(0, subscriberId);
+							query.setInteger(0, subscriberId);
 							return query.list();
 						}
 					});
@@ -384,4 +441,6 @@ public class SubscriberDAO extends BaseDao {
 		}
 		return results;
 	}
+
+
 }

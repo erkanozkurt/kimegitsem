@@ -42,20 +42,17 @@ import com.persona.kg.model.Subscriber;
 
 public class UserAction extends BaseAction implements SessionAware,
 		ServletRequestAware, ServletResponseAware {
-
+	
 	public final static int RATE_LIKE = 1;
 	public final static int RATE_DISLIKE = 2;
 	private SubscriberDAO subscriberDAO;
 	private String mailAddressContainer;
-	@Autowired
-	private JavaMailSender mailSender;
-	@Autowired
-	private VelocityEngine velocityEngine;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
 	private List<TblMessage> messageList;
 	private List<TblSubscriber> friendList;
 	private int messageId;
 	private List jsonList;
+
 
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -167,9 +164,8 @@ public class UserAction extends BaseAction implements SessionAware,
 						model.put("name", authenticatedUser.getName());
 						model.put("surname", authenticatedUser.getSurname());
 						model.put("profile","https://graph.facebook.com/"+authenticatedUser.getFacebookId()+"/picture");
-						model.put("logo",ApplicationConstants.getContext()+"img/logo.jpg");
-						model.put("connect",ApplicationConstants.getContext()+"img/connect.jpg");
-						model.put("context",ApplicationConstants.getContext());
+						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
+						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
 						String mailContent = VelocityEngineUtils
 								.mergeTemplateIntoString(getVelocityEngine(),
 										"invitation.vm", "UTF-8", model);
@@ -284,21 +280,6 @@ public class UserAction extends BaseAction implements SessionAware,
 		this.friendList = friendList;
 	}
 
-	public JavaMailSender getMailSender() {
-		return mailSender;
-	}
-
-	public void setMailSender(JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-	}
-
-	public VelocityEngine getVelocityEngine() {
-		return velocityEngine;
-	}
-
-	public void setVelocityEngine(VelocityEngine velocityEngine) {
-		this.velocityEngine = velocityEngine;
-	}
 
 
 }
