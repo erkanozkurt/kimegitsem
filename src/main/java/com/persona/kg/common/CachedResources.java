@@ -232,7 +232,7 @@ public class CachedResources {
 
 		return builder.toString();
 	}
-
+/*
 	private String getSubcategoryClause(TblCategory category){
 		StringBuilder builder=new StringBuilder();
 		builder.append(category.getCategoryId());
@@ -244,7 +244,20 @@ public class CachedResources {
 		}
 		return builder.toString();
 	}
-
+    */
+	public String getSubcategoryClause(TblCategory category){
+		getCategoryMap();
+		StringBuilder builder=new StringBuilder();
+		builder.append(category.getCategoryId());
+		if(category.getChilds().size()>0){
+			Iterator<TblCategory> categoryIterator=category.getChilds().iterator();
+			while(categoryIterator.hasNext()){
+				builder.append(",").append(getSubcategoryClause(categoryIterator.next()));
+			}
+		}
+		return builder.toString();
+	}
+	
 	private TblDistrict findDistrict(int districtId){
 		List<TblDistrict> districtList=getDistrictList();
 		Iterator<TblDistrict> iterator=districtList.iterator();

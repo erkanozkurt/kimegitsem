@@ -40,14 +40,32 @@ public class SearchAction extends BaseAction implements SessionAware {
 	private Integer category;
 	private Integer city;
 
-	public String filter() {
+	/*public String filter() {
 		if(category!=null){
 			TblCategory tblcategory=new TblCategory();
 			tblcategory.setCategoryId(category);
 			searchResult=poiDao.retrievePoisByCategory(tblcategory, 12);
 		}
 		return "success";
+	}*/
+	
+	public String filter() {
+		if (category != null) {
+			TblCategory tblcategory = new TblCategory();
+			tblcategory.setCategoryId(category);
+			TblCategory cachedCategory = cachedResources.getCategoryMap().get(
+					tblcategory.getCategoryId());
+			if (cachedCategory != null) {
+				String categoryList = cachedResources
+						.getSubcategoryClause(cachedCategory);
+
+				searchResult = poiDao.retrievePoisByCategoryWithSubcategories(
+						categoryList, 12);
+			}
+		}
+		return "success";
 	}
+	
 	public String search(){
 		if(logger.isDebugEnabled()){
 			logger.debug("search will be executed with parameters [what] "+what+" [where] "+where);

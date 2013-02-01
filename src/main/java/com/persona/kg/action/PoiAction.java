@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
+import org.junit.experimental.categories.Categories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
@@ -164,6 +165,17 @@ public class PoiAction extends BaseAction implements SessionAware {
 					admin.setStatus((short) 2);
 					poiDAO.setAdmin(admin);
 					addActionMessage("İşletme başarıyla kaydedildi!");
+					System.out.print("appLog hizmEkle kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
+					
+					//logger.info("hizmEkle kullanici:[username] hizmAd:[hizmetveren-adi] kategori:[category]");
+					/*sisteme giris- username girdi
+					davet, tavsiye et(ozel-emaillistesi|yayinla), tavsiye iste(ozel-emaillistesi|yayinla), arama, hiz-goruntuleme(hizmetveren adi), 
+					
+					 #kimegitsem tavsiyem Kofteci_Mehmet_Usta (Restoran/Istanbul) http://web1.kimegitsem.com/kimegitsem/in/Kofteci_Mehmet_Usta kimegitsem?com - en iyisi, arkadaş tavsiyesi 
+					 
+					 #kimegitsen a (Restoran/Istanbul) http://web1.kimegitsem.com/kimegitsem/in/Kofteci_Mehmet_Usta - via kimegitsem?com: en iyisi, arkadaş tavsiyesi  
+					*/
+					
 				}
 			} else {
 				if (poiDAO.updatePoi(poi)) {

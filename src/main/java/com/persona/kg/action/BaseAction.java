@@ -214,7 +214,7 @@ public class BaseAction  extends ActionSupport implements ServletRequestAware,Se
 						// mail sending parameters
 						message.setTo(email);
 						message.setSubject(subject);
-						message.setFrom("ylcnarsln@gmail.com");
+						message.setFrom("kimegitsemdestek@gmail.com");
 						String mailContent = VelocityEngineUtils
 								.mergeTemplateIntoString(velocityEngine,
 										template+".vm", "UTF-8", attributes);

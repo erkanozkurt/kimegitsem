@@ -97,8 +97,12 @@ function suggest()
 								</s:form>
 								<div class="fb-like" data-href="<%=ApplicationConstants.getDomainName()+request.getContextPath()%>/in/<s:property value="%{#session.userContext.selectedPoi.uniqueIdentifier}"/>" data-send="false" data-layout="button_count" data-width="100" data-show-faces="true"></div>
 								<div>
+								<!--  
 									<a href="https://twitter.com/share" class="twitter-share-button">Tweet</a>
 									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+								-->
+									<a href="https://twitter.com/intent/tweet?button_hashtag=kimegitsem&text=tavsiyem%20<s:property value="#session.userContext.selectedPoi.poiName"/>%20http%3A%2F%2Fweb1.kimegitsem.com%2Fkimegitsem%2Fin%2FKofteci_Mehmet_Usta%20kimegitsem%3Fcom%20-%20en%20iyisi%2C%20arkada%C5%9F%20tavsiyesi%20" class="twitter-hashtag-button">Tweet</a>
+									<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>								
 								</div>
 							</td>
 						</tr>

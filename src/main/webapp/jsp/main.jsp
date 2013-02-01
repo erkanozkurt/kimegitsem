@@ -22,11 +22,11 @@
 			src="<%=response.encodeURL(request.getContextPath()
 					+ "/img/main.jpg")%>" />
 	</div>
-	
+	<!--   
 	<div>
 		<a href="<s:url action="claimForm" namespace="/in"/>" class="addPoi" style="top: 43px;">Hizmetveren Ekle</a>		
 	</div>
-
+-->
 	<div class="nearLocations" id="nearLocations" style="top: 300px;">
 		
 		<div class="grayHeading" style="width: 561px; top:90px;">Yakınınızdaki Yerel Hizmetler</div>

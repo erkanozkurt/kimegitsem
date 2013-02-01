@@ -62,6 +62,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 	private String userComment;
 	private File imageFile;
 	private TblCategory category;
+	private TblPoi poi;
 	private List<TblPoi> poiList;
 	private String categoryId;
 	private String what_widget;
@@ -285,14 +286,17 @@ public class TalkAction extends BaseAction implements SessionAware {
 		}else{
 			result=false;
 		}
+		logger.info("appLog tavsEt(genel) kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " yayınla hizmAd:" + poi.getPoiName() + " kategori:");
 		return result;
 	}
 
 	private boolean sharePrivateSuggestion(TblPoi poi){
 		boolean result=true;
+		String[] list=null;
+		String yazliste="";
 		UserContext userContext = getUserContext();
 		if(getSelectedFriends()!=null){
-			String[] list=getSelectedFriends().split("\\,");
+			list=getSelectedFriends().split("\\,");
 			if(list!=null && list.length>0){
 				for(String friend:list){
 					TblMessage message=new TblMessage();
@@ -317,6 +321,12 @@ public class TalkAction extends BaseAction implements SessionAware {
 				}
 			}
 		}
+		if(list!=null && list.length>0){
+			for(int i=0;i<list.length;i++){
+				yazliste+=list[i];
+			}
+		}
+		logger.info("appLog tavsEt(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
 		return result;
 	}
 
@@ -340,9 +350,11 @@ public class TalkAction extends BaseAction implements SessionAware {
 
 	private boolean shareMailSuggestion(TblPoi poi){
 		boolean result=true;
+		String[] list = null;
+		String yazliste="";
 		UserContext userContext = getUserContext();
 		if(emailList!=null){
-			String[] list=emailList.split("\\,");
+			list=emailList.split("\\,");
 			if(list!=null && list.length>0){
 				for(String email:list){
 					if(EmailValidator.getInstance().isValid(email)==true){
@@ -361,16 +373,23 @@ public class TalkAction extends BaseAction implements SessionAware {
 				}
 			}
 		}
-
+		if(list!=null && list.length>0){
+			for(int i=0;i<list.length;i++){
+				yazliste+=list[i];
+			}
+		}
+		logger.info("appLog tavsEt(mail - " +  yazliste  + ")kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
 		return result;
 	}	
 
 
 	private boolean askMailSuggestion(TblCategory selectedCategory, String placeName){
 		boolean result=true;
+		String[] list=null;
+		String yazliste="";
 		UserContext userContext = getUserContext();
 		if(emailList!=null){
-			String[] list=emailList.split("\\,");
+			list=emailList.split("\\,");
 			if(list!=null && list.length>0){
 				for(String email:list){
 					if(EmailValidator.getInstance().isValid(email)==true){
@@ -388,15 +407,22 @@ public class TalkAction extends BaseAction implements SessionAware {
 				}
 			}
 		}
-
+		if(list!=null && list.length>0){
+			for(int i=0;i<list.length;i++){
+				yazliste+=list[i];
+			}
+		}
+		logger.info("appLog tavsİste(mail - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
 		return result;
 	}	
 
 private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeName){
 		boolean result=true;
+		String[] list=null;
+		String yazliste="";
 		UserContext userContext = getUserContext();
 		if(getSelectedFriends()!=null){
-			String[] list=getSelectedFriends().split("\\,");
+			list=getSelectedFriends().split("\\,");
 			if(list!=null && list.length>0){
 				for(String friend:list){
 					TblMessage message=new TblMessage();
@@ -420,6 +446,12 @@ private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeNa
 				}
 			}
 		}
+		if(list!=null && list.length>0){
+			for(int i=0;i<list.length;i++){
+				yazliste+=list[i];
+			}
+		}
+		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
 		return result;
 	}
 	public String addWatch() {

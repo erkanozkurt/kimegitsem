@@ -46,6 +46,7 @@ public class UserAction extends BaseAction implements SessionAware,
 	public final static int RATE_LIKE = 1;
 	public final static int RATE_DISLIKE = 2;
 	private SubscriberDAO subscriberDAO;
+	private TblPoi poi;
 	private String mailAddressContainer;
 	private static final Logger logger = Logger.getLogger(TblSubscriber.class);
 	private List<TblMessage> messageList;
@@ -148,8 +149,11 @@ public class UserAction extends BaseAction implements SessionAware,
 
 	public String sendInvitation() {
 		final TblSubscriber authenticatedUser=getUserContext().getAuthenticatedUser();
+		UserContext userContext = getUserContext();
+		String[] addresses=null;
+		String yazliste="";
 		if (mailAddressContainer != null) {
-			String[] addresses=mailAddressContainer.split(",");
+			addresses=mailAddressContainer.split(",");
 			for(int i=0;i<addresses.length;i++){
 				final String address=addresses[i];
 				MimeMessagePreparator mimepreparator = new MimeMessagePreparator() {
@@ -158,7 +162,7 @@ public class UserAction extends BaseAction implements SessionAware,
 								mimeMessage);
 						// mail sending parameters
 						message.setTo(address);
-						message.setFrom("ylcnarsln@gmail.com");
+						message.setFrom("kimegitsemdestek@gmail.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" sana kimegitsem?com’dan arkadaslik istegi gonderdi");
 						Map model = new HashMap();
 						model.put("name", authenticatedUser.getName());
@@ -176,6 +180,12 @@ public class UserAction extends BaseAction implements SessionAware,
 				this.getMailSender().send(mimepreparator);
 			}
 		}
+		if(addresses!=null && addresses.length>0){
+			for(int i=0;i<addresses.length;i++){
+				yazliste+=addresses[i];
+			}
+		}
+		logger.info("appLog davet kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " davetEdilen:" + yazliste);
 		addActionMessage("Davetiyeler başarıyla gönderilmiştir.");
 		return "success";
 	}

@@ -9,32 +9,32 @@
 		   <sj:tab target="profile" id="profileTab" label="Profilim"> </sj:tab>
 	       <div id="profile">
 					<table border="0" width="300px">
-						<tr>
-							<td width="30%">Adı</td>
-							<td width="10%">:</td>
-							<td width="*"><s:property value="#request.subscriber.name" />
-							</td>
-						</tr>
-						<tr>
-							<td width="30%">Soyadı</td>
-							<td width="10%">:</td>
-							<td width="*"><s:property value="#request.subscriber.surname" />
-							</td>
-						</tr>
-						<tr>
-							<td width="30%">Kayıt Tarihi</td>
-							<td width="10%">:</td>
-							<td width="*"><s:property value="#request.subscriber.joinDate"  />
-							</td>
-						</tr>
-						<tr>
-							<td width="30%">Cinsiyet</td>
-							<td width="10%">:</td>
-							<td width="*">
-							<s:if test="%{#request.subscriber.gender='m'}">Erkek</s:if>
-							<s:else>Kadın</s:else>
-							</td>
-						</tr>
+								<tr>
+									<td width="30%">Adı</td>
+									<td width="10%">:</td>
+									<td width="*"><s:property value="#request.subscriber.name" />
+									</td>
+								</tr>
+								<tr>
+									<td width="30%">Soyadı</td>
+									<td width="10%">:</td>
+									<td width="*"><s:property value="#request.subscriber.surname" />
+									</td>
+								</tr>
+								<tr>
+									<td width="30%">Kayıt Tarihi</td>
+									<td width="10%">:</td>
+									<td width="*"><s:property value="#request.subscriber.joinDate"  />
+									</td>
+								</tr>
+								<tr>
+									<td width="30%">Cinsiyet</td>
+									<td width="10%">:</td>
+									<td width="*">
+									<s:if test="%{#request.subscriber.gender='m'}">Erkek</s:if>
+									<s:else>Kadın</s:else>
+									</td>
+								</tr>
 					</table>
 			</div>
 			<s:url id="friendsLink" action="friends?profileId=%{#request.subscriber.subscriberId}" namespace="/subs"></s:url>
