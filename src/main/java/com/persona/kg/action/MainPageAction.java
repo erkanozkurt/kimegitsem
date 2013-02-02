@@ -16,6 +16,7 @@ import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
 import com.google.code.facebookapi.FacebookException;
@@ -32,13 +33,11 @@ import com.sun.org.apache.xpath.internal.operations.Gte;
 
 public class MainPageAction extends BaseAction implements SessionAware,
 		ServletRequestAware, ServletResponseAware {
-	private String api_key="381050368581553";
-	private String secret="c726111ff85249f5620c6386c3624238";
-	 private String facebookUserId = "id";
-     private String ipAddress = "ip";
+	
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private static final String FACEBOOK_USER_CLIENT = "facebook.user.client";
+	@Autowired
 	private CategoryDAO categoryDao;
 	private TblCategory category;
 
@@ -74,4 +73,18 @@ public class MainPageAction extends BaseAction implements SessionAware,
 	public HttpServletResponse getServletResponse() {
 		return response;
 	}
+	public TblCategory getCategory() {
+		return category;
+	}
+	public void setCategory(TblCategory category) {
+		this.category = category;
+	}
+	public CategoryDAO getCategoryDao() {
+		return categoryDao;
+	}
+	public void setCategoryDao(CategoryDAO categoryDao) {
+		this.categoryDao = categoryDao;
+	}
+	
+	
 }

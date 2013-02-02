@@ -167,9 +167,6 @@
 		<div class="bodyDiv" id="bodyDiv">
 			<tiles:insertAttribute name="categories" />
 			<tiles:insertAttribute name="body" />
-			<div id="userinfo" class="userinfo" style="visibility: visible;">
-
-			</div>
 		</div>
 	</div>
 <%} %>

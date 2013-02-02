@@ -16,6 +16,8 @@
 	<div class="login" id="logoutdiv" style="display:none">
 		<a href="#" onclick="fblogout()"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/logout.jpg")%>"></a>
 	</div>
+	<div id="userinfo" class="userinfo" style="visibility: visible;">
+	</div>
 	<div class="searchArea" id="searchArea">
 		<s:form labelposition="left" theme="simple" action="search"
 			namespace="/s" id="searchHeaderform">

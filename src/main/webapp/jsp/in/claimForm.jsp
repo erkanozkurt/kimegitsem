@@ -73,6 +73,15 @@
 			<td>Anahtar Kelimeler</td>
 			<td><s:textfield name="poi.keywords" id="keywords" size="30"></s:textfield></td>
 		</tr>
+		
+		<tr>
+			<td>Bu hizmetverinin yetkilisi misiniz?</td>
+			<td><s:radio list="#{'1':'Evet','2':'Hayır'}" onchange="checkAuthority(this)" name="authority" ></s:radio></td>
+		</tr>
+		<tr style="display: none;" id="authorityMail">
+			<td>Yetkili email adresi</td>
+			<td><s:textfield name="poi.authorityEmail"></s:textfield></td>
+		</tr>
 		<tr>
 			<tr>
 				<td valign="top">Haritadaki Yeri</td>
@@ -208,5 +217,14 @@ function validatePoiInfo(){
 		return false;
 	}
 	document.getElementById("claimForm").submit();
+}
+
+function checkAuthority(object){
+	if(object.value=='2'){
+		document.getElementById('authorityMail').style.display='block';
+	}else{
+		document.getElementById('authorityMail').style.display='none';
+	}
+	
 }
 </script>

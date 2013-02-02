@@ -70,7 +70,7 @@ body {
 	left: 342px;
 	top: 36px;
 	position: absolute;
-	width: 682px;
+	width: 400px;
 	height: 62px;
 	padding-left: 60px;
 	padding-top: 21px;
@@ -189,6 +189,7 @@ a.menuInner:hover {
 
 .offerCategory{
 	padding:2px 50px;
+	display:block;
 	border:1px solid #7d99ca; -webkit-border-radius: 3px; -moz-border-radius: 3px;border-radius: 3px;font-family:arial, helvetica, sans-serif; text-shadow: -1px -1px 0 rgba(0,0,0,0.3);font-weight:bold; font-size:16px; text-align: center; text-decoration: none; color: #FFFFFF; background-color: #a5b8da;
  	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a5b8da), color-stop(100%, #7089b3));
  	background-image: -webkit-linear-gradient(top, #a5b8da, #7089b3);
@@ -277,7 +278,8 @@ a.category:hover {
 .userinfo {
 	width: 224px;
 	height: auto;
-	left: 810px;
+	left: 850px;
+	top: 45px;
 	position: absolute;
 }
 

@@ -86,5 +86,8 @@
   <property generated="never" lazy="false" name="website" type="string">
   	<column length="200" name="website"/>
   </property>
+    <property generated="never" lazy="false" name="authorityEmail" type="string">
+   <column length="100" name="authority_email"/>
+  </property>
  </class>
 </hibernate-mapping>

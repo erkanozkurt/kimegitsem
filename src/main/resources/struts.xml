@@ -151,7 +151,8 @@
 		</action>
 		
 		<action name="addCategory" class="mainPageAction" method="addCategory">
-			<result name="success">master</result>
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
+			<result name="success"  type="tiles" >master</result>
 		</action>
 	</package>
 

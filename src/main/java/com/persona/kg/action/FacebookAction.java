@@ -83,6 +83,8 @@ public class FacebookAction extends BaseAction implements SessionAware,
 					}
 					subscriber.setName(facebookUser.getFirstName());
 					subscriber.setSurname(facebookUser.getLastName());
+					subscriber.setEmail(facebookUser.getEmail());
+					
 					subscriber.setJoinDate(new Date());
 					subscriber.setGender(facebookUser.getGender().substring(0,1));
 					subscriber.setActivated(1);
@@ -109,35 +111,34 @@ public class FacebookAction extends BaseAction implements SessionAware,
 		UserContext context = (UserContext) request.getSession().getAttribute(
 				ApplicationConstants.USER_CONTEXT_KEY);
 		context.setLoggedIn(false);
+		
 		return "success";
 	}
 
-	private List<String> enumerateFriends(FacebookClient client) {
-		List<String> result=new ArrayList<String>();
+	private List<User> enumerateFriends(FacebookClient client) {
+		List<String[]> result=null;
 		Connection<User> myFriends = client.fetchConnection("me/friends",
 				User.class);
 		List<User> users = myFriends.getData();
-		Iterator<User> it = users.iterator();
-		while (it.hasNext()) {
-			User usr = it.next();
-			result.add(usr.getId());
-		}
-		return result;
+		return users;
 	}
 
 	private void populateFacebookFriends(FacebookClient client, int userId){
-		List<String> facebookFriends=enumerateFriends(client);
-		Iterator<String> iterator=facebookFriends.iterator();
+		List<User> facebookFriends=enumerateFriends(client);
+		Iterator<User> iterator=facebookFriends.iterator();
 		while(iterator.hasNext()){
-			String friendId=iterator.next();
-			TblSubscriber friend=subscriberDao.retrieveFacebookSubscriber(friendId);
+			User friendStr=iterator.next();
+			TblSubscriber friend=subscriberDao.retrieveFacebookSubscriber(friendStr.getId());
 			if(friend==null){
 				friend=new TblSubscriber();
 				friend.setActivated(0);
-				friend.setFacebookId(friendId);
+				friend.setFacebookId(friendStr.getId());
+				int surnameIndex=friendStr.getName().lastIndexOf(" ");
+				friend.setName(friendStr.getName().substring(0,surnameIndex));
+				friend.setSurname(friendStr.getName().substring(surnameIndex+1));
 				friend.setJoinDate(new Date());
 				subscriberDao.storeUser(friend);
-				friend=subscriberDao.retrieveFacebookSubscriber(friendId);
+				friend=subscriberDao.retrieveFacebookSubscriber(friendStr.getId());
 			}
 			if(friend.getSubscriberId()>0){
 				subscriberDao.createFriend(userId, friend.getSubscriberId(),(short)1);

@@ -124,5 +124,8 @@
             </key>
             <one-to-many class="com.persona.kg.dao.TblFriendship" />
         </set>
+         <property name="email" type="string">
+            <column name="email" length="300" />
+        </property>
     </class>
 </hibernate-mapping>

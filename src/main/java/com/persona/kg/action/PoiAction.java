@@ -10,7 +10,6 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
-import org.junit.experimental.categories.Categories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
@@ -60,6 +59,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 	private List jsonList;
 	private int districtId;
 	private int cityId;
+	private String authority;
 
 	@Autowired
 	private CachedResources cachedResources;
@@ -150,12 +150,17 @@ public class PoiAction extends BaseAction implements SessionAware {
 			if (updateMode == false) {
 				poi.setUniqueIdentifier(escapeSpace(poi.getPoiName()));
 				poi.setDateAdded(new Date());
+				if("1".equals(authority)){
+					poi.setAuthorityEmail(userContext.getAuthenticatedUser().getEmail());
+				}
 				if (poiDAO.addPoi(poi)) {
 					TblPoiCategory poiCategory = new TblPoiCategory();
 					TblPoiCategoryId id = new TblPoiCategoryId();
 					id.setPoiId(poi.getPoiId());
 					id.setCategoryId(poi.getCategory());
 					poiCategory.setId(id);
+					
+					
 					poiDAO.addPoiCategory(poiCategory);
 					poi.setAdministrator(userContext.getAuthenticatedUser());
 					TblPoiAdministrator admin = new TblPoiAdministrator();
@@ -165,18 +170,8 @@ public class PoiAction extends BaseAction implements SessionAware {
 					admin.setStatus((short) 2);
 					poiDAO.setAdmin(admin);
 					addActionMessage("İşletme başarıyla kaydedildi!");
-					System.out.print("appLog hizmEkle kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
-					
-					//logger.info("hizmEkle kullanici:[username] hizmAd:[hizmetveren-adi] kategori:[category]");
-					/*sisteme giris- username girdi
-					davet, tavsiye et(ozel-emaillistesi|yayinla), tavsiye iste(ozel-emaillistesi|yayinla), arama, hiz-goruntuleme(hizmetveren adi), 
-					
-					 #kimegitsem tavsiyem Kofteci_Mehmet_Usta (Restoran/Istanbul) http://web1.kimegitsem.com/kimegitsem/in/Kofteci_Mehmet_Usta kimegitsem?com - en iyisi, arkadaş tavsiyesi 
-					 
-					 #kimegitsen a (Restoran/Istanbul) http://web1.kimegitsem.com/kimegitsem/in/Kofteci_Mehmet_Usta - via kimegitsem?com: en iyisi, arkadaş tavsiyesi  
-					*/
-					
-				}
+					System.out.print("appLog hizmEkle kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+									}
 			} else {
 				if (poiDAO.updatePoi(poi)) {
 					TblPoiCategory poiCategory = new TblPoiCategory();
@@ -373,7 +368,15 @@ public class PoiAction extends BaseAction implements SessionAware {
 		TblCategory category = categoryDAO.findCategoryById(categoryId);
 		if (category != null) {
 			this.setCategory(category);
-			this.setPoiList(poiDAO.retrievePoisByCategory(category, 5));
+			TblCategory cachedCategory = cachedResources.getCategoryMap().get(
+					category.getCategoryId());
+			if (cachedCategory != null) {
+				String categoryList = cachedResources
+						.getSubcategoryClause(cachedCategory);
+
+				this.setPoiList( poiDAO.retrievePoisByCategoryWithSubcategories(
+						categoryList, 5));
+			}
 		}
 		return "poiListAjax";
 	}
@@ -546,6 +549,14 @@ public class PoiAction extends BaseAction implements SessionAware {
 
 	public void setCityId(int cityId) {
 		this.cityId = cityId;
+	}
+
+	public String getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
 	}
 
 }

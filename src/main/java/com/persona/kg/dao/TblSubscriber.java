@@ -37,7 +37,7 @@ public class TblSubscriber implements java.io.Serializable {
 	private Set tblComments = new HashSet(0);
 	private Set tblConversations = new HashSet(0);
 	private Set tblFriendshipsForInitiatorId = new HashSet(0);
-
+	private String email;
 	public TblSubscriber() {
 	}
 
@@ -293,4 +293,13 @@ public class TblSubscriber implements java.io.Serializable {
 	public String getDisplayName(){
 		return getName()+" "+ getSurname().substring(0,1)+".";
 	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 }

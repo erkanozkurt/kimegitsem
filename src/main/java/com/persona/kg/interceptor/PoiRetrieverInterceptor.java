@@ -9,6 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.StrutsStatics;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
@@ -21,6 +22,7 @@ import com.persona.kg.CategoryDAO;
 import com.persona.kg.PoiDAO;
 import com.persona.kg.action.BaseAction;
 import com.persona.kg.common.ApplicationConstants;
+import com.persona.kg.common.CachedResources;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblPoi;
@@ -29,6 +31,8 @@ public class PoiRetrieverInterceptor extends AbstractInterceptor implements
 		StrutsStatics {
 
 	private PoiDAO poiDAO;
+	@Autowired
+	private CachedResources cachedResources;
 	protected Log logger = LogFactory.getLog(CategoryInterceptor.class);
 
 	public PoiDAO getPoiDAO() {
@@ -67,6 +71,11 @@ public class PoiRetrieverInterceptor extends AbstractInterceptor implements
 			selectedPoi.setComments(poiDAO.retrieveCommentsByPoi(selectedPoi));
 			selectedPoi.setImages(poiDAO.retrieveImagesByPoi(selectedPoi));
 			selectedPoi.setAdministrator(poiDAO.retrievePoiAdministrator(selectedPoi.getPoiId()));
+			selectedPoi.setPlaceName(cachedResources.getMergedPlaceList().get(selectedPoi.getPlaceId()));
+			selectedPoi.setCityName(cachedResources.getMergedPlaceList().get(""+selectedPoi.getCityId()));
+			if(selectedPoi.getCategories()!=null && selectedPoi.getCategories().size()>0){
+				selectedPoi.setCategoryName(selectedPoi.getCategories().get(0).getCategoryName());
+			}
 			userContext.setSelectedPoi(selectedPoi);
 		} else {
 			userContext.setSelectedPoi(null);
@@ -79,6 +88,14 @@ public class PoiRetrieverInterceptor extends AbstractInterceptor implements
 			logger.debug("exit");
 		}
 		return action.invoke();
+	}
+
+	public CachedResources getCachedResources() {
+		return cachedResources;
+	}
+
+	public void setCachedResources(CachedResources cachedResources) {
+		this.cachedResources = cachedResources;
 	}
 
 }
