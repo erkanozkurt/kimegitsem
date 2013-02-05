@@ -60,7 +60,6 @@
 <div class="rightcontentDiv">
 
 	<div class="redHeading2" style="width: 500px ; height: 25px; top:20px" align="center">
-    	Kimegitsem'in temel fonksiyonları:
     </div>
   
 
