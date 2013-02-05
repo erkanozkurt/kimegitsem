@@ -51,7 +51,7 @@
 	</div>
 	<div>
 	
-		<s:a action="profilevb " namespace="/subs" cssClass="invitefriends" style="top: 45px;" >Arkadaş Daveti</s:a>
+		<s:a action="profile" namespace="/subs" cssClass="invitefriends" style="top: 45px;" >Arkadaş Daveti</s:a>
 	</div>
 	<div > 
 		<s:a action="claimForm" namespace="/in" cssClass="addPoi" style="top: 3px; left: 175px" >Hizmet Veren Ekle</s:a>
