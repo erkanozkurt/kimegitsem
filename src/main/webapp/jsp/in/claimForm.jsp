@@ -75,12 +75,12 @@
 		</tr>
 		
 		<tr>
-			<td>Bu hizmetverinin yetkilisi misiniz?</td>
+			<td width="35%">Bu hizmetverinin yetkilisi misiniz?</td>
 			<td><s:radio list="#{'1':'Evet','2':'Hayır'}" onchange="checkAuthority(this)" name="authority" ></s:radio></td>
 		</tr>
-		<tr style="display: none;" id="authorityMail">
-			<td>Yetkili email adresi</td>
-			<td><s:textfield name="poi.authorityEmail"></s:textfield></td>
+		<tr style="display: none;" id="authorityMail" >
+			<td>Yetkili E-Mail Adresi<font color="red"> ***</font></td>
+			<td><s:textfield name="poi.authorityEmail" id="email"></s:textfield></td>
 		</tr>
 		<tr>
 			<tr>
@@ -216,6 +216,14 @@ function validatePoiInfo(){
 		alert("Lütfen bir şehir seçiniz!");
 		return false;
 	}
+	
+	var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	var address = document.getElementById("email").value;
+	if (reg.test(address) == false) {
+		alert('Lütfen geçerli bir mail adresi giriniz!');
+		return false;
+	}
+	
 	document.getElementById("claimForm").submit();
 }
 

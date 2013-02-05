@@ -12,7 +12,7 @@
 		</s:iterator>
 	</div>
 <div>
-	<a href="#" onclick="addNewCategory()" class="offerCategory" style="position: relative">Kategori Öner</a>
+	<a href="#" onclick="addNewCategory()" class="offerCategory" style="position: relative; width:107px;">Kategori Öner</a>
 </div>
 </div>
  

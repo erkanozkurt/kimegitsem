@@ -286,7 +286,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 		}else{
 			result=false;
 		}
-		logger.info("appLog tavsEt(genel) kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " yayınla hizmAd:" + poi.getPoiName() + " kategori:");
+		logger.info("appLog tavsEt(genel) kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " yayınla hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}
 
@@ -326,7 +326,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
-		logger.info("appLog tavsEt(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
+		logger.info("appLog tavsEt(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}
 
@@ -378,7 +378,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
-		logger.info("appLog tavsEt(mail - " +  yazliste  + ")kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
+		logger.info("appLog tavsEt(mail - " +  yazliste  + ")kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}	
 
@@ -412,7 +412,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
-		logger.info("appLog tavsİste(mail - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
+		logger.info("appLog tavsİste(mail - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}	
 
@@ -451,7 +451,7 @@ private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeNa
 				yazliste+=list[i];
 			}
 		}
-		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:");
+		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}
 	public String addWatch() {

@@ -162,7 +162,7 @@ public class UserAction extends BaseAction implements SessionAware,
 								mimeMessage);
 						// mail sending parameters
 						message.setTo(address);
-						message.setFrom("kimegitsemdestek@gmail.com");
+						message.setFrom("ylcnarsln@gmail.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" sana kimegitsem?com’dan arkadaslik istegi gonderdi");
 						Map model = new HashMap();
 						model.put("name", authenticatedUser.getName());

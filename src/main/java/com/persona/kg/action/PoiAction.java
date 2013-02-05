@@ -170,7 +170,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 					admin.setStatus((short) 2);
 					poiDAO.setAdmin(admin);
 					addActionMessage("İşletme başarıyla kaydedildi!");
-					System.out.print("appLog hizmEkle kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+					logger.info("appLog hizmEkle kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 									}
 			} else {
 				if (poiDAO.updatePoi(poi)) {

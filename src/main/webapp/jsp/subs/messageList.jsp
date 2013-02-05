@@ -2,15 +2,16 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@ taglib prefix="sj" uri="/struts-jquery-tags"%> 
-
+<s:form namespace="/subs" theme="simple">
+<s:submit action="delete" value="Sil" namespace="/subs" align="left" theme="simple"></s:submit> 
 <div class="messageList">
-<s:form namespace="/subs" > 
 
-<s:submit action="delete" value="Sil" namespace="/subs" align="left"></s:submit>
 
+
+	<table>
 
 <s:iterator value="%{#request.messageList}" status="messageStatus" >
-	<table>
+
 		<tr>
 			<td>
 				<s:checkbox name="messageIds" fieldValue="%{messageId}" theme="simple"></s:checkbox>
@@ -26,11 +27,11 @@
 				<s:property value="sendDate"/> <br>
 			</td>
 		</tr>
-	</table>
+	
 </s:iterator>
+</table>
+</div>
 
 	
 </s:form>
-</div>
-
 <div id="messageContent<s:property value="%{boxType}"/>"></div>

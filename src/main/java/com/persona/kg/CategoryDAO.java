@@ -37,7 +37,7 @@ public class CategoryDAO extends BaseDao {
 						public Object doInHibernate(Session session)
 								throws HibernateException, SQLException {
 							Query query = session
-									.createQuery("from TblCategory cat where cat.parentId=?");
+									.createQuery("from TblCategory cat where cat.status=1 and cat.parentId=?");
 
 							// SQLQuery query = session
 							// .createSQLQuery("SELECT * FROM tbl_category where parent_id=?");
@@ -70,7 +70,7 @@ public class CategoryDAO extends BaseDao {
 						public Object doInHibernate(Session session)
 								throws HibernateException, SQLException {
 							Query query = session
-									.createQuery("from TblCategory cat where cat.categoryId=?");
+									.createQuery("from TblCategory cat where cat.status=1 and cat.categoryId=?");
 							query.setInteger(0, id);
 							return query.uniqueResult();
 						}
@@ -92,7 +92,7 @@ public class CategoryDAO extends BaseDao {
 						public Object doInHibernate(Session session)
 								throws HibernateException, SQLException {
 							Query query = session
-									.createQuery("from TblCategory cat order by cat.parentId");
+									.createQuery("from TblCategory cat where cat.status=1 order by cat.parentId");
 							return query.list();
 						}
 					});
