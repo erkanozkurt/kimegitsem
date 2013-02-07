@@ -67,6 +67,7 @@ public class AjaxAction extends BaseAction implements SessionAware,
 	private String term;
 	private List<TblPoi> poiList;
  	private JsonObject jsonResult;
+ 	private JsonObject jsonResult2;
  	private TblPoi poi;
 	@Autowired
 	private CachedResources cachedResources;
@@ -122,6 +123,7 @@ public class AjaxAction extends BaseAction implements SessionAware,
 
 
 	private Map<String,String> json;
+	private Map<String,String> json2;
 	public String placeList(){
 		logger.debug("term: "+term);
 		json=new HashMap<String,String>();

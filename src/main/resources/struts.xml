@@ -305,6 +305,14 @@
 			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result name="poiListAjax">/jsp/in/poiList.jsp</result>
 		</action>
+		<action name="lastAddedPoi" class="poiAction" method="lastAddedPoiList">
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
+			<result name="poiListAjax">/jsp/in/poiListWithImage.jsp</result>
+		</action>
+		<action name="lastSuggestion" class="poiAction" method="lastSuggestionList">
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
+			<result name="poiListAjax">/jsp/talk/convList.jsp</result>
+		</action>
 		<action name="placeList" class="ajaxAction" method="placeList">
 			<interceptor-ref name="defInterceptors"></interceptor-ref>
 			<result type="json" name="success">
@@ -323,8 +331,7 @@
 				<param name="root">jsonResult</param>
 			</result>
 		</action>
-
-			<action name="retrieveDistrictList" class="poiAction" method="retrieveDistrictList">
+		<action name="retrieveDistrictList" class="poiAction" method="retrieveDistrictList">
 			<result type="json" name="success">
 				<param name="excludeNullProperties">true</param>
 				 <param name="root">jsonList</param>

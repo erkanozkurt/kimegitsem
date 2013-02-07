@@ -57,11 +57,27 @@
 		<s:a action="claimForm" namespace="/in" cssClass="addPoi" style="top: 3px; left: 175px" >Hizmet Veren Ekle</s:a>
 	</div>
 </div>
+
 <div class="rightcontentDiv">
 
-	<div class="redHeading2" style="width: 500px ; height: 25px; top:20px" align="center">
-    </div>
-  
-
-
+	<div class="grayHeading" style="width: 205px; top:10px;">Son Katılan Hizmetverenler</div>
+		<div class="categoryListInner" style="width: 205px; top: 8px;">
+			<s:url var="lastAddedPoi" action="lastAddedPoi" namespace="/ajax" />
+				<table>
+					<tr>
+						<sj:div id="lastAddedPoi" loadingText="Yükleniyor..." href="%{lastAddedPoi}" label="Son Eklenenler" cssClass="topcategory" cssStyle="width:230px;">İçerik Bulunmamaktadır.</sj:div>
+					</tr>
+				</table>
+    	</div>
+    	
+    	<div class="grayHeading" style="width: 205px; top:10px;">Son Tavsiyeler</div>
+		<div class="categoryListInner" style="width: 205px; top: 8px;">
+			<s:url var="suggestion" action="lastSuggestion" namespace="/ajax" />
+				<table>
+					<tr>
+						<sj:div id="lastSuggestion" loadingText="Yükleniyor..." href="%{suggestion}" label="Son Eklenenler" cssClass="topcategory" cssStyle="width:230px;">İçerik Bulunmamaktadır.</sj:div>
+					</tr>
+				</table>
+    	</div>
+    	
 </div>

@@ -31,10 +31,10 @@ function suggest()
 		<!-- Poi detail start -->
 		<table width="100%" border="0">
 			<tr>
-				<td width="*" valign="top">
+				<td width="500px" valign="top">
 					
 					
-					<table border="0" width="100%">
+					<table border="0" width="450px">
 						<tr>
 							<td> 
 					        	<img border="0" src="/content/<s:property value="#session.userContext.selectedPoi.profileImage"/>" width="125" length="200"/>
@@ -87,6 +87,14 @@ function suggest()
 							</tr>
 						</s:if>
 						
+						<s:if test="%{#session.userContext.selectedPoi.info neq ''}">
+							<tr>
+								<td valign="top"><span class="bold">Bilgi: </span> <s:property
+										value="#session.userContext.selectedPoi.info" escape="true" />
+								</td>
+							</tr>
+						</s:if>
+						
 						<tr>
 							<td align="left">
 								<s:form action="suggest/%{#session.userContext.selectedPoi.uniqueIdentifier}">
@@ -117,7 +125,7 @@ function suggest()
 					</td>
 					
 					
-				<td width="250px" valign="top">
+				<td width="250px">
 					<table width="100%" border="0" cellpadding="0" cellspacing="0">
 						<tr>
 							<td><s:if test="#session.userContext.selectedPoi.coordLat">
@@ -149,7 +157,7 @@ function suggest()
 
 										}
 									</script>
-									<div id="map_canvas" style="width: 300px; height: 300px">
+									<div id="map_canvas" style="width: 335px; height: 330px">
 										<script type="text/javascript">
 											initialize();
 										</script>

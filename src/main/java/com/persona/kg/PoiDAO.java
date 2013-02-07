@@ -17,6 +17,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblCity;
 import com.persona.kg.dao.TblComment;
+import com.persona.kg.dao.TblConversation;
 import com.persona.kg.dao.TblDistrict;
 import com.persona.kg.dao.TblSubdistrict;
 import com.persona.kg.dao.TblImage;
@@ -232,6 +233,44 @@ public class PoiDAO extends BaseDao {
 		return results;
 	}
 	
+	public List<TblPoi> searchLastPoiByName(final int limit){
+		List<TblPoi> results=new ArrayList<TblPoi>();
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblPoi poi order by dateAdded");
+							query.setMaxResults(limit);
+							return query.list();
+						}
+					});
+			results = (List<TblPoi>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
+	public List<TblConversation> searchLastSuggestion(final int limit){
+		List<TblConversation> results=new ArrayList<TblConversation>();
+		try {
+			Object obj = getHibernateTemplate().execute(
+					new HibernateCallback() {
+
+						public Object doInHibernate(Session session)
+								throws HibernateException, SQLException {
+							Query query=session.createQuery("from TblConversation conv order by dateStarted");
+							query.setMaxResults(limit);
+							return query.list();
+						}
+					});
+			results = (List<TblConversation>) obj;
+		} catch (Exception exp) {
+			logger.error("Database Exception", exp);
+		}
+		return results;
+	}
 	
 	public List<TblPoi> searchPoiByName(final String name, final int limit){
 		List<TblPoi> results=new ArrayList<TblPoi>();
@@ -253,7 +292,6 @@ public class PoiDAO extends BaseDao {
 		}
 		return results;
 	}
-	
 	
 	public List<TblCity> retrieveCityList(){
 		List<TblCity> results=new ArrayList<TblCity>();

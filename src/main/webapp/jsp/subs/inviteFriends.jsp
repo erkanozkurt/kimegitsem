@@ -16,3 +16,4 @@
 	<input type="hidden" id="mailAddressContainer" name="mailAddressContainer">
 	<a href="#" onclick="validateInvitationForm()"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/send.jpg")%>"></a></a>
 </s:form>
+<s:actionmessage/>

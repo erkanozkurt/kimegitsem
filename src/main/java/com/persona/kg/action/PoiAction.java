@@ -4,13 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.interceptor.SessionAware;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.util.FileCopyUtils;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -21,11 +28,13 @@ import com.persona.kg.SubscriberDAO;
 import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.common.CachedResources;
 import com.persona.kg.common.ImageResizer;
+import com.persona.kg.common.JsonObject;
 import com.persona.kg.common.ObjectIdGenerator;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblCity;
 import com.persona.kg.dao.TblComment;
+import com.persona.kg.dao.TblConversation;
 import com.persona.kg.dao.TblDistrict;
 import com.persona.kg.dao.TblSubdistrict;
 import com.persona.kg.dao.TblImage;
@@ -52,6 +61,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 	private File imageFile;
 	private TblCategory category;
 	private List<TblPoi> poiList;
+	private List<TblConversation> convList;
 	private String categoryId;
 	private TblPoi poi;
 	private boolean updateMode = false;
@@ -170,8 +180,10 @@ public class PoiAction extends BaseAction implements SessionAware {
 					admin.setStatus((short) 2);
 					poiDAO.setAdmin(admin);
 					addActionMessage("İşletme başarıyla kaydedildi!");
+					sendInfo();
 					logger.info("appLog hizmEkle kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
-									}
+									
+				}
 			} else {
 				if (poiDAO.updatePoi(poi)) {
 					TblPoiCategory poiCategory = new TblPoiCategory();
@@ -207,6 +219,37 @@ public class PoiAction extends BaseAction implements SessionAware {
 		return name;
 	}
 
+	public String sendInfo() {
+		final TblSubscriber authenticatedUser=getUserContext().getAuthenticatedUser();
+		UserContext userContext = getUserContext();
+				MimeMessagePreparator mimepreparator = new MimeMessagePreparator() {
+					public void prepare(MimeMessage mimeMessage) throws Exception {
+						MimeMessageHelper message = new MimeMessageHelper(
+								mimeMessage);
+						// mail sending parameters
+						message.setTo("ylcnarslan@windowslive.com");
+						message.setFrom("ylcnarsln@gmail.com");
+						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" bir hizmet veren ekledi.");
+						Map model = new HashMap();
+						model.put("name", authenticatedUser.getName());
+						model.put("surname", authenticatedUser.getSurname());
+						model.put("profile","https://graph.facebook.com/"+authenticatedUser.getFacebookId()+"/picture");
+						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
+						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
+						
+						model.put("poiname",poi.getPoiName());
+						model.put("category",cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+						String mailContent = VelocityEngineUtils
+								.mergeTemplateIntoString(getVelocityEngine(),
+										"info.vm", "UTF-8", model);
+						message.setText(mailContent, true);
+	
+					}
+				};
+				this.getMailSender().send(mimepreparator);
+		return "success";
+	}
+	
 	private void sendFacebookFeed(String accessToken, String context,
 			String name) {
 		FacebookClient facebookClient = new DefaultFacebookClient(accessToken);
@@ -381,6 +424,14 @@ public class PoiAction extends BaseAction implements SessionAware {
 		return "poiListAjax";
 	}
 	
+	public String lastAddedPoiList(){
+		this.setPoiList( poiDAO.searchLastPoiByName(5));
+		return "poiListAjax";
+	}
+	public String lastSuggestionList(){
+		this.setConvList(poiDAO.searchLastSuggestion(5));
+		return "poiListAjax";
+	}
 	public String addWatch() {
 		String result = "success";
 		TblWatchList watch = new TblWatchList();
@@ -559,4 +610,13 @@ public class PoiAction extends BaseAction implements SessionAware {
 		this.authority = authority;
 	}
 
+	public List<TblConversation> getConvList() {
+		return convList;
+	}
+
+	public void setConvList(List<TblConversation> convList) {
+		this.convList = convList;
+	}
+
+	
 }

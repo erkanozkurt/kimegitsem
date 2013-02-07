@@ -26,6 +26,7 @@ import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.springframework.util.FileCopyUtils;
 
+import com.persona.kg.common.CachedResources;
 import com.opensymphony.xwork2.ActionContext;
 import com.persona.kg.LandingPageDAO;
 import com.persona.kg.SubscriberDAO;
@@ -53,7 +54,17 @@ public class UserAction extends BaseAction implements SessionAware,
 	private List<TblSubscriber> friendList;
 	private int messageId;
 	private List jsonList;
+	@Autowired
+	private CachedResources cachedResources;
 
+
+	public CachedResources getCachedResources() {
+		return cachedResources;
+	}
+
+	public void setCachedResources(CachedResources cachedResources) {
+		this.cachedResources = cachedResources;
+	}
 
 	public String profile() {
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -190,21 +201,6 @@ public class UserAction extends BaseAction implements SessionAware,
 		return "success";
 	}
 
-	/*public String showInbox(){
-		messageList=new ArrayList<TblMessage>();
-		TblMessage message=new TblMessage();
-		message.setMessage("test234223");
-		message.setSubject("sdasdsadsdsd");
-		message.setSendDate(new Date());
-		messageList.add(message);
-		
-		message=new TblMessage();
-		message.setMessage("test234223");
-		message.setSubject("sdasdsadsdsd1");
-		message.setSendDate(new Date());
-		messageList.add(message);
-		return "success";
-	}*/
 	
 	public String showInbox(){
 		String result="success";
@@ -288,6 +284,14 @@ public class UserAction extends BaseAction implements SessionAware,
 
 	public void setFriendList(List<TblSubscriber> friendList) {
 		this.friendList = friendList;
+	}
+
+	public TblPoi getPoi() {
+		return poi;
+	}
+
+	public void setPoi(TblPoi poi) {
+		this.poi = poi;
 	}
 
 

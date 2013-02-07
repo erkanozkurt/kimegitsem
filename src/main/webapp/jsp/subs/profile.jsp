@@ -3,7 +3,7 @@
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@taglib prefix="sj" uri="/struts-jquery-tags"%>
 <div class="contentDiv" id="contentDiv">
-<s:actionmessage/>
+
 <sj:tabbedpanel id="userProfile">
 	<s:if test="#session.userContext.authenticatedUser.subscriberId==#request.subscriber.subscriberId">	
 		   <sj:tab target="profile" id="profileTab" label="Profilim"> </sj:tab>
@@ -108,4 +108,5 @@
 			</s:else>
 
 </sj:tabbedpanel>
+<s:actionmessage/>
 </div>	
