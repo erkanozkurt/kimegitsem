@@ -24,10 +24,10 @@
 
 	<div class="nearLocations" id="nearLocations" style="top: 300px;">	
 		<div class="grayHeading" style="width: 561px; top:90px;">Yakınınızdaki Yerel Hizmetler</div>
-			<s:url var="url2publish" action="listPoi?categoryId=100" namespace="/ajax" />
-			<s:url var="url3publish" action="listPoi?categoryId=132" namespace="/ajax" />
-			<s:url var="url4publish" action="listPoi?categoryId=109" namespace="/ajax" />
-			<s:url var="url5publish" action="listPoi?categoryId=116" namespace="/ajax" />
+			<s:url var="url2publish" action="listPoi?categoryId=1" namespace="/ajax" />
+			<s:url var="url3publish" action="listPoi?categoryId=2" namespace="/ajax" />
+			<s:url var="url4publish" action="listPoi?categoryId=32" namespace="/ajax" />
+			<s:url var="url5publish" action="listPoi?categoryId=25" namespace="/ajax" />
 			<div class="categoryListInner" style="width: 561px; top: 90px;">
 				<table>
 					<tr>
