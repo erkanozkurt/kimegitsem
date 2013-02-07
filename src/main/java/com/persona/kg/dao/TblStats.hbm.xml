@@ -27,5 +27,9 @@
                 <comment>1- subscriber, 2- poi, 3- picture</comment>
             </column>
         </property>
+            
+        <property name="log" type="string">
+            <column name="log" length="1000" not-null="true" />
+        </property>
     </class>
 </hibernate-mapping>

@@ -35,7 +35,7 @@
         <td valign="top"><img src="$profile"/></td>
         <td><p><strong>$name $surname</strong>,  seni kimegitsem?com'da tavsiyelerine güvendiği arkadaş listesine eklemek istiyor.</p>
         
-          <p><a href="web1.kimegitsem.com" class="addPoi">Arkadaşlık İsteğini Kabul Et</a></p>
+          <p><a href="$url" class="addPoi">Arkadaşlık İsteğini Kabul Et</a></p>
           <p>kimegitsem?com’da  tavsiye istemek ve tavsiye yazmak çok kolay! Siz de tamamen ücretsiz  kimegitsem?com’a üye olun, sosyal medyadaki arkadaş çevrenizin gücünü keşfedin.</p></td>
       </tr>
     </table></td>

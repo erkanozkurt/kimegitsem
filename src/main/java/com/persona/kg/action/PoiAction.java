@@ -30,6 +30,7 @@ import com.persona.kg.common.CachedResources;
 import com.persona.kg.common.ImageResizer;
 import com.persona.kg.common.JsonObject;
 import com.persona.kg.common.ObjectIdGenerator;
+import com.persona.kg.common.StatConstants;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblCity;
@@ -84,6 +85,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 	
 	public String show() {
 		logger.debug("show invoked");
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId() , StatConstants.AT_VIEW, StatConstants.IT_POI,null);
 		return "show";
 	}
 

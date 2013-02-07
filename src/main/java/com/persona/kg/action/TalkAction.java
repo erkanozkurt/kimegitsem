@@ -27,6 +27,7 @@ import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.common.CachedResources;
 import com.persona.kg.common.ImageResizer;
 import com.persona.kg.common.ObjectIdGenerator;
+import com.persona.kg.common.StatConstants;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblCategory;
 import com.persona.kg.dao.TblComment;
@@ -162,6 +163,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 								}
 							}
 						}
+					
 						getServletRequest().setAttribute("conversation", conv);
 					}
 				}
@@ -259,6 +261,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 					}
 				}
 			}
+			addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId() , StatConstants.AT_SUGGEST, StatConstants.IT_POI,null);
 
 		}catch(Exception e){
 			logger.warn("Facebook publish exception",e);

@@ -105,7 +105,7 @@ public class CategoryDAO extends BaseDao {
 			Iterator<TblCategory> categoryIterator = tempList.iterator();
 			TblCategory topCategory = new TblCategory();
 			topCategory.setCategoryId(0);
-			topCategory.setCategoryName("Top");
+			topCategory.setCategoryName("Tüm Kategoriler");
 			results.put(0, topCategory);
 			while (categoryIterator.hasNext()) {
 				TblCategory tmp = categoryIterator.next();

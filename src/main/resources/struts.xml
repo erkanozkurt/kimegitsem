@@ -154,6 +154,11 @@
 			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
 			<result name="success"  type="tiles" >master</result>
 		</action>
+		<action name="register" class="subscriberAction" method="register">
+			<interceptor-ref name="unsecuredDefInterceptors"></interceptor-ref>
+			<result type="tiles" name="success">master</result>
+		</action>
+		
 	</package>
 
 	<package name="facebook" extends="default" namespace="/fb">

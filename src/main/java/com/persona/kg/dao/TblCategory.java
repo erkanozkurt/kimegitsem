@@ -3,6 +3,7 @@ package com.persona.kg.dao;
 // Generated Jul 22, 2012 7:33:02 PM by Hibernate Tools 3.4.0.CR1
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,6 +93,19 @@ public class TblCategory implements java.io.Serializable {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public List<TblCategory> getParents() {
+		List<TblCategory> parents=new ArrayList<TblCategory>();
+		parents.add(this);
+		TblCategory tmp=getParent();	
+		
+		while(tmp!=null){
+			parents.add(tmp);
+			tmp=tmp.getParent();
+		}
+		Collections.reverse(parents);
+		return parents;
 	}
 
 }

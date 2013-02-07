@@ -15,6 +15,7 @@ public class TblStats implements java.io.Serializable {
 	private short actionType;
 	private Date dateAdded;
 	private short itemType;
+	private String log;
 
 	public TblStats() {
 	}
@@ -84,6 +85,14 @@ public class TblStats implements java.io.Serializable {
 
 	public void setItemType(short itemType) {
 		this.itemType = itemType;
+	}
+
+	public String getLog() {
+		return log;
+	}
+
+	public void setLog(String log) {
+		this.log = log;
 	}
 
 }

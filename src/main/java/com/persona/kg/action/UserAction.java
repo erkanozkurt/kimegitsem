@@ -19,6 +19,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.interceptor.SessionAware;
 import org.apache.velocity.app.VelocityEngine;
+import org.hibernate.type.IntegerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -31,6 +32,7 @@ import com.opensymphony.xwork2.ActionContext;
 import com.persona.kg.LandingPageDAO;
 import com.persona.kg.SubscriberDAO;
 import com.persona.kg.common.ApplicationConstants;
+import com.persona.kg.common.StatConstants;
 import com.persona.kg.common.UserContext;
 import com.persona.kg.dao.TblLandingPagePoi;
 import com.persona.kg.dao.TblMessage;
@@ -54,6 +56,10 @@ public class UserAction extends BaseAction implements SessionAware,
 	private List<TblSubscriber> friendList;
 	private int messageId;
 	private List jsonList;
+	private String id;
+	private String mail;
+	private String source;
+	private int st=0;
 	@Autowired
 	private CachedResources cachedResources;
 
@@ -181,6 +187,7 @@ public class UserAction extends BaseAction implements SessionAware,
 						model.put("profile","https://graph.facebook.com/"+authenticatedUser.getFacebookId()+"/picture");
 						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
 						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
+						model.put("url", ApplicationConstants.getContext()+"subs/register?id="+authenticatedUser.getSubscriberId()+"&mail="+address+"&source=email");
 						String mailContent = VelocityEngineUtils
 								.mergeTemplateIntoString(getVelocityEngine(),
 										"invitation.vm", "UTF-8", model);
@@ -245,6 +252,17 @@ public class UserAction extends BaseAction implements SessionAware,
 		return result;
 	}
 	
+	public String register() {
+		try{
+			addStat(Integer.parseInt(id), (short)0, StatConstants.AT_REGISTRATION,StatConstants.IT_UNDEFINED, "email:"+mail+" source:"+source);
+		}catch(Exception e){
+			LOG.warn("register error", e);
+		}
+		
+		return "success";
+	}
+
+	
 	public SubscriberDAO getSubscriberDAO() {
 		return subscriberDAO;
 	}
@@ -293,6 +311,40 @@ public class UserAction extends BaseAction implements SessionAware,
 	public void setPoi(TblPoi poi) {
 		this.poi = poi;
 	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public int getSt() {
+		return st;
+	}
+
+	public void setSt(int st) {
+		this.st = st;
+	}
+
+
 
 
 

@@ -4,6 +4,14 @@
 <div id="categoryList" class="categoryList">
 	<div id="categroyHeader" class="grayHeading">Kategoriler</div>
 	<div class="categoryListInner">
+		<s:iterator value="#session.userContext.selectedCategory.parents" var="category" status="status"> 
+			<s:a action="filter?category=%{categoryId}" namespace="/s" cssClass="category">
+				<s:iterator begin="0"  end="%{#status.index}">&nbsp;</s:iterator>
+				<s:property value="categoryName" escape="true" />
+			</s:a>
+			<br />
+		</s:iterator>
+	
 		<s:iterator value="#session.userContext.selectedCategory.childs" var="category"> 
 			<s:a action="filter?category=%{categoryId}" namespace="/s" cssClass="category">
 				<s:property value="categoryName" escape="true" />

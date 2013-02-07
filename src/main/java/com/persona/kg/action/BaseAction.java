@@ -33,8 +33,10 @@ import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.persona.kg.BaseDao;
 import com.persona.kg.common.ApplicationConstants;
 import com.persona.kg.common.UserContext;
+import com.persona.kg.dao.TblStats;
 import com.persona.kg.dao.TblSubscriber;
 import com.persona.kg.dao.TblWatchList;
 
@@ -59,6 +61,8 @@ public class BaseAction  extends ActionSupport implements ServletRequestAware,Se
 	private VelocityEngine velocityEngine;
 	@Autowired
 	private CacheManager cacheManager;
+	@Autowired
+	private BaseDao baseDao;
 
 	//protected final static String DESTINATION_DIR="/home/xv01d40337/tomcat5.5/webapps/content/";
 	public static String DESTINATION_DIR="";//Configuration.destinationDir;
@@ -131,7 +135,9 @@ public class BaseAction  extends ActionSupport implements ServletRequestAware,Se
 		 logger.debug("saveFileToFileSystem end [isSaved]"+isSaved);
 		    return isSaved;
 	}
-
+	public void addStat(final int subscriberId, final int itemId, final short actionType, final short itemType, final String log){
+		baseDao.addStat(subscriberId, itemId, actionType, itemType, log);
+	}
 
 	public String getSection() {
 		return section;
@@ -243,6 +249,12 @@ public class BaseAction  extends ActionSupport implements ServletRequestAware,Se
 	}
 	public void setVelocityEngine(VelocityEngine velocityEngine) {
 		this.velocityEngine = velocityEngine;
+	}
+	public BaseDao getBaseDao() {
+		return baseDao;
+	}
+	public void setBaseDao(BaseDao baseDao) {
+		this.baseDao = baseDao;
 	}
 
 

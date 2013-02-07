@@ -197,6 +197,9 @@
 		</property>
 	</bean>
 
+	<bean id="baseDao" class="com.persona.kg.BaseDao">
+		<property name="sessionFactory" ref="sessionFactoryMysql"></property>
+	</bean>
 	<bean id="landingPageDao" class="com.persona.kg.LandingPageDAO">
 		<property name="sessionFactory" ref="sessionFactoryMysql"></property>
 	</bean>
