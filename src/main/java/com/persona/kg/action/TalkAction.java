@@ -79,6 +79,8 @@ public class TalkAction extends BaseAction implements SessionAware {
 	private String selectedFriends;
 	private String suggestedCategory;
 	private String suggestionPlace;
+	private String id;
+	private String poiid;
 
 	public String show() {
 		String result = "list";
@@ -290,6 +292,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 			result=false;
 		}
 		logger.info("appLog tavsEt(genel) kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " yayınla hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "facebook genel tavsiye");
 		return result;
 	}
 
@@ -329,6 +332,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "facebook özel tavsiye");
 		logger.info("appLog tavsEt(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}
@@ -381,6 +385,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "mail yoluyla tavsiye");
 		logger.info("appLog tavsEt(mail - " +  yazliste  + ")kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}	
@@ -415,6 +420,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "mail yoluyla tavsiye isteme");
 		logger.info("appLog tavsİste(mail - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}	
@@ -454,6 +460,7 @@ private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeNa
 				yazliste+=list[i];
 			}
 		}
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "facebook özel tavsiye isteme");
 		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
 		return result;
 	}

@@ -45,12 +45,9 @@ public class CategoryInterceptor extends BaseInterceptor implements StrutsStatic
 	public String intercept(ActionInvocation action) throws Exception {
 		
 		ServletActionContext.getRequest().setCharacterEncoding("utf-8");
-		logger.debug("enter");
 		UserContext context=(UserContext)action.getInvocationContext().getSession().get(ApplicationConstants.USER_CONTEXT_KEY);
 		final ActionContext actionContext = action.getInvocationContext (); 
 		HttpServletRequest request = (HttpServletRequest) actionContext.get(HTTP_REQUEST);
-	
-		
 		context.setSelectedCategory(getSelecteCategoryFromCache(request.getParameter(ApplicationConstants.CATEGORY_ID_KEY)));
 		
 		logger.debug("exit");

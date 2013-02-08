@@ -241,7 +241,7 @@ public class PoiDAO extends BaseDao {
 
 						public Object doInHibernate(Session session)
 								throws HibernateException, SQLException {
-							Query query=session.createQuery("from TblPoi poi order by dateAdded");
+							Query query=session.createQuery("from TblPoi poi order by dateAdded desc");
 							query.setMaxResults(limit);
 							return query.list();
 						}

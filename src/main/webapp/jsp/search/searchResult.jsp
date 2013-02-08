@@ -19,5 +19,5 @@
 				</tr>
 			</table>
 	</s:if>
-	<s:a action="claimForm" namespace="/in" cssClass="addPoi" cssStyle="top: 30px; width: 150px; position:relative;">Yeni Hizmet Veren Ekle</s:a>
+	<s:a action="claimForm" namespace="/in" cssClass="addPoi" cssStyle="top: 30px; width: 200px; position:relative;">Yeni Hizmet Veren Ekle</s:a>
 </div>
