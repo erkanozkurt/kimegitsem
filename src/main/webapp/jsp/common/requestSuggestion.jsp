@@ -60,6 +60,21 @@
 	
 		 //event.originalEvent.options.submit = false;
 		});
-	
-	
+	function getValues(){
+		alert("aaa");
+		document.getElementById("categoryValue").value=document.getElementById("suggestedCategoryAs").value;
+		document.getElementById("cityValue").value=document.getElementById("suggestedCityAs").value;
+	}
+	function getCategoryValue(){
+		
+		var category=document.getElementById("suggestedCategoryAs").value;
+		return category;
+		
+		alert("aaa");
+	}
+	function getCityValue(){
+		var city=document.getElementById("suggestedCityAs").value;
+		return city;
+		alert("aaa");
+	}
 </script>

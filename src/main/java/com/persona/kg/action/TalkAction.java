@@ -64,6 +64,14 @@ public class TalkAction extends BaseAction implements SessionAware {
 	private File imageFile;
 	private TblCategory category;
 	private TblPoi poi;
+	public TblPoi getPoi() {
+		return poi;
+	}
+
+	public void setPoi(TblPoi poi) {
+		this.poi = poi;
+	}
+
 	private List<TblPoi> poiList;
 	private String categoryId;
 	private String what_widget;
@@ -263,7 +271,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 					}
 				}
 			}
-			addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId() , StatConstants.AT_SUGGEST, StatConstants.IT_POI,null);
+			addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId() , StatConstants.AT_SUGGEST, StatConstants.IT_POI,"");
 
 		}catch(Exception e){
 			logger.warn("Facebook publish exception",e);
@@ -291,8 +299,8 @@ public class TalkAction extends BaseAction implements SessionAware {
 		}else{
 			result=false;
 		}
-		logger.info("appLog tavsEt(genel) kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " yayınla hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "facebook genel tavsiye");
+		logger.info("appLog tavsEt(genel) kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " yayınla hizmAd:" + poi.getPoiName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "facebook genel tavsiye");
 		return result;
 	}
 
@@ -332,8 +340,8 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "facebook özel tavsiye");
-		logger.info("appLog tavsEt(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "facebook özel tavsiye");
+		logger.info("appLog tavsEt(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
 		return result;
 	}
 
@@ -385,8 +393,12 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_SUGGEST,StatConstants.IT_POI, "mail yoluyla tavsiye");
-		logger.info("appLog tavsEt(mail - " +  yazliste  + ")kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),
+				poi.getPoiId(), 
+				StatConstants.AT_SUGGEST,
+				StatConstants.IT_POI, 
+				"mail yoluyla tavsiye");
+		logger.info("appLog tavsEt(mail - " +  yazliste  + ")kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
 		return result;
 	}	
 
@@ -420,8 +432,8 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "mail yoluyla tavsiye isteme");
-		logger.info("appLog tavsİste(mail - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "mail yoluyla tavsiye isteme");
+		logger.info("appLog tavsİste(mail - " + yazliste + "kullanici:" + userContext.getAuthenticatedUser().getName() + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
 		return result;
 	}	
 
@@ -460,8 +472,8 @@ private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeNa
 				yazliste+=list[i];
 			}
 		}
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),getUserContext().getSelectedPoi().getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "facebook özel tavsiye isteme");
-		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName() + " kategori:"+cachedResources.getCategoryMap().get(poi.getCategory()).getCategoryName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "facebook özel tavsiye isteme");
+		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
 		return result;
 	}
 	public String addWatch() {

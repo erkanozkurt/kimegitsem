@@ -86,8 +86,9 @@ public class PoiAction extends BaseAction implements SessionAware {
 	public String show() {
 		logger.debug("show invoked");
 		UserContext userContext = getUserContext();
-		//addStat(getUserContext().getAuthenticatedUser().getSubscriberId(), getUserContext().getSelectedPoi().getPoiId() , StatConstants.AT_VIEW, StatConstants.IT_POI, null);
-		//logger.info("appLog hizmGoster kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(), userContext.getSelectedPoi().getPoiId() , StatConstants.AT_VIEW, StatConstants.IT_POI, "");
+		logger.info("appLog hizmGoster kullanici:" + 
+		userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + userContext.getSelectedPoi().getPoiName());
 		return "show";
 	}
 
@@ -231,7 +232,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 						MimeMessageHelper message = new MimeMessageHelper(
 								mimeMessage);
 						// mail sending parameters
-						message.setTo("ylcnarslan@windowslive.com");
+						message.setTo("adnan.ertemel@gmail.com");
 						message.setFrom("ylcnarsln@gmail.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" bir hizmet veren ekledi.");
 						Map model = new HashMap();

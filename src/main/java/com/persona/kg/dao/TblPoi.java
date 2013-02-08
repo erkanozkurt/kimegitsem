@@ -33,8 +33,9 @@ public class TblPoi implements java.io.Serializable {
 	private String keywords;
 	private String website;
 	private Integer category;
+	
 	public String getPoiName() {
-		return poiName;
+		return this.poiName;
 	}
 
 	public void setPoiName(String poiName) {

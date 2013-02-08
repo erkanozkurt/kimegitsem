@@ -19,7 +19,7 @@ public class UserContext {
 
 
 	public TblPoi getSelectedPoi() {
-		return selectedPoi;
+		return this.selectedPoi;
 	}
 	public void setSelectedPoi(TblPoi selectedPoi) {
 		this.selectedPoi = selectedPoi;
