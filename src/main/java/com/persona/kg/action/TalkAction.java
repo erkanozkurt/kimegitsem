@@ -271,7 +271,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 					}
 				}
 			}
-			addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId() , StatConstants.AT_SUGGEST, StatConstants.IT_POI,"");
+			//addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId() , StatConstants.AT_SUGGEST, StatConstants.IT_POI,"");
 
 		}catch(Exception e){
 			logger.warn("Facebook publish exception",e);
