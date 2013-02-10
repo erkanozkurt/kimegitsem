@@ -46,9 +46,9 @@ public class MainPageAction extends BaseAction implements SessionAware,
                         .getAttribute(FACEBOOK_USER_CLIENT);
 }
 	public String addCategory(){
-		System.out.print("aaa");
-		System.out.print(category.getCategoryName());
-		System.out.print("sss");
+	
+		//System.out.print(category.getCategoryName());
+	
 		String result="success";
 		categoryDao.addCategory(category);
 		return result;
