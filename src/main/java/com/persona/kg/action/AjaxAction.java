@@ -203,7 +203,7 @@ public class AjaxAction extends BaseAction implements SessionAware,
 	public String poiList(){
 		jsonResult=new JsonObject();
 		json=new HashMap<String,String>();
-		List<TblPoi> list=poiDao.searchPoiByName(suggestion,5);
+		List<TblPoi> list=poiDao.searchPoiByName(term,5);
 		if(list!=null && list.size()>0){
 			Iterator<TblPoi> poiIterator=list.iterator();
 			while(poiIterator.hasNext()){
