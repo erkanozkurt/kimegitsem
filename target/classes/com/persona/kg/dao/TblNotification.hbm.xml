@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2012 7:33:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.persona.kg.dao.TblNotification" table="tbl_notification" catalog="kimegitsem">
+        <id name="notificationId" type="int">
+            <column name="notification_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="notificationText" type="string">
+            <column name="notification_text" length="65535" not-null="true" />
+        </property>
+        <property name="notificationType" type="short">
+            <column name="notification_type" not-null="true">
+                <comment>holds type information: 1- subscriber, 2- poi</comment>
+            </column>
+        </property>
+        <property name="senderId" type="int">
+            <column name="sender_id" not-null="true" />
+        </property>
+        <property name="notificationDate" type="timestamp">
+            <column name="notification_date" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

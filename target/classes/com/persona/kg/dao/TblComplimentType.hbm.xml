@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2012 7:33:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.persona.kg.dao.TblComplimentType" table="tbl_compliment_type" catalog="kimegitsem">
+        <id name="complimentTypeId" type="int">
+            <column name="compliment_type_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="itemType" type="short">
+            <column name="item_type" not-null="true">
+                <comment>1- subscriber ,2- poi, 3- comment, 4- picture</comment>
+            </column>
+        </property>
+        <property name="compText" type="string">
+            <column name="comp_text" length="100" not-null="true" />
+        </property>
+        <property name="status" type="short">
+            <column name="status" not-null="true">
+                <comment>1-enabled, 2-disabled (not shown in available options)</comment>
+            </column>
+        </property>
+        <set name="tblCompliments" table="tbl_compliment" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="compliment_type" not-null="true" />
+            </key>
+            <one-to-many class="com.persona.kg.dao.TblCompliment" />
+        </set>
+    </class>
+</hibernate-mapping>

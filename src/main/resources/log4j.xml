@@ -11,6 +11,7 @@
 
 	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="c:/log/kimegitsem.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<param name="MaxFileSize" value="9000KB" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<!-- Keep one backup file -->

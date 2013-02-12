@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2012 7:33:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.persona.kg.dao.TblTransactionLog" table="tbl_transaction_log" catalog="kimegitsem">
+        <id name="logId" type="int">
+            <column name="log_id" />
+            <generator class="assigned" />
+        </id>
+        <property name="subscriberId" type="java.lang.Integer">
+            <column name="subscriber_id" />
+        </property>
+        <property name="poiId" type="java.lang.Integer">
+            <column name="poi_id" />
+        </property>
+        <property name="logText" type="string">
+            <column name="log_text" length="65535" />
+        </property>
+        <property name="logDate" type="timestamp">
+            <column name="log_date" length="19" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

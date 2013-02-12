@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www7.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</head>
+
+<body>
+<table border="0">
+<tr>
+  <td><a href="http://kgitsemtest.zapto.org:8080/kimegitsem/"><img src="yok" width="350" height="101" border="0" /></a></td></tr>
+<tr>
+<td>
+<pre><font face="Arial, Helvetica, sans-serif">
+<img src="yok" />
+erkan �zkurt seni kimegitsem?com sisteminde tavsiyelerine güvendiği kişilerden biri 
+olarak seçti ve arkadaş olarak eklemek istiyor. 
+
+<a href="http://kgitsemtest.zapto.org:8080/kimegitsem/"><img src="yoko" border="0" /></a>
+
+kimegitsem, çağımızda en değerli ve az bulunur unsur olan güvenilebilecek hizmetveren 
+arayışında en güvenilir bilgi kaynağı olan arkadaşların tavsiyelerini temel alan konusunda 
+dünyada ilk ve tek sosyal medya merkezli yenilikçi internet yazılımıdır.
+
+Doktordan, avukata, mali müşavirden, ev dekorasyon firmasına hizmet sektöründe aklınıza 
+gelebilecek hemen her konuda arkadaşlarınızdan tavsiye isteyebileceğiniz, deneyimlerinizle 
+ilgili beğendiğiniz hizmetverenler için tavsiye yazabileceğiniz ve çevrenizde yerel 
+hizmetverenlerle ilgili kim kimi tavsiye etmiş takip edebileceğiniz eşsiz bir deneyim sunan 
+kimegitsem'i ücretsiz kullanmak için hemen tıkla! </font>
+</pre>
+</td>
+</tr>
+<tr>
+<td><pre><font face="Arial, Helvetica, sans-serif"><font color="#0033CC">Sosyal</font>"leşen,"<font color="#0033CC">beğen</font>"ilen,
+hakettiği ilgiyi gören <font color="#fe6801">yerel hizmetverenler</font>…
+Günlük ihtiyaçlarında,  <font color="#fe6801">güvenilir</font> hizmetveren arayışında  <font color="#fe6801">arkadaş ağının</font> desteğini yanında
+hisseden mutlu tüketiciler…
+</font>
+</pre>
+</td>
+</tr>
+</table>
+</body>
+</html>

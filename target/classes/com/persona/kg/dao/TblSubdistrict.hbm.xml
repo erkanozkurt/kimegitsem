@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 6, 2012 6:25:50 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+    <class name="com.persona.kg.dao.TblSubdistrict" table="tbl_subdistrict" catalog="kimegitsem">
+        <id name="subdistrictId" type="int">
+            <column name="subdistrict_id" />
+            <generator class="assigned" />
+        </id>
+        
+        <property name="districtId" type="int">
+            <column name="district_id" not-null="true" />
+        </property>
+        
+        <property name="subdistrictName" type="string">
+            <column name="subdistrict_name" length="100" not-null="true" />
+        </property>
+     </class>
+</hibernate-mapping>

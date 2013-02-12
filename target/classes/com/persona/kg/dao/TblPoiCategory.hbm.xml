@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2012 7:33:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.persona.kg.dao.TblPoiCategory" table="tbl_poi_category" catalog="kimegitsem">
+        <composite-id name="id" class="com.persona.kg.dao.TblPoiCategoryId">
+            <key-property name="poiId" type="int">
+                <column name="poi_id" />
+            </key-property>
+            <key-property name="categoryId" type="int">
+                <column name="category_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="tblPoi" class="com.persona.kg.dao.TblPoi" update="false" insert="false" fetch="select">
+            <column name="poi_id" not-null="true" />
+        </many-to-one>
+        <many-to-one name="tblCategory" class="com.persona.kg.dao.TblCategory" update="false" insert="false" fetch="select">
+            <column name="category_id" not-null="true" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

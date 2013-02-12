@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2012 7:33:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+ <class catalog="kimegitsem" name="com.persona.kg.dao.TblPoi" table="tbl_poi">
+  <id name="poiId" type="int">
+   <column name="poi_id"/>
+   <generator class="identity"/>
+  </id>
+  
+  <many-to-one class="com.persona.kg.dao.TblDistrict" fetch="select" name="tblDistrict">
+   <column name="district_id"/>
+  </many-to-one>
+  
+   <many-to-one class="com.persona.kg.dao.TblSubdistrict" fetch="select" name="tblSubdistrict">
+   <column name="subdistrict_id"/>
+  </many-to-one>
+  
+  <property generated="never" lazy="false" name="uniqueIdentifier" type="string">
+   <column length="100" name="unique_identifier" not-null="true" unique="true"/>
+  </property>
+  <property generated="never" lazy="false" name="address" type="string">
+   <column length="200" name="address"/>
+  </property>
+  <property generated="never" lazy="false" name="cityId" type="java.lang.Integer">
+   <column name="city_id"/>
+  </property>
+  <property generated="never" lazy="false" name="coordLat" type="java.math.BigDecimal">
+   <column name="coord_lat" precision="20" scale="0"/>
+  </property>
+  <property generated="never" lazy="false" name="coordLong" type="java.math.BigDecimal">
+   <column name="coord_long" precision="20" scale="0"/>
+  </property>
+  <property generated="never" lazy="false" name="info" type="string">
+   <column length="65535" name="info"/>
+  </property>
+  <property generated="never" lazy="false" name="phone" type="string">
+   <column length="45" name="phone"/>
+  </property>
+  <property generated="never" lazy="false" name="dateAdded" type="timestamp">
+   <column length="19" name="date_added"/>
+  </property>
+  <property generated="never" lazy="false" name="profileImage" type="string">
+   <column length="45" name="profile_image"/>
+  </property>
+  
+  <set fetch="select" inverse="true" lazy="true" name="tblComments"
+   sort="unsorted" table="tbl_comment">
+   <key>
+    <column name="poi_id" not-null="true"/>
+   </key>
+   <one-to-many class="com.persona.kg.dao.TblComment"/>
+  </set>
+  
+  <set fetch="select" inverse="true" lazy="true" name="tblPoiCategories"
+   sort="unsorted" table="tbl_poi_category">
+   <key>
+    <column name="poi_id" not-null="true"/>
+   </key>
+   <one-to-many class="com.persona.kg.dao.TblPoiCategory"/>
+  </set>
+  
+  <set fetch="select" inverse="true" lazy="true" name="tblListItemses"
+   sort="unsorted" table="tbl_list_items">
+   <key>
+    <column name="poi_id"/>
+   </key>
+   <one-to-many class="com.persona.kg.dao.TblListItems"/>
+  </set>
+  
+  <set fetch="select" inverse="true" lazy="true"
+   name="tblAttributeValues" sort="unsorted" table="tbl_attribute_value">
+   <key>
+    <column name="poi_id" not-null="true"/>
+   </key>
+   <one-to-many class="com.persona.kg.dao.TblAttributeValue"/>
+  </set>
+  
+  <property generated="never" lazy="false" name="poiName" type="string">
+   <column length="1000" name="poi_name"/>
+  </property>
+  <property generated="never" lazy="false" name="keywords" type="string">
+  	<column length="1000" name="keywords"/>
+  </property>
+  <property generated="never" lazy="false" name="website" type="string">
+  	<column length="200" name="website"/>
+  </property>
+    <property generated="never" lazy="false" name="authorityEmail" type="string">
+   <column length="100" name="authority_email"/>
+  </property>
+ </class>
+</hibernate-mapping>

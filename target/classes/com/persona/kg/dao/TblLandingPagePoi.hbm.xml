@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 22, 2012 7:33:03 PM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="com.persona.kg.dao.TblLandingPagePoi" table="tbl_landing_page_poi" catalog="kimegitsem">
+        <id name="lpid" type="java.lang.Integer">
+            <column name="lpid" />
+            <generator class="identity" />
+        </id>
+        <property name="poiType" type="string">
+            <column name="poi_type" length="100">
+                <comment>1- Doktor, 2- avukat, 3- y&#252;zy&#252;ze</comment>
+            </column>
+        </property>
+        <property name="comment" type="string">
+            <column name="comment" length="65535" />
+        </property>
+        <property name="image" type="string">
+            <column name="image" length="100" />
+        </property>
+        <property name="username" type="string">
+            <column name="username" length="20" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>
