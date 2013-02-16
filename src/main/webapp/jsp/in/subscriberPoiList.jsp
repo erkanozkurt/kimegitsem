@@ -20,12 +20,12 @@
 				<table>
 					<tr>
 						<td>
-							<a href="#" onclick="return hs.close('uploadImagePopup');" ><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/close.jpg")%>"></a>
+							<a href="#" onclick="javascript:document.getElementById('uploadPicForm').submit();"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/load.jpg")%>"></a>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<a href="#" onclick="javascript:document.getElementById('uploadPicForm').submit();"><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/load.jpg")%>"></a>
+							<a href="#" onclick="return hs.close('uploadImagePopup');" ><img border="0" src="<%=response.encodeURL(request.getContextPath()+ "/img/close.jpg")%>"></a>
 						</td>
 					</tr>
 				</table>
