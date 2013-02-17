@@ -52,14 +52,12 @@
 <sj:dialog id="requestSuggestionPopupDialog" title="Tavsiye İstiyorum" autoOpen="false" modal="true"  width="500" position="center"></sj:dialog>
 <sj:dialog id="showSuggestPopupDialog" title="Tavsiye Ediyorum" autoOpen="false" modal="true" width="500" position="center"></sj:dialog>
 
-<div id="facebookLoginDiv" class="popupDiv">			
-		<div class="popupHeader">kimegitsem?com'a bağlan!</div>
+<sj:dialog id="facebookLoginDiv" title="kimegitsem?com'a bağlan!" autoOpen="false" modal="true" width="200" position="center" openTopics="openFacebookPopup" closeTopics="closeFacebookPopup">			
 		<div align="center">
 			<fb:login-button autologoutlink="true"
 				scope="email,user_likes,user_checkins,publish_stream">Facebook ile bağlan</fb:login-button>
 		</div>
-</div>
-
+</sj:dialog>
 <script type="text/javascript">
 	function sendSearchForm(e){
 		if(e && e.keyCode == 13){

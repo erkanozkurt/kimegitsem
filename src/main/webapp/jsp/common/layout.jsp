@@ -55,7 +55,7 @@
 				  url: "<%=response.encodeURL(request.getContextPath()+"/fb/login")%>?access_token="+accessCode,
 				  success:function (data) {
 						   if(popupMode==true){
-							   hs.close("facebookLoginDiv");
+							   $.publish("closeFacebookPopup");
 							   popupMode=false;
 						   }
 
@@ -103,7 +103,8 @@
 						}else{
 							document.getElementById('login').style.display='block';
 							document.getElementById('logoutdiv').style.display = 'hide';
-							hs.htmlExpand(null, {width: 400,height:100, contentId: 'facebookLoginDiv',wrapperClassName :'draggable-header'} );
+							$.publish("openFacebookPopup");
+							//hs.htmlExpand(null, {width: 400,height:100, contentId: 'facebookLoginDiv',wrapperClassName :'draggable-header'} );
 						}
 					});
 		};
