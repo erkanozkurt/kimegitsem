@@ -102,6 +102,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 		return result;
 	}
 
+	//TAVSİYE İSTEME
 	public String ask() {
 		String result = "success";
 		if (logger.isDebugEnabled()) {
@@ -185,6 +186,7 @@ public class TalkAction extends BaseAction implements SessionAware {
 	}
 
 	private boolean askFacebookSuggestion(String accessToken, Integer convId) {
+		UserContext userContext = getUserContext();
 		boolean result = false;
 		try {
 			FacebookClient facebookClient = new DefaultFacebookClient(
@@ -201,9 +203,91 @@ public class TalkAction extends BaseAction implements SessionAware {
 		} catch (Exception e) {
 			logger.warn("Facebook publish exception", e);
 		}
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(), 0, StatConstants.AT_REQUEST_SUGGESTION, StatConstants.IT_POI, "facebook genel tavsiye isteme");
+		logger.info("appLog tavsİste(genel) kullanici:" + userContext.getAuthenticatedUser().getName() + userContext.getAuthenticatedUser().getSurname());
 		return result;
 	}
 
+	private boolean askMailSuggestion(TblCategory selectedCategory, String placeName){
+		boolean result=true;
+		String[] list=null;
+		String yazliste="";
+		UserContext userContext = getUserContext();
+		if(emailList!=null){
+			list=emailList.split("\\,");
+			if(list!=null && list.length>0){
+				for(String email:list){
+					if(EmailValidator.getInstance().isValid(email)==true){
+						Map model = new HashMap();
+						model.put("name", userContext.getAuthenticatedUser().getName());
+						model.put("surname", userContext.getAuthenticatedUser().getSurname());
+						model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
+						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
+						model.put("category", selectedCategory.getCategoryName());
+						model.put("place",placeName);
+						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
+						model.put("description", description);
+						sendMail(model, "requestSuggestion", email, getSubjectForRequest(selectedCategory.getCategoryName()));
+					}
+				}
+			}
+		}
+		if(list!=null && list.length>0){
+			for(int i=0;i<list.length;i++){
+				yazliste+=list[i];
+			}
+		}
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(), 0, StatConstants.AT_REQUEST_SUGGESTION, StatConstants.IT_POI, "mail yoluyla tavsiye isteme");
+		logger.info("appLog tavsİste(mail - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + userContext.getAuthenticatedUser().getSurname() + " kategori/şehir:" + selectedCategory.getCategoryName() + "/" + placeName);
+		return result;
+	}	
+
+	private boolean askPrivateSuggestion(TblCategory selectedCategory,
+			String placeName) {
+		boolean result = true;
+		String[] list = null;
+		String yazliste = "";
+		UserContext userContext = getUserContext();
+		if (getSelectedFriends() != null) {
+			list = getSelectedFriends().split("\\,");
+			if (list != null && list.length > 0) {
+				for (String friend : list) {
+					TblMessage message = new TblMessage();
+					TblSubscriber recipient = new TblSubscriber();
+					recipient.setSubscriberId(Integer.parseInt(friend.trim()));
+					message.setTblSubscriberByRecipientId(recipient);
+					message.setTblSubscriberBySenderId(userContext
+							.getAuthenticatedUser());
+					message.setSubject(getSubjectForRequest(selectedCategory
+							.getCategoryName()));
+					Map model = new HashMap();
+					model.put("name", userContext.getAuthenticatedUser().getName());
+					model.put("surname", userContext.getAuthenticatedUser().getSurname());
+					model.put("profile", "https://graph.facebook.com/" + userContext.getAuthenticatedUser().getFacebookId() + "/picture");
+					model.put("logo", ApplicationConstants.getContext() + "img/suggestion/mail_logo.png");
+					model.put("footer", ApplicationConstants.getContext() + "img/suggestion/mail_footer.png");
+					model.put("category", selectedCategory.getCategoryName());
+					model.put("place", placeName);
+					model.put("description", description);
+					message.setMessage(getMergedTemplate("requestSuggestion",
+							model));
+					message.setSendDate(new Date());
+					subscriberDAO.sendMessage(message);
+				}
+			}
+		}
+		if (list != null && list.length > 0) {
+			for (int i = 0; i < list.length; i++) {
+				yazliste += list[i];
+			}
+		}
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(), 0, StatConstants.AT_REQUEST_SUGGESTION, StatConstants.IT_POI, "facebook özel tavsiye isteme");
+		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " kategori/şehir:" + selectedCategory.getCategoryName() + "/"+ placeName);
+		return result;
+	}
+
+	
+	//TAVSİYE ETME
 	public String suggest() {
 		String result="success";
 		logger.debug("suggest invoked");
@@ -345,24 +429,6 @@ public class TalkAction extends BaseAction implements SessionAware {
 		return result;
 	}
 
-	private String getSubjectForSuggestion(String poiName, String category){
-		StringBuilder sb=new StringBuilder();
-		UserContext context=getUserContext();
-		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
-		sb.append(" kimegitsem?com'da ");
-		sb.append(poiName);
-		sb.append("("+category+") tavsiye ediyor.");
-		return sb.toString();
-	}
-	private String getSubjectForRequest( String category){
-		StringBuilder sb=new StringBuilder();
-		UserContext context=getUserContext();
-		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
-		sb.append(" kimegitsem?com'da ");
-		sb.append(category+" tavsiyesi istiyor.");
-		return sb.toString();
-	}
-
 	private boolean shareMailSuggestion(TblPoi poi){
 		boolean result=true;
 		String[] list = null;
@@ -393,89 +459,33 @@ public class TalkAction extends BaseAction implements SessionAware {
 				yazliste+=list[i];
 			}
 		}
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),
-				poi.getPoiId(), 
-				StatConstants.AT_SUGGEST,
-				StatConstants.IT_POI, 
-				"mail yoluyla tavsiye");
-		logger.info("appLog tavsEt(mail - " +  yazliste  + ")kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
+		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(), poi.getPoiId(), StatConstants.AT_SUGGEST, StatConstants.IT_POI, "mail yoluyla tavsiye");
+		logger.info("appLog tavsEt(mail - " +  yazliste  + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
 		return result;
 	}	
-
-
-	private boolean askMailSuggestion(TblCategory selectedCategory, String placeName){
-		boolean result=true;
-		String[] list=null;
-		String yazliste="";
-		UserContext userContext = getUserContext();
-		if(emailList!=null){
-			list=emailList.split("\\,");
-			if(list!=null && list.length>0){
-				for(String email:list){
-					if(EmailValidator.getInstance().isValid(email)==true){
-						Map model = new HashMap();
-						model.put("name", userContext.getAuthenticatedUser().getName());
-						model.put("surname", userContext.getAuthenticatedUser().getSurname());
-						model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
-						model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
-						model.put("category", selectedCategory.getCategoryName());
-						model.put("place",placeName);
-						model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
-						model.put("description", description);
-						sendMail(model, "requestSuggestion", email, getSubjectForRequest(selectedCategory.getCategoryName()));
-					}
-				}
-			}
-		}
-		if(list!=null && list.length>0){
-			for(int i=0;i<list.length;i++){
-				yazliste+=list[i];
-			}
-		}
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "mail yoluyla tavsiye isteme");
-		logger.info("appLog tavsİste(mail - " + yazliste + "kullanici:" + userContext.getAuthenticatedUser().getName() + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
-		return result;
-	}	
-
-private boolean askPrivateSuggestion(TblCategory selectedCategory,String placeName){
-		boolean result=true;
-		String[] list=null;
-		String yazliste="";
-		UserContext userContext = getUserContext();
-		if(getSelectedFriends()!=null){
-			list=getSelectedFriends().split("\\,");
-			if(list!=null && list.length>0){
-				for(String friend:list){
-					TblMessage message=new TblMessage();
-					TblSubscriber recipient=new TblSubscriber();
-					recipient.setSubscriberId(Integer.parseInt(friend.trim()));
-					message.setTblSubscriberByRecipientId(recipient);
-					message.setTblSubscriberBySenderId(userContext.getAuthenticatedUser());
-					message.setSubject(getSubjectForRequest(selectedCategory.getCategoryName()));					
-					Map model = new HashMap();
-					model.put("name", userContext.getAuthenticatedUser().getName());
-					model.put("surname", userContext.getAuthenticatedUser().getSurname());
-					model.put("profile","https://graph.facebook.com/"+userContext.getAuthenticatedUser().getFacebookId()+"/picture");
-					model.put("logo",ApplicationConstants.getContext()+"img/suggestion/mail_logo.png");
-					model.put("footer",ApplicationConstants.getContext()+"img/suggestion/mail_footer.png");
-					model.put("category", selectedCategory.getCategoryName());
-					model.put("place",placeName);
-					model.put("description", description);
-					message.setMessage(getMergedTemplate("requestSuggestion",model));
-					message.setSendDate(new Date());
-					subscriberDAO.sendMessage(message);
-				}
-			}
-		}
-		if(list!=null && list.length>0){
-			for(int i=0;i<list.length;i++){
-				yazliste+=list[i];
-			}
-		}
-		addStat(getUserContext().getAuthenticatedUser().getSubscriberId(),poi.getPoiId(), StatConstants.AT_REQUEST_SUGGESTION,StatConstants.IT_POI, "facebook özel tavsiye isteme");
-		logger.info("appLog tavsIste(özel - " + yazliste + ") kullanici:" + userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + poi.getPoiName());
-		return result;
+	
+	private String getSubjectForSuggestion(String poiName, String category){
+		StringBuilder sb=new StringBuilder();
+		UserContext context=getUserContext();
+		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
+		sb.append(" kimegitsem?com'da ");
+		sb.append(poiName);
+		sb.append("("+category+") tavsiye ediyor.");
+		return sb.toString();
 	}
+	private String getSubjectForRequest( String category){
+		StringBuilder sb=new StringBuilder();
+		UserContext context=getUserContext();
+		sb.append(context.getAuthenticatedUser().getName()+" "+context.getAuthenticatedUser().getSurname());
+		sb.append(" kimegitsem?com'da ");
+		sb.append(category+" tavsiyesi istiyor.");
+		return sb.toString();
+	}
+
+	
+
+
+	
 	public String addWatch() {
 		String result = "success";
 		TblWatchList watch = new TblWatchList();
