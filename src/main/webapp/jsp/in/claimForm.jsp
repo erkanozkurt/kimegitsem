@@ -86,6 +86,11 @@
 				<td><s:textfield name="poi.authorityEmail" id="email"></s:textfield></td>
 			</tr>
 			<tr>
+				<td colspan="2">
+					<s:file name="uploadFile">Logo seçiniz</s:file>
+				</td>
+			</tr>
+			<tr>
 			<tr>
 				<td valign="top">Haritadaki Yeri</td>
 			<tr>
