@@ -3,7 +3,7 @@
 <div class="contentDiv" id="contentDiv">
 	<s:actionmessage />
 
-	<s:form action="addPoi" namespace="/in" theme="simple" id="claimForm">
+	<s:form action="addPoi" namespace="/in" theme="simple" id="claimForm" enctype="multipart/form-data">
 		<s:hidden name="poi.poiId"></s:hidden>
 		<s:hidden name="poi.uniqueIdentifier"></s:hidden>
 		<s:if test="#request.poi.uniqueIdentifier!=null">
