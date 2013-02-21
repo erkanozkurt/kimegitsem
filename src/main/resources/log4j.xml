@@ -3,30 +3,19 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d %-5p %c.%M:%L - %m%n" />
-		</layout>
-	</appender>
-
+	
 	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="c:/log/kimegitsem.log" />
+		<param name="file" value="../../log/kimegitsem.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<param name="MaxFileSize" value="9000KB" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<!-- Keep one backup file -->
-		<param name="MaxBackupIndex" value="1" />
+		<param name="MaxBackupIndex" value="5" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{MM-dd HH:mm:ss.SSS} %-5p (%F:%L) - %m%n" />
+			<param name="ConversionPattern" value="%d %5p [%t] (%F:%L) - %m%n" />
 		</layout>
 	</appender>
-	
-	<appender name="console" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p %c{1} - %m%n" />
-		</layout>
-	</appender>
+
 
 	<logger name="org.hibernate.type">
 		<level value="ERROR" />
@@ -44,7 +33,6 @@
 	<logger name="com.persona">
 		<level value="debug" />
 		<appender-ref ref="file" />
-		<appender-ref ref="console"/>
 	</logger>
 
 	<!-- for all other loggers log only warn and above log messages -->
