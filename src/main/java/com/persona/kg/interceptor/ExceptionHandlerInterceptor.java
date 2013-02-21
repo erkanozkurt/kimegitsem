@@ -37,22 +37,12 @@ public class ExceptionHandlerInterceptor extends BaseInterceptor implements
 	public String intercept(ActionInvocation action) throws Exception {
 
 		String result = "error";
-		logger.debug("enter");
 		try {
-			final HttpServletRequest request = (HttpServletRequest) ActionContext
-            .getContext().get(ServletActionContext.HTTP_REQUEST);
-
-			Enumeration enumer=request.getHeaderNames();
-			while(enumer.hasMoreElements()){
-				String key=(String)enumer.nextElement();
-				logger.debug("key: "+key+" value:"+request.getHeader(key));
-			}
 			result = action.invoke();
 		} catch (Exception e) {
 			logger.error("Struts received error", e);
 			result = "error";
 		}
-		logger.debug("exit");
 		return result;
 	}
 
