@@ -146,9 +146,9 @@
 			value="${jdbcUrl}" />
 		<property name="user" value="${user}" />
 		<property name="password" value="${password}" />
-		<property name="minPoolSize" value="40" />
-		<property name="initialPoolSize" value="40" />
-		<property name="maxPoolSize" value="40" />
+		<property name="minPoolSize" value="5" />
+		<property name="initialPoolSize" value="5" />
+		<property name="maxPoolSize" value="5" />
 		<property name="maxStatements" value="100" />
 		<property name="checkoutTimeout" value="10000" />
 		<property name="idleConnectionTestPeriod" value="60" />
