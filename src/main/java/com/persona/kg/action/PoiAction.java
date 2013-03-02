@@ -87,9 +87,12 @@ public class PoiAction extends BaseAction implements SessionAware {
 		logger.debug("show invoked");
 		UserContext userContext = getUserContext();
 		//addStat(getUserContext().getAuthenticatedUser().getSubscriberId(), userContext.getSelectedPoi().getPoiId() , StatConstants.AT_VIEW, StatConstants.IT_POI, "");
-		
+		if(userContext.getAuthenticatedUser()!=null){
 		logger.info("appLog hizmGoster kullanici:" + 
 		userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + userContext.getSelectedPoi().getPoiName());
+		}else{
+		logger.info("appLog hizmGoster kullanicisi : --- null --- "; 	
+		}
 		return "show";
 	}
 
