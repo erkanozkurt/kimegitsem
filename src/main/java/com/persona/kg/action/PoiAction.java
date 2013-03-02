@@ -91,7 +91,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 		logger.info("appLog hizmGoster kullanici:" + 
 		userContext.getAuthenticatedUser().getName() + " " + userContext.getAuthenticatedUser().getSurname() + " hizmAd:" + userContext.getSelectedPoi().getPoiName());
 		}else{
-		logger.info("appLog hizmGoster kullanicisi : --- null --- "; 	
+		logger.info("appLog hizmGoster kullanicisi : --- null --- "); 	
 		}
 		return "show";
 	}
