@@ -57,11 +57,13 @@ public class FacebookAction extends BaseAction implements SessionAware,
 
 	public String login() {
 		logger.debug("access_token: " + request.getParameter("access_token"));
-
+		logger.debug("ApplicationConstants.USER_CONTEXT_KEY: " + ApplicationConstants.USER_CONTEXT_KEY );
+ 
+ 
 		UserContext context = (UserContext) request.getSession().getAttribute(
 				ApplicationConstants.USER_CONTEXT_KEY);
 	        
-	        logger.debug("ApplicationConstants.USER_CONTEXT_KEY: " + ApplicationConstants.USER_CONTEXT_KEY );
+	       
 	        logger.debug("context: " +context );
 	        
 	        logger.debug("context.isLoggedIn(): " +context.isLoggedIn() );
