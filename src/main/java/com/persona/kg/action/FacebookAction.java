@@ -65,6 +65,9 @@ public class FacebookAction extends BaseAction implements SessionAware,
 			context.setFacebookAccessToken(accessToken);
 			FacebookClient facebookClient = new DefaultFacebookClient(
 					accessToken);
+					
+		        logger.debug("facebookClient : " + facebookClient);
+		        
 			User facebookUser = retrieveUserDetails(facebookClient);
 
 			if (facebookUser != null) {
