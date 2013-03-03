@@ -242,7 +242,7 @@ public class PoiAction extends BaseAction implements SessionAware {
 								mimeMessage);
 						// mail sending parameters
 						message.setTo("adnan.ertemel@gmail.com");
-						message.setFrom("ylcnarsln@gmail.com");
+						message.setFrom("bilgi@kimegitsem.com");
 						message.setSubject(authenticatedUser.getName()+" "+authenticatedUser.getSurname()+" bir hizmet veren ekledi.");
 						Map model = new HashMap();
 						model.put("name", authenticatedUser.getName());
