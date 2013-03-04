@@ -95,14 +95,15 @@ public class FacebookAction extends BaseAction implements SessionAware,
 						subscriber = new TblSubscriber();
 						subscriber.setFacebookId(facebookUser.getId());
 					}
+					logger.debug("creating user1: "+facebookUser.getId());
 					subscriber.setName(facebookUser.getFirstName());
 					subscriber.setSurname(facebookUser.getLastName());
 					subscriber.setEmail(facebookUser.getEmail());
-					
+					logger.debug("creating user2: "+facebookUser.getId());
 					subscriber.setJoinDate(new Date());
 					subscriber.setGender(facebookUser.getGender().substring(0,1));
 					subscriber.setActivated(1);
-					logger.debug("creating user: "+facebookUser.getId());
+					logger.debug("creating user3: "+facebookUser.getId());
 					if (subscriberDao.storeUser(subscriber)) {
 						logger.debug("user stored: "+facebookUser.getId());
 						subscriber=subscriberDao.retrieveFacebookSubscriber(facebookUser.getId());
