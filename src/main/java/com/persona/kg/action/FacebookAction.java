@@ -74,21 +74,23 @@ public class FacebookAction extends BaseAction implements SessionAware,
 			context.setFacebookAccessToken(accessToken);
 			FacebookClient facebookClient = new DefaultFacebookClient(
 					accessToken);
-					
-		        logger.debug("facebookClient : " + facebookClient);
-		        
+			
+			logger.debug("facebookClient : " + facebookClient);
 			User facebookUser = retrieveUserDetails(facebookClient);
 
 			if (facebookUser != null) {
+				logger.debug("facebook user is not null!: "+facebookUser.getId());
 				TblSubscriber subscriber = subscriberDao
 						.retrieveFacebookSubscriber(facebookUser.getId());
 				if (subscriber != null && subscriber.getActivated() == 1) {
+					logger.debug("user exists: "+facebookUser.getId());
 					context.setLoggedIn(true);
 					context.setFacebookId(facebookUser.getId());
 					context.setAuthenticatedUser(subscriber);
 					context.putObject(ApplicationConstants.FRIENDLIST_KEY, getSubscriberDao().retrieveFriendsBySubscriberId(subscriber.getSubscriberId()));
 					putWatchList(context);
 				} else {
+					logger.debug("user doest not exist: "+facebookUser.getId());
 					if (subscriber == null) {
 						subscriber = new TblSubscriber();
 						subscriber.setFacebookId(facebookUser.getId());
@@ -102,12 +104,14 @@ public class FacebookAction extends BaseAction implements SessionAware,
 					subscriber.setActivated(1);
 
 					if (subscriberDao.storeUser(subscriber)) {
+						logger.debug("user stored: "+facebookUser.getId());
 						subscriber=subscriberDao.retrieveFacebookSubscriber(facebookUser.getId());
 						context.setLoggedIn(true);
 						context.setFacebookId(facebookUser.getId());
 						context.setAuthenticatedUser(subscriber);
 						//create friends
 						populateFacebookFriends(facebookClient, subscriber.getSubscriberId());
+						logger.debug("friend list populated : "+facebookUser.getId());
 						context.putObject(ApplicationConstants.FRIENDLIST_KEY, getSubscriberDao().retrieveFriendsBySubscriberId(subscriber.getSubscriberId()));
 						getServletRequest().setAttribute("newMember", "true");
 					}
@@ -136,6 +140,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 	}
 
 	private void populateFacebookFriends(FacebookClient client, int userId){
+		logger.debug("populatig facebook friends: "+userId);
 		List<User> facebookFriends=enumerateFriends(client);
 		Iterator<User> iterator=facebookFriends.iterator();
 		while(iterator.hasNext()){
@@ -156,6 +161,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 				subscriberDao.createFriend(userId, friend.getSubscriberId(),(short)1);
 			}
 		}
+		logger.debug("populatig facebook friends: "+userId+" end");
 	}
 
 
