@@ -102,7 +102,7 @@ public class FacebookAction extends BaseAction implements SessionAware,
 					subscriber.setJoinDate(new Date());
 					subscriber.setGender(facebookUser.getGender().substring(0,1));
 					subscriber.setActivated(1);
-
+					logger.debug("creating user: "+facebookUser.getId());
 					if (subscriberDao.storeUser(subscriber)) {
 						logger.debug("user stored: "+facebookUser.getId());
 						subscriber=subscriberDao.retrieveFacebookSubscriber(facebookUser.getId());
@@ -114,6 +114,8 @@ public class FacebookAction extends BaseAction implements SessionAware,
 						logger.debug("friend list populated : "+facebookUser.getId());
 						context.putObject(ApplicationConstants.FRIENDLIST_KEY, getSubscriberDao().retrieveFriendsBySubscriberId(subscriber.getSubscriberId()));
 						getServletRequest().setAttribute("newMember", "true");
+					}else{
+						logger.debug("user could not be created: "+facebookUser.getId());
 					}
 
 				}
